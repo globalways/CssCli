@@ -33,7 +33,7 @@
     <style name="ActivityOuterStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/base_beige_white</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
 </resources>

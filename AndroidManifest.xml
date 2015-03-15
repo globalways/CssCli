@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.globalways.csscli"
-    android:versionCode="1"
+    android:versionCode="2"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -22,7 +22,7 @@
     <application
         android:name=".tools.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
         <activity
@@ -34,8 +34,49 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 账户 -->
         <activity
             android:name=".ui.account.LoginActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 商铺管理 -->
+        <activity
+            android:name=".ui.store.StoreActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 商铺商品管理 -->
+        <activity
+            android:name=".ui.product.ProductActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 雇员管理 -->
+        <activity
+            android:name=".ui.employee.EmployeeActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 收银台 -->
+        <activity
+            android:name=".ui.cashier.CashierActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 进货渠道管理 -->
+        <activity
+            android:name=".ui.purchase.PurchaseActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 订单管理 -->
+        <activity
+            android:name=".ui.order.OrderActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 统计 -->
+        <activity
+            android:name=".ui.statistics.StatisticsActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <!-- 系统设置 -->
+        <activity
+            android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="landscape" >
         </activity>
     </application>

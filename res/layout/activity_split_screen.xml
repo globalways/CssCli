@@ -29,8 +29,13 @@
                 ptr:ptrAnimationStyle="flip" />
         </LinearLayout>
 
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/base_beige_white" />
+
         <RelativeLayout
-            android:id="@+id/rightContainer"
+            android:id="@+id/layoutContainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.6" />

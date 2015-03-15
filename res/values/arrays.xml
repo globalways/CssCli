@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mainViewButton">
+        <item>商铺管理</item>
+        <item>商铺商品管理</item>
+        <item>雇员管理</item>
+        <item>收银台</item>
+        <item>进货管理</item>
+        <item>订单管理</item>
+        <item>统计</item>
+        <item>系统设置</item>
+    </string-array>
+
+</resources>
