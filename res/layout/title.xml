@@ -98,7 +98,7 @@
             android:ellipsize="middle"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:textColor="@android:color/white"
+            android:textColor="@color/base_white"
             android:textSize="@dimen/title_text_size"
             android:visibility="gone" />
     </FrameLayout>

@@ -3,5 +3,10 @@
 
     <color name="base_beige_white">#FCF1DF</color>
     <color name="base_black">#2F3D4C</color>
+    <color name="base_black_333333">#333333</color>
+    <color name="base_black_999999">#999999</color>
+    <color name="base_white">#ffffff</color>
+    <color name="base_blue">#00923f</color>
+    <color name="base_green">#004080</color>
 
 </resources>

@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface HttpClientDao {
 	/**
-	 * 发�?�Get请求
+	 * 发送Get请求
 	 * 
 	 * @param url
 	 *            请求url
@@ -22,7 +22,7 @@ public interface HttpClientDao {
 			HttpClientUtilCallBack<String> httpClientUtilCallBack);
 
 	/**
-	 * 发�?�Post请求
+	 * 发送Post请求
 	 * 
 	 * @param url
 	 *            请求url
@@ -39,9 +39,9 @@ public interface HttpClientDao {
 	 * 上传文件
 	 * 
 	 * @param fileLocalPath
-	 *            �?要上传的文件路径
+	 *            需要上传的文件路径
 	 * @param fileServerPath
-	 *            文件保存的服务器端路�?
+	 *            文件保存的服务器端路径
 	 * @param flag
 	 * @param httpClientUtilCallBack
 	 *            <String> 请求结果回调
@@ -63,9 +63,9 @@ public interface HttpClientDao {
 	public void downloadFile(String fileLocalPath, String fileServerPath, long flag,
 			HttpClientUtilCallBack<String> httpClientUtilCallBack);
 
-	/** 部分错误�? **/
+	/** 部分错误码 **/
 	public enum ErrorCode {
-		EXCEPTION(-10000, "访问服务器错�?"), FILE_NOT_EXIST(-10001, "文件不存�?"), PATH_EXCEPTION(-10002, "文件路径错误"), RESOLVE_EXCEPTION(
+		EXCEPTION(-10000, "访问服务器错误"), FILE_NOT_EXIST(-10001, "文件不存在"), PATH_EXCEPTION(-10002, "文件路径错误"), RESOLVE_EXCEPTION(
 				-10003, "解析数据异常");
 
 		private ErrorCode(int code, String msg) {
@@ -108,13 +108,13 @@ public interface HttpClientDao {
 		 *            请求url
 		 * @param flag
 		 * @param errorCode
-		 *            错误�?(com.blueocean.youpea.http.dao.HttpClientDao.ErrorCode)
+		 *            错误码(com.blueocean.youpea.http.dao.HttpClientDao.ErrorCode)
 		 */
 		public void onFailure(String url, long flag, ErrorCode errorCode) {
 		};
 
 		/**
-		 * 进度条更�?
+		 * 进度条更新
 		 * 
 		 * @param url
 		 *            请求url
