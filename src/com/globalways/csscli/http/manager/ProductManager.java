@@ -136,8 +136,8 @@ public class ProductManager {
 	 */
 	public void addProduct(long storeid, String product_name, String product_brand, String product_bar,
 			String product_desc, String product_avatar, int product_price, String product_unit, int product_apr,
-			int stock_cnt, boolean is_recommend, int stock_limit, String product_tag, long purchase_channel,
-			final ManagerCallBack<String> callBack) {
+			int stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
+			long purchase_channel, final ManagerCallBack<String> callBack) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {
 			return;
@@ -168,6 +168,8 @@ public class ProductManager {
 		}
 		// 1，推荐，2不推荐
 		params.put("is_recommend", is_recommend ? 1 : 2);
+		// 1，推荐，2不推荐
+		params.put("status", status ? 1 : 2);
 		if (stock_limit != 0) {
 			params.put("stock_limit", stock_limit);
 		}
@@ -177,8 +179,9 @@ public class ProductManager {
 		if (purchase_channel != 0) {
 			params.put("purchase_channel", purchase_channel);
 		}
-		HttpUtils.getInstance().sendPostRequest(HttpApi.PRODUCT_ADD_PRODUCT.replaceFirst(":sid", String.valueOf(storeid)),
-				1, params, new HttpClientUtilCallBack<String>() {
+		HttpUtils.getInstance().sendPostRequest(
+				HttpApi.PRODUCT_ADD_PRODUCT.replaceFirst(":sid", String.valueOf(storeid)), 1, params,
+				new HttpClientUtilCallBack<String>() {
 					@Override
 					public void onSuccess(String url, long flag, String returnContent) {
 						super.onSuccess(url, flag, returnContent);
@@ -209,6 +212,89 @@ public class ProductManager {
 						}
 					}
 				});
+	}
+
+	public void update(long storeid, String product_bar, String product_name, String product_brand,
+			String product_desc, String product_avatar, int product_price, String product_unit, int product_apr,
+			int stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
+			long purchase_channel, final ManagerCallBack<String> callBack) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		if (product_name == null || product_name.isEmpty()) {
+			return;
+		}
+		params.put("product_name", product_name);
+		if (product_brand != null && !product_brand.isEmpty()) {
+			params.put("product_brand", product_brand);
+		}
+		if (product_bar != null && !product_bar.isEmpty()) {
+			params.put("product_bar", product_bar);
+		}
+		if (product_desc != null && !product_desc.isEmpty()) {
+			params.put("product_desc", product_desc);
+		}
+		if (product_avatar != null && !product_avatar.isEmpty()) {
+			params.put("product_avatar", product_avatar);
+		}
+		params.put("product_price", product_price);
+		if (product_unit == null || product_unit.isEmpty()) {
+			return;
+		}
+		params.put("product_unit", product_unit);
+		if (product_apr != 100) {
+			params.put("product_apr", product_apr);
+		}
+		if (stock_cnt != 0) {
+			params.put("stock_cnt", stock_cnt);
+		}
+		// 1，推荐，2不推荐
+		params.put("is_recommend", is_recommend ? 1 : 2);
+		// 1，推荐，2不推荐
+		params.put("status", status ? 1 : 2);
+		if (stock_limit != 0) {
+			params.put("stock_limit", stock_limit);
+		}
+		if (product_tag != null && !product_tag.isEmpty()) {
+			params.put("product_tag", product_tag);
+		}
+		if (purchase_channel != 0) {
+			params.put("purchase_channel", purchase_channel);
+		}
+		HttpUtils.getInstance().sendPostRequest(
+				HttpApi.PRODUCT_UPDATE_INFO.replaceFirst(":sid", String.valueOf(storeid)).replaceFirst(":bar",
+						product_bar), 1, params, new HttpClientUtilCallBack<String>() {
+					@Override
+					public void onSuccess(String url, long flag, String returnContent) {
+						super.onSuccess(url, flag, returnContent);
+						JSONObject jsonObject;
+						try {
+							jsonObject = new JSONObject(returnContent);
+							int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+							if (code == HttpCode.SUCCESS) {
+								if (null != callBack) {
+									callBack.onSuccess(null);
+								}
+							} else {
+								if (null != callBack) {
+									callBack.onFailure(code,
+											jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onFailure(String url, long flag, ErrorCode errorCode) {
+						super.onFailure(url, flag, errorCode);
+						if (null != callBack) {
+							callBack.onFailure(errorCode.code(), errorCode.msg());
+						}
+					}
+				});
+	}
+
+	public void deleteProduct(final ManagerCallBack<String> callBack) {
 	}
 
 }

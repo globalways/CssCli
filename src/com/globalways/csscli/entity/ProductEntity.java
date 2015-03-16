@@ -9,6 +9,8 @@ public class ProductEntity {
 	@Expose
 	private long store_id;
 	@Expose
+	private String product_brand;
+	@Expose
 	private String product_name;
 	@Expose
 	private String product_desc;
@@ -49,13 +51,14 @@ public class ProductEntity {
 		super();
 	}
 
-	public ProductEntity(long id, long store_id, String product_name, String product_desc, String product_qr,
-			String product_bar, String product_avatar, long product_price, String product_unit, long product_apr,
-			double sales_cnt, double stock_cnt, long hits, int is_recommend, double stock_limit, String product_tag,
-			long purchase_channel, int status, String created, String updated) {
+	public ProductEntity(long id, long store_id, String product_brand, String product_name, String product_desc,
+			String product_qr, String product_bar, String product_avatar, long product_price, String product_unit,
+			long product_apr, double sales_cnt, double stock_cnt, long hits, int is_recommend, double stock_limit,
+			String product_tag, long purchase_channel, int status, String created, String updated) {
 		super();
 		this.id = id;
 		this.store_id = store_id;
+		this.product_brand = product_brand;
 		this.product_name = product_name;
 		this.product_desc = product_desc;
 		this.product_qr = product_qr;
@@ -78,13 +81,21 @@ public class ProductEntity {
 
 	@Override
 	public String toString() {
-		return "ProductEntity [id=" + id + ", store_id=" + store_id + ", product_name=" + product_name
-				+ ", product_desc=" + product_desc + ", product_qr=" + product_qr + ", product_bar=" + product_bar
-				+ ", product_avatar=" + product_avatar + ", product_price=" + product_price + ", product_unit="
-				+ product_unit + ", product_apr=" + product_apr + ", sales_cnt=" + sales_cnt + ", stock_cnt="
-				+ stock_cnt + ", hits=" + hits + ", is_recommend=" + is_recommend + ", stock_limit=" + stock_limit
-				+ ", product_tag=" + product_tag + ", purchase_channel=" + purchase_channel + ", status=" + status
-				+ ", created=" + created + ", updated=" + updated + "]";
+		return "ProductEntity [id=" + id + ", store_id=" + store_id + ", product_brand=" + product_brand
+				+ ", product_name=" + product_name + ", product_desc=" + product_desc + ", product_qr=" + product_qr
+				+ ", product_bar=" + product_bar + ", product_avatar=" + product_avatar + ", product_price="
+				+ product_price + ", product_unit=" + product_unit + ", product_apr=" + product_apr + ", sales_cnt="
+				+ sales_cnt + ", stock_cnt=" + stock_cnt + ", hits=" + hits + ", is_recommend=" + is_recommend
+				+ ", stock_limit=" + stock_limit + ", product_tag=" + product_tag + ", purchase_channel="
+				+ purchase_channel + ", status=" + status + ", created=" + created + ", updated=" + updated + "]";
+	}
+
+	public String getProduct_brand() {
+		return product_brand;
+	}
+
+	public void setProduct_brand(String product_brand) {
+		this.product_brand = product_brand;
 	}
 
 	public long getId() {

@@ -13,4 +13,5 @@ public class HttpApi {
 
 	public static final String PRODUCT_GET_LIST = HOME_URI + "/v2/merchants/stores/:sid/products";
 	public static final String PRODUCT_ADD_PRODUCT = HOME_URI + "/v2/merchants/stores/:sid/products";
+	public static final String PRODUCT_UPDATE_INFO = HOME_URI + "/v2/merchants/stores/:sid/products/bar/:bar";
 }

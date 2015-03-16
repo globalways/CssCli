@@ -3,6 +3,7 @@ package com.globalways.csscli.ui.product;
 import java.util.List;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -39,7 +40,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 	private ProductListAdapter productListAdapter;
 	private ProductDetailFragment productDetailFragment;
 	private ProductAddNewFragment productAddNewFragment;
-	private View dialogContainer;
+	private View dialogContainer, layoutContainer;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -59,14 +60,28 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			finish();
 			break;
 		case R.id.textRight:
-			if (productAddNewFragment == null) {
-				productAddNewFragment = new ProductAddNewFragment();
-				getSupportFragmentManager().beginTransaction().add(R.id.dialogContainer, productAddNewFragment)
-						.show(productAddNewFragment).commit();
+			if (layoutContainer.isShown()) {
+				showAddProductFragment();
 			}
-			dialogContainer.setVisibility(View.VISIBLE);
 			break;
 		}
+	}
+
+	private long storeid = 46758;
+
+	private void showAddProductFragment() {
+		if (productAddNewFragment == null) {
+			productAddNewFragment = new ProductAddNewFragment();
+			getSupportFragmentManager().beginTransaction().add(R.id.dialogContainer, productAddNewFragment)
+					.show(productAddNewFragment).commit();
+			productAddNewFragment.setData(storeid);
+		}
+		dialogContainer.setVisibility(View.VISIBLE);
+	}
+
+	public void hideAddProductFragment() {
+		productAddNewFragment.resetView();
+		dialogContainer.setVisibility(View.GONE);
 	}
 
 	/** PullToRefreshListView的下拉或上拉监听接口 */
@@ -85,11 +100,12 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 
 	/** 加载ProductList数据，isRefresh为true时，刷新；isRefresh为false时，加载更多 */
 	private void loadProductList(final boolean isRefresh) {
-		ProductManager.getInstance().getProductList(46758, isRefresh, new ManagerCallBack<List<ProductEntity>>() {
+		ProductManager.getInstance().getProductList(storeid, isRefresh, new ManagerCallBack<List<ProductEntity>>() {
 			@Override
 			public void onSuccess(List<ProductEntity> returnContent) {
 				super.onSuccess(returnContent);
 				productListAdapter.setData(isRefresh, returnContent);
+				layoutContainer.setVisibility(View.VISIBLE);
 				productDetailFragment.setEntity(productListAdapter.getItemByPosition(0));
 				refreshListView.onRefreshComplete();
 			}
@@ -129,10 +145,24 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 
 		dialogContainer = findViewById(R.id.dialogContainer);
 		dialogContainer.setVisibility(View.GONE);
+		layoutContainer = findViewById(R.id.layoutContainer);
+		layoutContainer.setVisibility(View.INVISIBLE);
 
 		productDetailFragment = new ProductDetailFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.layoutContainer, productDetailFragment)
 				.show(productDetailFragment).commit();
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (dialogContainer.isShown()) {
+				hideAddProductFragment();
+				return true;
+			}
+			return false;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 }
