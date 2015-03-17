@@ -1,11 +1,16 @@
 package com.globalways.csscli.ui.cashier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.globalways.csscli.R;
+import com.globalways.csscli.entity.ShoppingEntity;
 import com.globalways.csscli.ui.BaseFragmentActivity;
 
 /**
@@ -18,11 +23,13 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 
 	private TextView textLeft, textCenter;
 	private View layoutContainer;
+	private ListView listViewShopping;
+	private CashierListAdapter cashierListAdapter;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.activity_split_screen);
+		setContentView(R.layout.cashier_fragment);
 		initView();
 	}
 
@@ -46,7 +53,20 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		textCenter.setText("收银台");
 		textCenter.setVisibility(View.VISIBLE);
 
-		layoutContainer = findViewById(R.id.layoutContainer);
-		layoutContainer.setVisibility(View.GONE);
+//		layoutContainer = findViewById(R.id.layoutContainer);
+//		layoutContainer.setVisibility(View.GONE);
+
+		listViewShopping = (ListView) findViewById(R.id.listViewShopping);
+		cashierListAdapter = new CashierListAdapter(this);
+		listViewShopping.setAdapter(cashierListAdapter);
+		
+		ShoppingEntity entity=new ShoppingEntity();
+		entity.setProduct_name("美味辣条");
+		entity.setProduct_price(300);
+		entity.setProduct_unit("袋");
+		entity.setShoppingNumber(5);
+		List<ShoppingEntity> list=new ArrayList<ShoppingEntity>();
+		list.add(entity);
+		cashierListAdapter.setData(list);
 	}
 }

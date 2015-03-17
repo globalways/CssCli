@@ -158,9 +158,10 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (dialogContainer.isShown()) {
 				hideAddProductFragment();
-				return true;
+			}else{
+				finish();
 			}
-			return false;
+			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
