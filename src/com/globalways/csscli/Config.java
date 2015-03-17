@@ -8,4 +8,5 @@ public class Config {
 	public static final String MSG = "msg";
 	public static final String BODY = "body";
 	public static final String STATUS = "status";
+	
 }
