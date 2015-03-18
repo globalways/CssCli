@@ -41,6 +41,87 @@ public class ProductManager {
 		return productManager;
 	}
 
+	public enum GetProductType {
+		/** 条形码 */
+		BAR_CODE(HttpApi.PRODUCT_GET_DETAIL_BAR_CODE, ":bar"),
+		/** 二维码 */
+		QR_CODE(HttpApi.PRODUCT_GET_DETAIL_QR_CODE, ":qr");
+
+		private GetProductType(String url, String code) {
+			this.url = url;
+			this.code = code;
+		}
+
+		private String url;
+		private String sid = ":sid";
+		private String code;
+
+		public String getUrl() {
+			return url;
+		}
+
+		public String getSid() {
+			return sid;
+		}
+
+		public String getCode() {
+			return code;
+		}
+	}
+
+	/**
+	 * 根据条形码或者二维码获取商品详细信息
+	 * 
+	 * @param storeid
+	 *            店铺id
+	 * @param type
+	 *            获取方式：条形码、二维码
+	 * @param productCode
+	 *            商品的条形码或者二维码
+	 * @param callBack
+	 */
+	public void getProductDetail(long storeid, GetProductType type, String productCode,
+			final ManagerCallBack<ProductEntity> callBack) {
+		HttpUtils.getInstance().sendGetRequest(
+				(type.getUrl().replaceFirst(type.getSid(), String.valueOf(storeid))).replaceFirst(type.getCode(),
+						productCode), 1, null, new HttpClientUtilCallBack<String>() {
+					@Override
+					public void onSuccess(String url, long flag, String returnContent) {
+						super.onSuccess(url, flag, returnContent);
+						JSONObject jsonObject;
+						try {
+							jsonObject = new JSONObject(returnContent);
+							int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+							if (code == HttpCode.SUCCESS) {
+								Gson gson = new Gson();
+								ProductEntity entity = new ProductEntity();
+								entity = gson.fromJson(jsonObject.getString(Config.BODY),
+										new TypeToken<ProductEntity>() {
+										}.getType());
+								if (null != callBack) {
+									callBack.onSuccess(entity);
+								}
+							} else {
+								if (null != callBack) {
+									callBack.onFailure(code,
+											jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onFailure(String url, long flag, ErrorCode errorCode) {
+						super.onFailure(url, flag, errorCode);
+						if (null != callBack) {
+							callBack.onFailure(errorCode.code(), errorCode.msg());
+						}
+					}
+				});
+	}
+
 	private static final int PAGE_SIZE = 20;
 	private int page = 1;
 

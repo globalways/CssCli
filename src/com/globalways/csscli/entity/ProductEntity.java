@@ -47,6 +47,9 @@ public class ProductEntity {
 	@Expose
 	private String updated;
 
+	/** 购物车数量 */
+	private int shoppingNumber;
+
 	public ProductEntity() {
 		super();
 	}
@@ -87,7 +90,16 @@ public class ProductEntity {
 				+ product_price + ", product_unit=" + product_unit + ", product_apr=" + product_apr + ", sales_cnt="
 				+ sales_cnt + ", stock_cnt=" + stock_cnt + ", hits=" + hits + ", is_recommend=" + is_recommend
 				+ ", stock_limit=" + stock_limit + ", product_tag=" + product_tag + ", purchase_channel="
-				+ purchase_channel + ", status=" + status + ", created=" + created + ", updated=" + updated + "]";
+				+ purchase_channel + ", status=" + status + ", created=" + created + ", updated=" + updated
+				+ ", shoppingNumber=" + shoppingNumber + "]";
+	}
+
+	public int getShoppingNumber() {
+		return shoppingNumber;
+	}
+
+	public void setShoppingNumber(int shoppingNumber) {
+		this.shoppingNumber = shoppingNumber;
 	}
 
 	public String getProduct_brand() {
