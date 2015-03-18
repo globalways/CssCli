@@ -1,5 +1,6 @@
 package com.globalways.csscli.ui.cashier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -20,12 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.globalways.csscli.R;
-import com.globalways.csscli.entity.ShoppingEntity;
+import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.tools.PicassoImageLoader;
 
 public class CashierListAdapter extends BaseAdapter {
 
-	private List<ShoppingEntity> list = null;
+	private List<ProductEntity> list = null;
 	private PicassoImageLoader imageLoader;
 	private Context context;
 
@@ -35,12 +36,20 @@ public class CashierListAdapter extends BaseAdapter {
 		imageLoader = new PicassoImageLoader(context);
 	}
 
-	public void setData(List<ShoppingEntity> list) {
+	public void setData(List<ProductEntity> list) {
 		this.list = list;
 		notifyDataSetChanged();
 	}
 
-	public ShoppingEntity getItemByPosition(int position) {
+	public void addItem(ProductEntity entity) {
+		if (list == null) {
+			list = new ArrayList<ProductEntity>();
+		}
+		list.add(entity);
+		notifyDataSetChanged();
+	}
+
+	public ProductEntity getItemByPosition(int position) {
 		if (null != list) {
 			return list.get(position);
 		}
@@ -80,7 +89,7 @@ public class CashierListAdapter extends BaseAdapter {
 		} else {
 			mItemView = (ItemView) convertView.getTag();
 		}
-		final ShoppingEntity entity = list.get(position);
+		final ProductEntity entity = list.get(position);
 		imageLoader.showListRoundImage(entity.getProduct_avatar(), R.drawable.logo, R.drawable.logo,
 				mItemView.productAva);
 		mItemView.productName.setText(entity.getProduct_name());
@@ -176,23 +185,44 @@ public class CashierListAdapter extends BaseAdapter {
 				mItemView.textNumber.setText(list.get(position).getShoppingNumber() + "");
 			}
 		});
+		mItemView.textDelete.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder builder = new Builder(context);
+				builder.setTitle("提示!");
+				builder.setMessage("您正在删除改商品");
+				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						list.remove(position);
+						notifyDataSetChanged();
+					}
+				});
+				builder.create().show();
+			}
+		});
 		return convertView;
 	}
 
 	private class ItemView {
 		ImageView productAva;
-		TextView productName, productPrice;
+		TextView productName, productPrice, textNumber, textDelete;
 		Button btnLess, btnAdd;
-		TextView textNumber;
 	}
 
 	public void findView(ItemView itemView, View convertView) {
 		itemView.productAva = (ImageView) convertView.findViewById(R.id.productAva);
 		itemView.productName = (TextView) convertView.findViewById(R.id.productName);
 		itemView.productPrice = (TextView) convertView.findViewById(R.id.productPrice);
+		itemView.textNumber = (TextView) convertView.findViewById(R.id.textNumber);
+		itemView.textDelete = (TextView) convertView.findViewById(R.id.textDelete);
 		itemView.btnLess = (Button) convertView.findViewById(R.id.btnLess);
 		itemView.btnAdd = (Button) convertView.findViewById(R.id.btnAdd);
-		itemView.textNumber = (TextView) convertView.findViewById(R.id.textNumber);
 	}
 
 }

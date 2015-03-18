@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.globalways.csscli.R;
-import com.globalways.csscli.entity.ShoppingEntity;
+import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.ui.BaseFragmentActivity;
 
 /**
@@ -25,6 +25,7 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 	private View layoutContainer;
 	private ListView listViewShopping;
 	private CashierListAdapter cashierListAdapter;
+	private CashierQRCodeFragment cashierQRCodeFragment;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -42,6 +43,15 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		}
 	}
 
+	/**
+	 * 向购物车添加商品
+	 * 
+	 * @param entity
+	 */
+	public void addCashierProduct(ProductEntity entity) {
+		cashierListAdapter.addItem(entity);
+	}
+
 	/** 初始化UI、设置监听 */
 	private void initView() {
 		textLeft = (TextView) findViewById(R.id.textleft);
@@ -53,19 +63,22 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		textCenter.setText("收银台");
 		textCenter.setVisibility(View.VISIBLE);
 
-//		layoutContainer = findViewById(R.id.layoutContainer);
-//		layoutContainer.setVisibility(View.GONE);
+		// layoutContainer = findViewById(R.id.layoutContainer);
+		// layoutContainer.setVisibility(View.GONE);
+		cashierQRCodeFragment = new CashierQRCodeFragment();
+		getSupportFragmentManager().beginTransaction().add(R.id.layoutContainer, cashierQRCodeFragment)
+				.show(cashierQRCodeFragment).commit();
 
 		listViewShopping = (ListView) findViewById(R.id.listViewShopping);
 		cashierListAdapter = new CashierListAdapter(this);
 		listViewShopping.setAdapter(cashierListAdapter);
-		
-		ShoppingEntity entity=new ShoppingEntity();
+
+		ProductEntity entity = new ProductEntity();
 		entity.setProduct_name("美味辣条");
 		entity.setProduct_price(300);
 		entity.setProduct_unit("袋");
 		entity.setShoppingNumber(5);
-		List<ShoppingEntity> list=new ArrayList<ShoppingEntity>();
+		List<ProductEntity> list = new ArrayList<ProductEntity>();
 		list.add(entity);
 		cashierListAdapter.setData(list);
 	}
