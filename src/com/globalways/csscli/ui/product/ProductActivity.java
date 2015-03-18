@@ -33,7 +33,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		OnItemClickListener {
 	private static final String TAG = ProductActivity.class.getSimpleName();
 
-	private TextView textLeft, textCenter, textRight;
+	private TextView textLeft, textCenter, textRight, textRight_scan;
 
 	private PullToRefreshListView refreshListView;
 	private ListView listView;
@@ -134,6 +134,11 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		textRight.setText("添加商品");
 		textRight.setVisibility(View.VISIBLE);
 		textRight.setOnClickListener(this);
+		
+		textRight_scan = (TextView) findViewById(R.id.textRight_scan);
+		textRight_scan.setText("扫描");
+		textRight_scan.setVisibility(View.VISIBLE);
+		textRight_scan.setOnClickListener(this);
 
 		refreshListView = (PullToRefreshListView) findViewById(R.id.refreshListView);
 		refreshListView.setOnRefreshListener(this);

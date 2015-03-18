@@ -31,7 +31,7 @@
                     android:dividerHeight="1px"
                     android:footerDividersEnabled="false"
                     android:headerDividersEnabled="false"
-                    ptr:ptrAnimationStyle="flip" />
+                     />
             </LinearLayout>
 
             <View

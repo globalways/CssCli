@@ -131,6 +131,19 @@
             android:textColor="@color/selector_textcolor"
             android:textSize="@dimen/title_text_size"
             android:visibility="gone" />
+        <TextView
+            android:id="@+id/textRight_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/title_height"
+            android:clickable="true"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:singleLine="true"
+            android:textColor="@color/selector_textcolor"
+            android:textSize="@dimen/title_text_size"
+            android:visibility="gone" />
     </FrameLayout>
 
 </RelativeLayout>
