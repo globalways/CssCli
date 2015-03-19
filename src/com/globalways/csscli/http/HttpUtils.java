@@ -54,7 +54,7 @@ public class HttpUtils implements HttpClientDao {
 				rp.put(key, params.get(key));
 			}
 		}
-		MyLog.d(TAG, "get RequestParams = " + params.toString());
+		//MyLog.d(TAG, "get RequestParams = " + params.toString());
 		mHttpUtil.setTimeout(10 * 1000);
 		mHttpUtil.get(url, rp, new AsyncHttpResponseHandler() {
 			@Override
