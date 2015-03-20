@@ -79,6 +79,23 @@
             android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="landscape" >
         </activity>
+        
+        <activity
+            android:name=".ui.gallery.AlbumMultiPicChooseActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ui.gallery.AlbumSiglePicChooseActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ui.gallery.GalleryActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ui.gallery.ImageListPreviewActivity"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>

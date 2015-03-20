@@ -8,5 +8,8 @@
     <color name="base_white">#ffffff</color>
     <color name="base_blue">#00923f</color>
     <color name="base_green">#004080</color>
+    
+    <color name="gallery_default_bg">#FFF</color>
+    <color name="gallery_pressed_bg">#00F</color>
 
 </resources>
