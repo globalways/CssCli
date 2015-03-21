@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -22,9 +23,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.globalways.csscli.R;
 import com.globalways.csscli.tools.PicassoImageLoader;
-import com.globalways.csscli.tools.Tool;
 import com.globalways.csscli.ui.BaseActivity;
 import com.globalways.csscli.view.SimpleProgressDialog;
 
@@ -92,9 +93,9 @@ public class GalleryAlbumMultiPicActivity extends BaseActivity implements OnClic
 	 */
 	@SuppressWarnings("unchecked")
 	private void getIntentArgs(Intent intent) {
-		imageBucket = (GalleryAlbumEntity) intent.getSerializableExtra("ImageBucket");
+		imageBucket = (GalleryAlbumEntity) intent.getSerializableExtra(GalleryActivity.KEY_IMAGE_ALBUM);
 		selectedImageItem = (HashMap<String, HashMap<Long, GalleryPicEntity>>) intent
-				.getSerializableExtra("selectedImageItem");
+				.getSerializableExtra(GalleryActivity.KEY_SELECTED_IMAGE);
 	}
 
 	/**
@@ -199,10 +200,10 @@ public class GalleryAlbumMultiPicActivity extends BaseActivity implements OnClic
 	private void goBack() {
 		Intent intent = new Intent();
 		Bundle extras = new Bundle();
-		extras.putSerializable("ImageBucket", imageBucket);
-		extras.putSerializable("selectedImageItemList", selectedImageItemList);
+		extras.putSerializable(GalleryActivity.KEY_IMAGE_ALBUM, imageBucket);
+		extras.putSerializable(GalleryActivity.KEY_SELECTED_IMAGE, selectedImageItemList);
 		intent.putExtras(extras);
-		setResult(Tool.ResultCode.OK, intent);
+		setResult(RESULT_OK, intent);
 		finish();
 	}
 

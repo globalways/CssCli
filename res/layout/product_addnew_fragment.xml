@@ -2,26 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80000000"
+    android:background="@color/base_white"
     android:orientation="vertical" >
+
+    <include layout="@layout/title" />
 
     <ScrollView
         android:id="@+id/scrollViewProductDetail"
-        android:layout_width="600dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="20dp" >
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/base_white"
-                android:padding="20dp" >
+                android:layout_height="wrap_content" >
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -69,6 +68,39 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
+                        android:text="商品标签" />
+
+                    <EditText
+                        android:id="@+id/editTag"
+                        style="@style/EditTextStye"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:maxLength="5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:text="商品二维码/条形码" />
+
+                    <EditText
+                        android:id="@+id/editCode"
+                        style="@style/EditTextStye"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:maxLength="5" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
                         android:text="商品价格（单位：分)" />
 
                     <EditText
@@ -78,11 +110,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:maxLength="20" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -117,25 +144,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:maxLength="3" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品标签" />
-
-                    <EditText
-                        android:id="@+id/editTag"
-                        style="@style/EditTextStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="5" />
                 </TableRow>
 
                 <TableRow
@@ -175,18 +183,13 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:maxLength="20" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="库存告急提醒" />
+                        android:text="库存告急提醒"
+                        android:visibility="gone" />
 
                     <EditText
                         android:id="@+id/editStockLimit"
@@ -194,7 +197,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:maxLength="20" />
+                        android:maxLength="20"
+                        android:visibility="gone" />
                 </TableRow>
 
                 <TableRow
@@ -212,11 +216,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="false" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -251,28 +250,18 @@
                         android:maxLength="240"
                         android:singleLine="false" />
                 </TableRow>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal" >
-
-                    <Button
-                        android:id="@+id/btnAdd"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="添加" />
-
-                    <Button
-                        android:id="@+id/btnCancel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="取消" />
-                </LinearLayout>
             </TableLayout>
+
+            <com.globalways.csscli.view.NoScrollGridView
+                android:id="@+id/gridViewPic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:numColumns="6"
+                android:padding="10dp"
+                android:verticalSpacing="10dp" >
+            </com.globalways.csscli.view.NoScrollGridView>
         </LinearLayout>
     </ScrollView>
 

@@ -19,4 +19,14 @@ public class MyApplication extends Application {
 		// crashHandler.init(getApplicationContext());
 	}
 
+	private static long storeid = 46758;
+
+	public static long getStoreid() {
+		return storeid;
+	}
+
+	public static void setStoreid(long storeid) {
+		MyApplication.storeid = storeid;
+	}
+
 }

@@ -8,12 +8,6 @@ public class Tool {
 	/** 是否已出现异常 **/
 	public static boolean IS_ERROR = false;
 
-	/** ActivityForResult返回码 **/
-	public class ResultCode {
-		/** 返回成功 **/
-		public static final int OK = 1;
-	}
-
 	/**
 	 * 文件是否存在
 	 * 

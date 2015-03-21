@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.tools.MyLog;
-import com.globalways.csscli.tools.Tool;
 import com.globalways.csscli.ui.BaseActivity;
 import com.globalways.csscli.view.SimpleProgressDialog;
 
@@ -32,6 +31,15 @@ import com.globalways.csscli.view.SimpleProgressDialog;
 public class GalleryActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 	private static final String TAG = GalleryActivity.class.getSimpleName();
 
+	/** 选择多张还是单张照片 */
+	public static final String KEY_JUMP_PURPOSE = "Purpose";
+	/** 已经选择的照片 */
+	public static final String KEY_SELECTED_IMAGE = "SelectImage";
+	/** 相册 */
+	public static final String KEY_IMAGE_ALBUM = "ImageAblum";
+	/** 选择照片的requestCode */
+	private static final int CODE_SELECT_IMAGE = 10;
+
 	private TextView textleft, textCenter, textRight;
 	private GridView gridViewGallery;
 	private GalleryAlbumAdapter mGalleryAdapter;
@@ -42,14 +50,23 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 
 	/** 存放已选择的图片key:imageBucketId,value:对应相册所选的图片列表 **/
 	private HashMap<String, HashMap<Long, GalleryPicEntity>> selectedImageItem = new HashMap<String, HashMap<Long, GalleryPicEntity>>();
-	private int mPurpose = Purpose.SIGNE_PIC;
+	private Purpose mPurpose = Purpose.SIGNE_PIC;
 
 	/** 跳转到相册的目的 */
-	public static class Purpose {
+	public enum Purpose {
 		/** 获取多张照片 **/
-		public static final int MULTI_PIC = 1;
+		MULTI_PIC(1),
 		/** 获取单张照片 **/
-		public static final int SIGNE_PIC = 2;
+		SIGNE_PIC(2);
+		private Purpose(int type) {
+			this.type = type;
+		}
+
+		private int type;
+
+		public int getType() {
+			return type;
+		}
 	}
 
 	@Override
@@ -70,11 +87,7 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 		textCenter.setVisibility(View.VISIBLE);
 		textRight = (TextView) findViewById(R.id.textRight);
 		textRight.setText("确定");
-		switch (mPurpose) {
-		case Purpose.MULTI_PIC:
-			textRight.setVisibility(View.VISIBLE);
-			break;
-		}
+		textRight.setVisibility(mPurpose == Purpose.MULTI_PIC ? View.VISIBLE : View.GONE);
 		gridViewGallery = (GridView) findViewById(R.id.gvGallery);
 	}
 
@@ -93,27 +106,30 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 	@SuppressWarnings("unchecked")
 	private void getIntentArgs(Intent intent) {
 		if (null != intent) {
-			mPurpose = intent.getIntExtra("purpose", Purpose.SIGNE_PIC);
+			mPurpose = intent.getIntExtra(KEY_JUMP_PURPOSE, Purpose.SIGNE_PIC.getType()) == Purpose.SIGNE_PIC.getType() ? Purpose.SIGNE_PIC
+					: Purpose.MULTI_PIC;
 			switch (mPurpose) {
-			case Purpose.MULTI_PIC:
-				ArrayList<GalleryPicEntity> selectedImageList = (ArrayList<GalleryPicEntity>) intent
-						.getSerializableExtra("selectedImageList");
+			case MULTI_PIC:
+				List<GalleryPicEntity> selectedImageList = (ArrayList<GalleryPicEntity>) intent
+						.getSerializableExtra(KEY_SELECTED_IMAGE);
 				if (null != selectedImageList && selectedImageList.size() > 0) {
 					for (int i = 0; i < selectedImageList.size(); i++) {
-						GalleryPicEntity ii = selectedImageList.get(i);
-						if (null != ii && null != ii.imageBucketId) {
+						GalleryPicEntity j = selectedImageList.get(i);
+						if (null != j && null != j.imageBucketId) {
 							// 存放已选择的图片key:imageBucketId,value:对应相册所选的图片列表
 							// HashMap<String, HashMap<Long,ImageItem>>
 							// selectedImageItem
-							HashMap<Long, GalleryPicEntity> selectedBucketImgs = selectedImageItem.get(ii.imageBucketId);
+							HashMap<Long, GalleryPicEntity> selectedBucketImgs = selectedImageItem.get(j.imageBucketId);
 							if (null == selectedBucketImgs) {
 								selectedBucketImgs = new HashMap<Long, GalleryPicEntity>();
 							}
-							selectedBucketImgs.put(ii.imageId, ii);
-							selectedImageItem.put(ii.imageBucketId, selectedBucketImgs);
+							selectedBucketImgs.put(j.imageId, j);
+							selectedImageItem.put(j.imageBucketId, selectedBucketImgs);
 						}
 					}
 				}
+				break;
+			case SIGNE_PIC:
 				break;
 			}
 		}
@@ -128,7 +144,6 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// UIPage.CURRENT_ACTIVITY = UIPage.GalleryActivity;
 		mSimpleProgressDialog = new SimpleProgressDialog(this, true);
 		mSimpleProgressDialog.setText("正在加载....").showDialog();
 		mGetDataTask = new GetDataTask();
@@ -174,9 +189,9 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 			}
 			Intent intent = new Intent();
 			Bundle extras = new Bundle();
-			extras.putSerializable("selectedImageList", selectedImageList);
+			extras.putSerializable(KEY_SELECTED_IMAGE, selectedImageList);
 			intent.putExtras(extras);
-			setResult(Tool.ResultCode.OK, intent);
+			setResult(RESULT_OK, intent);
 			finish();
 		} else {
 			Toast.makeText(this, "请选择图片", Toast.LENGTH_LONG).show();
@@ -203,18 +218,18 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 				Intent intent = null;
 				Bundle extras = null;
 				switch (mPurpose) {
-				case Purpose.MULTI_PIC:
+				case MULTI_PIC:
 					intent = new Intent(GalleryActivity.this, GalleryAlbumMultiPicActivity.class);
 					extras = new Bundle();
-					extras.putSerializable("ImageBucket", imageBucket);
-					extras.putSerializable("selectedImageItem", selectedImageItem);
+					extras.putSerializable(KEY_IMAGE_ALBUM, imageBucket);
+					extras.putSerializable(KEY_SELECTED_IMAGE, selectedImageItem);
 					intent.putExtras(extras);
-					startActivityForResult(intent, RequestCode.CHOOSE_IMG);
+					startActivityForResult(intent, CODE_SELECT_IMAGE);
 					break;
-				case Purpose.SIGNE_PIC:
+				case SIGNE_PIC:
 					intent = new Intent(GalleryActivity.this, GalleryAlbumSiglePicActivity.class);
 					extras = new Bundle();
-					extras.putSerializable("ImageBucket", imageBucket);
+					extras.putSerializable(KEY_IMAGE_ALBUM, imageBucket);
 					intent.putExtras(extras);
 					startActivity(intent);
 					break;
@@ -239,13 +254,13 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		MyLog.d(TAG, "[requestCode,resultCode]=[" + requestCode + "," + resultCode + "]");
-		if (RequestCode.CHOOSE_IMG == requestCode) {
-			if (Tool.ResultCode.OK == resultCode) {
-				GalleryAlbumEntity imageBucket = (GalleryAlbumEntity) data.getSerializableExtra("ImageBucket");
+		MyLog.d(TAG, "[requestCode, resultCode]=[" + requestCode + "," + resultCode + "]");
+		if (CODE_SELECT_IMAGE == requestCode) {
+			if (RESULT_OK == resultCode) {
+				GalleryAlbumEntity imageBucket = (GalleryAlbumEntity) data.getSerializableExtra(KEY_IMAGE_ALBUM);
 				@SuppressWarnings("unchecked")
 				HashMap<Long, GalleryPicEntity> selectedImageItemList = (HashMap<Long, GalleryPicEntity>) data
-						.getSerializableExtra("selectedImageItemList");
+						.getSerializableExtra(KEY_SELECTED_IMAGE);
 				if (null != selectedImageItemList && selectedImageItemList.size() > 0) {
 					selectedImageItem.put(imageBucket.imageBucketId, selectedImageItemList);
 				} else {
@@ -270,11 +285,6 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 			return true;
 		}
 		return false;
-	}
-
-	class RequestCode {
-		/** 选择图片 **/
-		private static final int CHOOSE_IMG = 1;
 	}
 
 	/**

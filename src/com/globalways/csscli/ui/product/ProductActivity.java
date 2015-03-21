@@ -2,8 +2,8 @@ package com.globalways.csscli.ui.product;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -16,6 +16,7 @@ import com.globalways.csscli.R;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.ProductManager;
+import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.MyLog;
 import com.globalways.csscli.ui.BaseFragmentActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -39,8 +40,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 	private ListView listView;
 	private ProductListAdapter productListAdapter;
 	private ProductDetailFragment productDetailFragment;
-	private ProductAddNewFragment productAddNewFragment;
-	private View dialogContainer, layoutContainer;
+	private View layoutContainer;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -60,29 +60,15 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			finish();
 			break;
 		case R.id.textRight:
-			if (layoutContainer.isShown()) {
-				showAddProductFragment();
-			}
+			jumpNewProduct();
 			break;
 		}
 	}
 
-	private long storeid = 46758;
-
-	private void showAddProductFragment() {
-		if (productAddNewFragment == null) {
-			productAddNewFragment = new ProductAddNewFragment();
-			getSupportFragmentManager().beginTransaction().add(R.id.dialogContainer, productAddNewFragment)
-					.show(productAddNewFragment).commit();
-			productAddNewFragment.setData(storeid);
-		}
-		dialogContainer.setVisibility(View.VISIBLE);
+	private void jumpNewProduct() {
+		startActivity(new Intent(this,ProductAddNewActivity.class));
 	}
 
-	public void hideAddProductFragment() {
-		productAddNewFragment.resetView();
-		dialogContainer.setVisibility(View.GONE);
-	}
 
 	/** PullToRefreshListView的下拉或上拉监听接口 */
 	@Override
@@ -100,7 +86,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 
 	/** 加载ProductList数据，isRefresh为true时，刷新；isRefresh为false时，加载更多 */
 	private void loadProductList(final boolean isRefresh) {
-		ProductManager.getInstance().getProductList(storeid, isRefresh, new ManagerCallBack<List<ProductEntity>>() {
+		ProductManager.getInstance().getProductList(MyApplication.getStoreid(), isRefresh, new ManagerCallBack<List<ProductEntity>>() {
 			@Override
 			public void onSuccess(List<ProductEntity> returnContent) {
 				super.onSuccess(returnContent);
@@ -143,27 +129,12 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		listView.setAdapter(productListAdapter);
 		listView.setOnItemClickListener(this);
 
-		dialogContainer = findViewById(R.id.dialogContainer);
-		dialogContainer.setVisibility(View.GONE);
 		layoutContainer = findViewById(R.id.layoutContainer);
 		layoutContainer.setVisibility(View.INVISIBLE);
 
 		productDetailFragment = new ProductDetailFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.layoutContainer, productDetailFragment)
 				.show(productDetailFragment).commit();
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (dialogContainer.isShown()) {
-				hideAddProductFragment();
-			}else{
-				finish();
-			}
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
 	}
 
 }

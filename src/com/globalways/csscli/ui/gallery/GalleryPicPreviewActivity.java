@@ -23,6 +23,11 @@ import com.globalways.csscli.ui.BaseActivity;
 public class GalleryPicPreviewActivity extends BaseActivity implements OnClickListener, OnPageChangeListener {
 	private static final String TAG = GalleryPicPreviewActivity.class.getSimpleName();
 
+	/** 已经选择的照片 */
+	public static final String KEY_SELECTED_IMAGE = "SelectImage";
+	/** 当前是已经选择的照片中的第几个 */
+	public static final String KEY_SELECTED_INDEX = "SelectedIndex";
+
 	private TextView tvleft, tvCenter, textIndex;
 	private GalleryPreviewPicAdapter mImagePagerAdapter;
 	private MyViewPager myViewPage;
@@ -69,8 +74,8 @@ public class GalleryPicPreviewActivity extends BaseActivity implements OnClickLi
 	@SuppressWarnings("unchecked")
 	private void getIntentArgs(Intent intent) {
 		if (null != intent) {
-			imagePathList = (ArrayList<String>) intent.getSerializableExtra("imagePathList");
-			initIndex = intent.getIntExtra("index", 0);
+			imagePathList = (ArrayList<String>) intent.getSerializableExtra(KEY_SELECTED_IMAGE);
+			initIndex = intent.getIntExtra(KEY_SELECTED_INDEX, 0);
 			if (null != imagePathList && imagePathList.size() > 0) {
 				Log.d(TAG, "图片列表：" + imagePathList.size());
 				dataChanged(imagePathList);

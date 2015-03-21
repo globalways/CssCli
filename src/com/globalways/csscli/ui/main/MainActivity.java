@@ -8,12 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.ui.BaseActivity;
 import com.globalways.csscli.ui.cashier.CashierActivity;
 import com.globalways.csscli.ui.employee.EmployeeActivity;
-import com.globalways.csscli.ui.gallery.GalleryActivity;
 import com.globalways.csscli.ui.order.OrderActivity;
 import com.globalways.csscli.ui.product.ProductActivity;
 import com.globalways.csscli.ui.purchase.PurchaseActivity;
@@ -38,19 +38,19 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Intent intent = new Intent(this, GalleryActivity.class);
-		intent.putExtra("purpose", GalleryActivity.Purpose.MULTI_PIC);
-		startActivity(intent);
-		// switch (position) {
-		// case 1:
-		// case 3:
-		// Intent intent = new Intent(this, mainClass[position]);
-		// startActivity(intent);
-		// break;
-		// default:
-		// Toast.makeText(this, "正在开发，敬请期待……", Toast.LENGTH_SHORT).show();
-		// break;
-		// }
+//		Intent intent = new Intent(this, GalleryActivity.class);
+//		intent.putExtra("purpose", GalleryActivity.Purpose.MULTI_PIC);
+//		startActivity(intent);
+		switch (position) {
+		case 1:
+		case 3:
+			Intent intent = new Intent(this, mainClass[position]);
+			startActivity(intent);
+			break;
+		default:
+			Toast.makeText(this, "正在开发，敬请期待……", Toast.LENGTH_SHORT).show();
+			break;
+		}
 	}
 
 	private void initView() {
