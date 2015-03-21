@@ -30,9 +30,9 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 
 	private View layoutView;
 	private EditText editName, editBrand, editPrice, editUnit, editApr, editTag, editStock, editStockLimit, editDesc;
-	private Button btnUpdate, btnDelete, btnQRCode, btnAva;
+	private Button btnUpdate, btnDelete, btnAva;
 	private CheckBox checkBoxRecommend, checkBoxLock;
-//	private Spinner spinnerPurchase;
+	// private Spinner spinnerPurchase;
 	private ScrollView scrollViewProductDetail;
 
 	private ProductEntity entity;
@@ -80,8 +80,6 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 			break;
 		case R.id.btnDelete:
 			break;
-		case R.id.btnQRCode:
-			break;
 		case R.id.btnAva:
 			break;
 		}
@@ -98,7 +96,7 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 			Toast.makeText(getActivity(), "请输入商品品牌", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		String product_avatar=null;
+		String product_avatar = null;
 		String product_desc = editDesc.getText().toString().trim();
 		int product_price = Integer.valueOf(editPrice.getText().toString().trim());
 		String product_unit = editUnit.getText().toString().trim();
@@ -114,11 +112,12 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 		// Integer.valueOf(editStockLimit.getText().toString().trim());
 		int stock_limit = 0;
 		String product_tag = editTag.getText().toString().trim();
-		long purchase_channel=0;
+		long purchase_channel = 0;
 
 		ProductManager.getInstance().update(entity.getStore_id(), entity.getProduct_bar(), product_name, product_brand,
-				product_desc, product_avatar, product_price, product_unit, product_apr, stock_cnt, checkBoxRecommend.isChecked(),
-				checkBoxLock.isChecked(), stock_limit, product_tag, purchase_channel, new ManagerCallBack<String>() {
+				product_desc, product_avatar, product_price, product_unit, product_apr, stock_cnt,
+				checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), stock_limit, product_tag, purchase_channel,
+				new ManagerCallBack<String>() {
 					@Override
 					public void onSuccess(String returnContent) {
 						super.onSuccess(returnContent);
@@ -156,15 +155,14 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 		btnUpdate.setOnClickListener(this);
 		btnDelete = (Button) layoutView.findViewById(R.id.btnDelete);
 		btnDelete.setOnClickListener(this);
-		btnQRCode = (Button) layoutView.findViewById(R.id.btnQRCode);
-		btnQRCode.setOnClickListener(this);
 		btnAva = (Button) layoutView.findViewById(R.id.btnAva);
 		btnAva.setOnClickListener(this);
 
 		checkBoxRecommend = (CheckBox) layoutView.findViewById(R.id.checkBoxRecommend);
 		checkBoxLock = (CheckBox) layoutView.findViewById(R.id.checkBoxLock);
 
-//		spinnerPurchase = (Spinner) layoutView.findViewById(R.id.spinnerPurchase);
+		// spinnerPurchase = (Spinner)
+		// layoutView.findViewById(R.id.spinnerPurchase);
 		scrollViewProductDetail = (ScrollView) layoutView.findViewById(R.id.scrollViewProductDetail);
 	}
 }

@@ -16,6 +16,8 @@ import com.globalways.csscli.http.HttpClientDao.HttpClientUtilCallBack;
 import com.globalways.csscli.http.HttpCode;
 import com.globalways.csscli.http.HttpUtils;
 import com.globalways.csscli.tools.MyLog;
+import com.globalways.csscli.tools.QRCodeTools;
+import com.globalways.csscli.tools.QRCodeTools.CodeType;
 import com.globalways.csscli.ui.gallery.GalleryPicEntity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,50 +45,20 @@ public class ProductManager {
 		return productManager;
 	}
 
-	public enum GetProductType {
-		/** 条形码 */
-		BAR_CODE(HttpApi.PRODUCT_GET_DETAIL_BAR_CODE, ":bar"),
-		/** 二维码 */
-		QR_CODE(HttpApi.PRODUCT_GET_DETAIL_QR_CODE, ":qr");
-
-		private GetProductType(String url, String code) {
-			this.url = url;
-			this.code = code;
-		}
-
-		private String url;
-		private String sid = ":sid";
-		private String code;
-
-		public String getUrl() {
-			return url;
-		}
-
-		public String getSid() {
-			return sid;
-		}
-
-		public String getCode() {
-			return code;
-		}
-	}
-
 	/**
 	 * 根据条形码或者二维码获取商品详细信息
 	 * 
 	 * @param storeid
 	 *            店铺id
-	 * @param type
-	 *            获取方式：条形码、二维码
 	 * @param productCode
 	 *            商品的条形码或者二维码
 	 * @param callBack
 	 */
-	public void getProductDetail(long storeid, GetProductType type, String productCode,
-			final ManagerCallBack<ProductEntity> callBack) {
+	public void getProductDetail(long storeid, String productCode, final ManagerCallBack<ProductEntity> callBack) {
+		CodeType codeType = new QRCodeTools().getCodeType(productCode);
 		HttpUtils.getInstance().sendGetRequest(
-				(type.getUrl().replaceFirst(type.getSid(), String.valueOf(storeid))).replaceFirst(type.getCode(),
-						productCode), 1, null, new HttpClientUtilCallBack<String>() {
+				(codeType.getUrl().replaceFirst(codeType.getSid(), String.valueOf(storeid))).replaceFirst(
+						codeType.getCode(), codeType.getContext()), 1, null, new HttpClientUtilCallBack<String>() {
 					@Override
 					public void onSuccess(String url, long flag, String returnContent) {
 						super.onSuccess(url, flag, returnContent);
