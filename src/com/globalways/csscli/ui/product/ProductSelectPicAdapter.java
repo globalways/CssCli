@@ -34,6 +34,11 @@ public class ProductSelectPicAdapter extends BaseAdapter {
 		return this.list.size();
 	}
 
+	public void remove(int position) {
+		list.remove(position);
+		notifyDataSetChanged();
+	}
+
 	@Override
 	public Object getItem(int position) {
 		return this.list.get(position);

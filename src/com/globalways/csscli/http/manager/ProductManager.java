@@ -15,6 +15,8 @@ import com.globalways.csscli.http.HttpClientDao.ErrorCode;
 import com.globalways.csscli.http.HttpClientDao.HttpClientUtilCallBack;
 import com.globalways.csscli.http.HttpCode;
 import com.globalways.csscli.http.HttpUtils;
+import com.globalways.csscli.tools.MyLog;
+import com.globalways.csscli.ui.gallery.GalleryPicEntity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -183,6 +185,8 @@ public class ProductManager {
 				});
 	}
 
+	private Map<String, Object> addProductParams;
+
 	/**
 	 * 添加商品
 	 * 
@@ -215,57 +219,86 @@ public class ProductManager {
 	 *            送货渠道ID，选填
 	 * @param callBack
 	 */
-	public void addProduct(long storeid, String product_name, String product_brand, String product_bar,
-			String product_desc, String product_avatar, int product_price, String product_unit, int product_apr,
-			int stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
+	public void addProduct(ArrayList<GalleryPicEntity> selectedImageList, final long storeid, String product_name,
+			String product_brand, String product_bar, String product_desc, int product_price, String product_unit,
+			int product_apr, int stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
 			long purchase_channel, final ManagerCallBack<String> callBack) {
-		Map<String, Object> params = new HashMap<String, Object>();
+		addProductParams = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {
 			return;
 		}
-		params.put("product_name", product_name);
+		addProductParams.put("product_name", product_name);
 		if (product_brand != null && !product_brand.isEmpty()) {
-			params.put("product_brand", product_brand);
+			addProductParams.put("product_brand", product_brand);
 		}
 		if (product_bar != null && !product_bar.isEmpty()) {
-			params.put("product_bar", product_bar);
+			addProductParams.put("product_bar", product_bar);
 		}
 		if (product_desc != null && !product_desc.isEmpty()) {
-			params.put("product_desc", product_desc);
+			addProductParams.put("product_desc", product_desc);
 		}
-		if (product_avatar != null && !product_avatar.isEmpty()) {
-			params.put("product_avatar", product_avatar);
-		}
-		params.put("product_price", product_price);
+		addProductParams.put("product_price", product_price);
 		if (product_unit == null || product_unit.isEmpty()) {
 			return;
 		}
-		params.put("product_unit", product_unit);
+		addProductParams.put("product_unit", product_unit);
 		if (product_apr != 100) {
-			params.put("product_apr", product_apr);
+			addProductParams.put("product_apr", product_apr);
 		}
 		if (stock_cnt != 0) {
-			params.put("stock_cnt", stock_cnt);
+			addProductParams.put("stock_cnt", stock_cnt);
 		}
 		// 1，推荐，2不推荐
-		params.put("is_recommend", is_recommend ? 1 : 2);
+		addProductParams.put("is_recommend", is_recommend ? 1 : 2);
 		// 1，推荐，2不推荐
-		params.put("status", status ? 1 : 2);
+		addProductParams.put("status", status ? 1 : 2);
 		if (stock_limit != 0) {
-			params.put("stock_limit", stock_limit);
+			addProductParams.put("stock_limit", stock_limit);
 		}
 		if (product_tag != null && !product_tag.isEmpty()) {
-			params.put("product_tag", product_tag);
+			addProductParams.put("product_tag", product_tag);
 		}
 		if (purchase_channel != 0) {
-			params.put("purchase_channel", purchase_channel);
+			addProductParams.put("purchase_channel", purchase_channel);
 		}
+		if (selectedImageList != null && selectedImageList.size() > 1) {
+			MyLog.e("imagelist", selectedImageList.toString());
+			String[] key = null, path = new String[selectedImageList.size() - 1];
+			for (int i = 0; i < selectedImageList.size() - 1; i++) {
+				path[i] = selectedImageList.get(i).imagePath;
+			}
+			ImageUpLoadManager.getInstance().upLoadImage(key, path, new ManagerCallBack<String>() {
+				@Override
+				public void onSuccess(String returnContent) {
+					addProductParams.put("product_avatar", returnContent);
+					toAddProduct(addProductParams, storeid, callBack);
+				};
+
+				@Override
+				public void onProgress(int progress) {
+					super.onProgress(progress);
+				}
+
+				@Override
+				public void onFailure(int code, String msg) {
+					if (null != callBack) {
+						callBack.onFailure(code, msg);
+					}
+				};
+			});
+		} else {
+			toAddProduct(addProductParams, storeid, callBack);
+		}
+	}
+
+	private void toAddProduct(Map<String, Object> params, long storeid, final ManagerCallBack<String> callBack) {
 		HttpUtils.getInstance().sendPostRequest(
 				HttpApi.PRODUCT_ADD_PRODUCT.replaceFirst(":sid", String.valueOf(storeid)), 1, params,
 				new HttpClientUtilCallBack<String>() {
 					@Override
 					public void onSuccess(String url, long flag, String returnContent) {
 						super.onSuccess(url, flag, returnContent);
+						addProductParams = null;
 						JSONObject jsonObject;
 						try {
 							jsonObject = new JSONObject(returnContent);

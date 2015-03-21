@@ -1,16 +1,19 @@
 package com.globalways.csscli.ui.product;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,7 +27,10 @@ import com.globalways.csscli.ui.BaseActivity;
 import com.globalways.csscli.ui.gallery.GalleryActivity;
 import com.globalways.csscli.ui.gallery.GalleryPicEntity;
 import com.globalways.csscli.ui.gallery.GalleryPicPreviewActivity;
+import com.globalways.csscli.view.BottomMenuDialog;
+import com.globalways.csscli.view.MenuItemEntity;
 import com.globalways.csscli.view.NoScrollGridView;
+import com.globalways.csscli.view.SimpleProgressDialog;
 
 /**
  * 添加商品弹出层
@@ -32,7 +38,8 @@ import com.globalways.csscli.view.NoScrollGridView;
  * @author James
  *
  */
-public class ProductAddNewActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
+public class ProductAddNewActivity extends BaseActivity implements OnClickListener, OnItemClickListener,
+		OnItemLongClickListener {
 
 	/** 跳转相册选择照片的requestCode */
 	private static final int CODE_SELECT_IMAGE = 11;
@@ -45,7 +52,13 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	private ProductSelectPicAdapter picAdapter;
 	private ArrayList<GalleryPicEntity> selectedImageList;
 
+	/** 菜单dialog */
+	private BottomMenuDialog<Integer> mBottomMenuDialog;
+	private List<MenuItemEntity> menuList;
+
 	// private Spinner spinnerPurchase;
+	/** 进度条 **/
+	private SimpleProgressDialog mSimpleProgressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +91,6 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 			return;
 		}
 		String product_bar = null;
-		String product_avatar = null;
 		String product_desc = editDesc.getText().toString().trim();
 		int product_price = Integer.valueOf(editPrice.getText().toString().trim());
 		String product_unit = editUnit.getText().toString().trim();
@@ -95,15 +107,17 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		int stock_limit = 0;
 		String product_tag = editTag.getText().toString().trim();
 		long purchase_channel = 0;
-		ProductManager.getInstance().addProduct(MyApplication.getStoreid(), product_name, product_brand, product_bar,
-				product_desc, product_avatar, product_price, product_unit, product_apr, stock_cnt,
+		mSimpleProgressDialog.showDialog();
+		ProductManager.getInstance().addProduct(selectedImageList, MyApplication.getStoreid(), product_name,
+				product_brand, product_bar, product_desc, product_price, product_unit, product_apr, stock_cnt,
 				checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), stock_limit, product_tag, purchase_channel,
 				new ManagerCallBack<String>() {
 					@Override
 					public void onSuccess(String returnContent) {
 						super.onSuccess(returnContent);
+						mSimpleProgressDialog.cancleDialog();
 						AlertDialog.Builder builder = new Builder(ProductAddNewActivity.this);
-						builder.setMessage("修改成功！");
+						builder.setMessage("添加成功！");
 						builder.setTitle("提示！");
 						builder.setPositiveButton("关闭", new DialogInterface.OnClickListener() {
 							@Override
@@ -115,8 +129,14 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 					}
 
 					@Override
+					public void onProgress(int progress) {
+						super.onProgress(progress);
+					}
+
+					@Override
 					public void onFailure(int code, String msg) {
 						super.onFailure(code, msg);
+						mSimpleProgressDialog.cancleDialog();
 						Toast.makeText(ProductAddNewActivity.this, msg, Toast.LENGTH_SHORT).show();
 					}
 				});
@@ -181,6 +201,33 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		}
 	}
 
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+		if (menuList == null) {
+			initMenuView();
+		}
+		mBottomMenuDialog.showDialog(position);
+		return true;
+	}
+
+	/** 初始化菜单view */
+	private void initMenuView() {
+		menuList = new ArrayList<MenuItemEntity>();
+		MenuItemEntity menuItemEntity1 = new MenuItemEntity(1, "移除这张照片", MenuItemEntity.Color.ALERT);
+		menuList.add(menuItemEntity1);
+		mBottomMenuDialog = new BottomMenuDialog<Integer>(this);
+		mBottomMenuDialog.setMenuList(menuList);
+		mBottomMenuDialog.setOnItemClickListener(new BottomMenuDialog.OnItemClickListener<Integer>() {
+			@Override
+			public void onItemClick(int menuId, Integer prams) {
+				if (selectedImageList != null && selectedImageList.size() > 0) {
+					selectedImageList.remove(prams);
+					picAdapter.remove(prams);
+				}
+			}
+		});
+	}
+
 	private void initView() {
 		textLeft = (TextView) findViewById(R.id.textleft);
 		textLeft.setText("返回");
@@ -215,9 +262,12 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		picAdapter = new ProductSelectPicAdapter(this);
 		gridViewPic.setAdapter(picAdapter);
 		gridViewPic.setOnItemClickListener(this);
+		gridViewPic.setOnItemLongClickListener(this);
 		selectedImageList = new ArrayList<GalleryPicEntity>();
 		selectedImageList.add(new GalleryPicEntity());
 		picAdapter.setData(selectedImageList);
-	}
 
+		mSimpleProgressDialog = new SimpleProgressDialog(this, true);
+		mSimpleProgressDialog.setText("正在为您创建商品....");
+	}
 }
