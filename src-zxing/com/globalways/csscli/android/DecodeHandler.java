@@ -27,7 +27,6 @@ import android.os.Message;
 import android.util.Log;
 
 import com.globalways.csscli.R;
-import com.globalways.csscli.ui.cashier.CashierQRCodeFragment;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
@@ -40,14 +39,15 @@ final class DecodeHandler extends Handler {
 
 	private static final String TAG = DecodeHandler.class.getSimpleName();
 
-	private final CashierQRCodeFragment fragment;
+	private final ScanCodeInterface scanCallBack;
+	
 	private final MultiFormatReader multiFormatReader;
 	private boolean running = true;
 
-	DecodeHandler(CashierQRCodeFragment fragment, Map<DecodeHintType, Object> hints) {
+	DecodeHandler(ScanCodeInterface scanCallBack, Map<DecodeHintType, Object> hints) {
 		multiFormatReader = new MultiFormatReader();
 		multiFormatReader.setHints(hints);
-		this.fragment = fragment;
+		this.scanCallBack = scanCallBack;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ final class DecodeHandler extends Handler {
 	private void decode(byte[] data, int width, int height) {
 		long start = System.currentTimeMillis();
 		Result rawResult = null;
-		PlanarYUVLuminanceSource source = fragment.getCameraManager().buildLuminanceSource(data, width, height);
+		PlanarYUVLuminanceSource source = scanCallBack.getCameraManager().buildLuminanceSource(data, width, height);
 		if (source != null) {
 			BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 			try {
@@ -93,7 +93,7 @@ final class DecodeHandler extends Handler {
 			}
 		}
 
-		Handler handler = fragment.getHandler();
+		Handler handler = scanCallBack.getHandler();
 		if (rawResult != null) {
 			// Don't log the barcode contents for security.
 			long end = System.currentTimeMillis();

@@ -28,7 +28,6 @@ import android.util.Log;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.android.camera.CameraManager;
-import com.globalways.csscli.ui.cashier.CashierQRCodeFragment;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -43,7 +42,7 @@ public final class CaptureActivityHandler extends Handler {
 
 	private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
-	private final CashierQRCodeFragment fragment;
+	private final ScanCodeInterface scanCallBack;
 	private final DecodeThread decodeThread;
 	private State state;
 	private final CameraManager cameraManager;
@@ -52,11 +51,11 @@ public final class CaptureActivityHandler extends Handler {
 		PREVIEW, SUCCESS, DONE
 	}
 
-	public CaptureActivityHandler(CashierQRCodeFragment fragment, Collection<BarcodeFormat> decodeFormats,
+	public CaptureActivityHandler(ScanCodeInterface scanCallBack, Collection<BarcodeFormat> decodeFormats,
 			Map<DecodeHintType, ?> baseHints, String characterSet, CameraManager cameraManager) {
-		this.fragment = fragment;
-		decodeThread = new DecodeThread(fragment, decodeFormats, baseHints, characterSet,
-				new ViewfinderResultPointCallback(fragment.getViewfinderView()));
+		this.scanCallBack = scanCallBack;
+		decodeThread = new DecodeThread(scanCallBack, decodeFormats, baseHints, characterSet,
+				new ViewfinderResultPointCallback(scanCallBack.getViewfinderView()));
 		decodeThread.start();
 		state = State.SUCCESS;
 
@@ -88,7 +87,7 @@ public final class CaptureActivityHandler extends Handler {
 				}
 				scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
 			}
-			fragment.handleDecode((Result) message.obj, barcode, scaleFactor);
+			scanCallBack.handleDecode((Result) message.obj, barcode, scaleFactor);
 			break;
 		case R.id.decode_failed:
 			// We're decoding as fast as possible, so when one decode fails,
@@ -153,7 +152,7 @@ public final class CaptureActivityHandler extends Handler {
 		if (state == State.SUCCESS) {
 			state = State.PREVIEW;
 			cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
-			fragment.drawViewfinder();
+			scanCallBack.drawViewfinder();
 		}
 	}
 

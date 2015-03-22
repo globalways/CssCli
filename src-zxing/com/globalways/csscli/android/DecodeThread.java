@@ -16,10 +16,11 @@
 
 package com.globalways.csscli.android;
 
-import com.globalways.csscli.ui.cashier.CashierQRCodeFragment;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.ResultPointCallback;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -27,11 +28,9 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.ResultPointCallback;
 
 /**
  * This thread does all the heavy lifting of decoding the images.
@@ -43,15 +42,16 @@ final class DecodeThread extends Thread {
 	public static final String BARCODE_BITMAP = "barcode_bitmap";
 	public static final String BARCODE_SCALED_FACTOR = "barcode_scaled_factor";
 
-	private final CashierQRCodeFragment fragment;
+	private final ScanCodeInterface scanCallBack;
+
 	private final Map<DecodeHintType, Object> hints;
 	private Handler handler;
 	private final CountDownLatch handlerInitLatch;
 
-	DecodeThread(CashierQRCodeFragment fragment, Collection<BarcodeFormat> decodeFormats,
+	DecodeThread(ScanCodeInterface scanCallBack, Collection<BarcodeFormat> decodeFormats,
 			Map<DecodeHintType, ?> baseHints, String characterSet, ResultPointCallback resultPointCallback) {
-
-		this.fragment = fragment;
+		this.scanCallBack = scanCallBack;
+		
 		handlerInitLatch = new CountDownLatch(1);
 
 		hints = new EnumMap<DecodeHintType, Object>(DecodeHintType.class);
@@ -62,7 +62,7 @@ final class DecodeThread extends Thread {
 		// The prefs can't change while the thread is running, so pick them up
 		// once here.
 		if (decodeFormats == null || decodeFormats.isEmpty()) {
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(fragment.getActivity());
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(scanCallBack.getContext());
 			decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
 			if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D, false)) {
 				decodeFormats.addAll(DecodeFormatManager.ONE_D_FORMATS);
@@ -95,7 +95,7 @@ final class DecodeThread extends Thread {
 	@Override
 	public void run() {
 		Looper.prepare();
-		handler = new DecodeHandler(fragment, hints);
+		handler = new DecodeHandler(scanCallBack, hints);
 		handlerInitLatch.countDown();
 		Looper.loop();
 	}

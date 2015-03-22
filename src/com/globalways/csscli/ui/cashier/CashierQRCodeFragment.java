@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -40,6 +41,7 @@ import com.globalways.csscli.android.FinishListener;
 import com.globalways.csscli.android.InactivityTimer;
 import com.globalways.csscli.android.IntentSource;
 import com.globalways.csscli.android.PreferencesActivity;
+import com.globalways.csscli.android.ScanCodeInterface;
 import com.globalways.csscli.android.ViewfinderView;
 import com.globalways.csscli.android.camera.CameraManager;
 import com.globalways.csscli.entity.ProductEntity;
@@ -48,7 +50,6 @@ import com.globalways.csscli.http.manager.ProductManager;
 import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.MyLog;
 import com.globalways.csscli.tools.PicassoImageLoader;
-import com.globalways.csscli.tools.QRCodeTools.CodeType;
 import com.globalways.csscli.ui.BaseFragment;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
@@ -58,7 +59,8 @@ import com.google.zxing.Result;
  * @author James
  *
  */
-public class CashierQRCodeFragment extends BaseFragment implements OnClickListener, SurfaceHolder.Callback {
+public class CashierQRCodeFragment extends BaseFragment implements OnClickListener, SurfaceHolder.Callback,
+		ScanCodeInterface {
 	private static final String TAG = CashierQRCodeFragment.class.getSimpleName();
 
 	private ProductEntity productEntity;
@@ -417,6 +419,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	 * @param barcode
 	 *            A greyscale bitmap of the camera data which was decoded.
 	 */
+	@Override
 	public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
 		inactivityTimer.onActivity();
 		lastResult = rawResult;
@@ -462,20 +465,29 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		}
 	}
 
+	@Override
 	public ViewfinderView getViewfinderView() {
 		return viewfinderView;
 	}
 
+	@Override
 	public void drawViewfinder() {
 		viewfinderView.drawViewfinder();
 	}
 
+	@Override
 	public CameraManager getCameraManager() {
 		return cameraManager;
 	}
 
+	@Override
 	public Handler getHandler() {
 		return handler;
+	}
+
+	@Override
+	public Context getContext() {
+		return getActivity();
 	}
 
 	public void restartPreviewAfterDelay(long delayMS) {
