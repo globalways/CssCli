@@ -2,6 +2,12 @@ package com.globalways.csscli.tools;
 
 import com.globalways.csscli.http.HttpApi;
 
+/**
+ * 二维码、条形码工具类
+ * 
+ * @author James.Fan
+ *
+ */
 public class QRCodeTools {
 
 	private static final String PRODUCT = "PRODUCT:";
@@ -43,6 +49,12 @@ public class QRCodeTools {
 		}
 	}
 
+	/**
+	 * 获取Code类型
+	 * 
+	 * @param content
+	 * @return
+	 */
 	public CodeType getCodeType(String content) {
 		CodeType type;
 		if (content.startsWith(PRODUCT)) {
@@ -53,5 +65,18 @@ public class QRCodeTools {
 			type.setContext(content);
 		}
 		return type;
+	}
+
+	/**
+	 * 判断是否是条形码
+	 * 
+	 * @param content
+	 * @return 如果不是我们内部的二维码就认为是条形码
+	 */
+	public boolean isBarCode(String content) {
+		if (content.startsWith(PRODUCT)) {
+			return false;
+		}
+		return true;
 	}
 }

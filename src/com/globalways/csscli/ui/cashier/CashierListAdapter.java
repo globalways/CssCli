@@ -46,7 +46,16 @@ public class CashierListAdapter extends BaseAdapter {
 			list = new ArrayList<ProductEntity>();
 		}
 		list.add(entity);
+		refreshTotalPrice();
 		notifyDataSetChanged();
+	}
+
+	private void refreshTotalPrice() {
+		int totalPrice = 0;
+		for (int i = 0; i < list.size(); i++) {
+			totalPrice += (list.get(i).getShoppingNumber() * list.get(i).getProduct_price());
+		}
+		((CashierActivity) context).setTotalPrice(totalPrice);
 	}
 
 	public ProductEntity getItemByPosition(int position) {
@@ -174,6 +183,7 @@ public class CashierListAdapter extends BaseAdapter {
 				String text = mItemView.textNumber.getText().toString().trim();
 				if (!text.equals("1")) {
 					list.get(position).setShoppingNumber(entity.getShoppingNumber() - 1);
+					refreshTotalPrice();
 					mItemView.textNumber.setText(list.get(position).getShoppingNumber() + "");
 				}
 			}
@@ -182,6 +192,7 @@ public class CashierListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				list.get(position).setShoppingNumber(entity.getShoppingNumber() + 1);
+				refreshTotalPrice();
 				mItemView.textNumber.setText(list.get(position).getShoppingNumber() + "");
 			}
 		});
@@ -200,6 +211,7 @@ public class CashierListAdapter extends BaseAdapter {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						list.remove(position);
+						refreshTotalPrice();
 						notifyDataSetChanged();
 					}
 				});

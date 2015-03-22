@@ -15,13 +15,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.globalways.csscli.R;
+import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.ProductManager;
 import com.globalways.csscli.tools.MyApplication;
+import com.globalways.csscli.tools.QRCodeTools;
 import com.globalways.csscli.ui.BaseActivity;
 import com.globalways.csscli.ui.gallery.GalleryActivity;
 import com.globalways.csscli.ui.gallery.GalleryPicEntity;
@@ -42,10 +45,34 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 
 	/** 跳转相册选择照片的requestCode */
 	private static final int CODE_SELECT_IMAGE = 11;
+	private static final int CODE_SCAN_REQUEST = 12;
+	private static final int CODE_SCAN_BAR_REQUEST = 13;
+	public static final String KEY_FIRST_STEP = "firstStep";
+	public static final String KEY_SCAN_RESULT = "scanResult";
+	private ScanStep scanStep;
+	private static boolean isJumped = false;
+
+	public enum ScanStep {
+		/** 先扫码 */
+		SCAN_FIRST(1),
+		/** 先填信息 */
+		INFO_FIRST(2);
+		private ScanStep(int step) {
+			this.step = step;
+		}
+
+		private int step;
+
+		public int getStep() {
+			return step;
+		}
+	}
 
 	private TextView textLeft, textCenter, textRight;
-	private EditText editName, editBrand, editPrice, editUnit, editApr, editTag, editStock, editStockLimit, editDesc;
+	private EditText editName, editBrand, editPrice, editUnit, editApr, editTag, editCode, editStock, editStockLimit,
+			editDesc;
 	private CheckBox checkBoxRecommend, checkBoxLock;
+	private ImageView imageScanBarCode;
 
 	private NoScrollGridView gridViewPic;
 	private ProductSelectPicAdapter picAdapter;
@@ -64,6 +91,93 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product_addnew_fragment);
 		initView();
+		initData();
+	}
+
+	private void initData() {
+		scanStep = getIntent().getIntExtra(KEY_FIRST_STEP, ScanStep.INFO_FIRST.getStep()) == ScanStep.INFO_FIRST
+				.getStep() ? ScanStep.INFO_FIRST : ScanStep.SCAN_FIRST;
+		if (scanStep == ScanStep.SCAN_FIRST && !isJumped) {
+			isJumped = true;
+			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_REQUEST);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (RESULT_OK == resultCode) {
+			isJumped = false;
+			switch (requestCode) {
+			case CODE_SELECT_IMAGE:
+				// 获取选择到的照片
+				selectedImageList = (ArrayList<GalleryPicEntity>) data
+						.getSerializableExtra(GalleryActivity.KEY_SELECTED_IMAGE);
+				selectedImageList.add(new GalleryPicEntity());
+				picAdapter.setData(selectedImageList);
+				break;
+			case CODE_SCAN_REQUEST:
+				// 扫描完成后，加载商品信息，如果是条形码，则将结果填充到对应输入框内
+				String productCode = data.getStringExtra(KEY_SCAN_RESULT);
+				Toast.makeText(this, productCode, Toast.LENGTH_SHORT).show();
+				if (new QRCodeTools().isBarCode(productCode)) {
+					editCode.setText(data.getStringExtra(KEY_SCAN_RESULT));
+				}
+				loadProductDetail(productCode);
+				break;
+			case CODE_SCAN_BAR_REQUEST:
+				if (new QRCodeTools().isBarCode(data.getStringExtra(KEY_SCAN_RESULT))) {
+					editCode.setText(data.getStringExtra(KEY_SCAN_RESULT));
+				} else {
+					Toast.makeText(this, "Scan bar code error", Toast.LENGTH_SHORT).show();
+				}
+				break;
+			}
+		}
+	}
+
+	/**
+	 * 扫码成功后调用这个方法，获取商品的详细信息
+	 * 
+	 * @param type
+	 *            二维码还是条形码
+	 * @param productCode
+	 *            二维码或者条形码的内容
+	 */
+	private void loadProductDetail(String productCode) {
+//		mSimpleProgressDialog.setText("正在加载数据……");
+//		mSimpleProgressDialog.showDialog();
+		ProductManager.getInstance().getProductDetail(MyApplication.getStoreid(), productCode,
+				new ManagerCallBack<ProductEntity>() {
+					@Override
+					public void onSuccess(ProductEntity returnContent) {
+						super.onSuccess(returnContent);
+						refreshView(returnContent);
+//						mSimpleProgressDialog.cancleDialog();
+					}
+
+					@Override
+					public void onFailure(int code, String msg) {
+						super.onFailure(code, msg);
+						Toast.makeText(ProductAddNewActivity.this, msg, Toast.LENGTH_SHORT).show();
+//						mSimpleProgressDialog.cancleDialog();
+					}
+				});
+	}
+
+	private void refreshView(ProductEntity entity) {
+		editName.setText(entity.getProduct_name());
+		editPrice.setText(entity.getProduct_price() + "");
+		editUnit.setText(entity.getProduct_unit());
+		editApr.setText(entity.getProduct_apr() + "");
+		editTag.setText(entity.getProduct_tag());
+		editStock.setText(entity.getStock_cnt() + "");
+		editStockLimit.setText(entity.getStock_limit() + "");
+		editDesc.setText(entity.getProduct_desc());
+
+		checkBoxRecommend.setChecked(entity.getStatus() == 1);
+		checkBoxLock.setChecked(entity.getIs_recommend() == 1);
 	}
 
 	@Override
@@ -75,6 +189,41 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		case R.id.textRight:
 			addProduct();
 			break;
+		case R.id.imageScanBarCode:
+			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_BAR_REQUEST);
+			break;
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		GalleryPicEntity imageItem = selectedImageList.get(position);
+		if (null != imageItem) {
+			// 点击添加图片按钮
+			if (imageItem.imageId <= 0) {
+				Intent intent = new Intent(this, GalleryActivity.class);
+				intent.putExtra(GalleryActivity.KEY_JUMP_PURPOSE, GalleryActivity.Purpose.MULTI_PIC.getType());
+				Bundle extras = new Bundle();
+				extras.putSerializable(GalleryActivity.KEY_SELECTED_IMAGE, selectedImageList);
+				intent.putExtras(extras);
+				startActivityForResult(intent, CODE_SELECT_IMAGE);
+			} else {
+				if (null != selectedImageList && selectedImageList.size() > 0) {
+					ArrayList<String> imagePathList = new ArrayList<String>();
+					for (int i = 0; i < selectedImageList.size(); i++) {
+						GalleryPicEntity ii = selectedImageList.get(i);
+						if (null != ii.imageBucketId && !"".equals(ii.imageBucketId)) {
+							imagePathList.add(ii.imagePath);
+						}
+					}
+					Intent intent = new Intent(this, GalleryPicPreviewActivity.class);
+					Bundle extras = new Bundle();
+					extras.putSerializable(GalleryPicPreviewActivity.KEY_SELECTED_IMAGE, imagePathList);
+					intent.putExtras(extras);
+					intent.putExtra(GalleryPicPreviewActivity.KEY_SELECTED_INDEX, position);
+					startActivity(intent);
+				}
+			}
 		}
 	}
 
@@ -106,6 +255,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		int stock_limit = 0;
 		String product_tag = editTag.getText().toString().trim();
 		long purchase_channel = 0;
+		mSimpleProgressDialog.setText("正在为您创建商品....");
 		mSimpleProgressDialog.showDialog();
 		ProductManager.getInstance().addProduct(selectedImageList, MyApplication.getStoreid(), product_name,
 				product_brand, product_bar, product_desc, product_price, product_unit, product_apr, stock_cnt,
@@ -153,51 +303,6 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 
 		checkBoxRecommend.setChecked(false);
 		checkBoxLock.setChecked(true);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (CODE_SELECT_IMAGE == requestCode && RESULT_OK == resultCode) {
-			// 获取选择到的照片
-			selectedImageList = (ArrayList<GalleryPicEntity>) data
-					.getSerializableExtra(GalleryActivity.KEY_SELECTED_IMAGE);
-			selectedImageList.add(new GalleryPicEntity());
-			picAdapter.setData(selectedImageList);
-		}
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		GalleryPicEntity imageItem = selectedImageList.get(position);
-		if (null != imageItem) {
-			// 点击添加图片按钮
-			if (imageItem.imageId <= 0) {
-				Intent intent = new Intent(this, GalleryActivity.class);
-				intent.putExtra(GalleryActivity.KEY_JUMP_PURPOSE, GalleryActivity.Purpose.MULTI_PIC.getType());
-				Bundle extras = new Bundle();
-				extras.putSerializable(GalleryActivity.KEY_SELECTED_IMAGE, selectedImageList);
-				intent.putExtras(extras);
-				startActivityForResult(intent, CODE_SELECT_IMAGE);
-			} else {
-				if (null != selectedImageList && selectedImageList.size() > 0) {
-					ArrayList<String> imagePathList = new ArrayList<String>();
-					for (int i = 0; i < selectedImageList.size(); i++) {
-						GalleryPicEntity ii = selectedImageList.get(i);
-						if (null != ii.imageBucketId && !"".equals(ii.imageBucketId)) {
-							imagePathList.add(ii.imagePath);
-						}
-					}
-					Intent intent = new Intent(this, GalleryPicPreviewActivity.class);
-					Bundle extras = new Bundle();
-					extras.putSerializable(GalleryPicPreviewActivity.KEY_SELECTED_IMAGE, imagePathList);
-					intent.putExtras(extras);
-					intent.putExtra(GalleryPicPreviewActivity.KEY_SELECTED_INDEX, position);
-					startActivity(intent);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -248,12 +353,16 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		editUnit = (EditText) findViewById(R.id.editUnit);
 		editApr = (EditText) findViewById(R.id.editApr);
 		editTag = (EditText) findViewById(R.id.editTag);
+		editCode = (EditText) findViewById(R.id.editCode);
 		editStock = (EditText) findViewById(R.id.editStock);
 		editStockLimit = (EditText) findViewById(R.id.editStockLimit);
 		editDesc = (EditText) findViewById(R.id.editDesc);
 
 		checkBoxRecommend = (CheckBox) findViewById(R.id.checkBoxRecommend);
 		checkBoxLock = (CheckBox) findViewById(R.id.checkBoxLock);
+
+		imageScanBarCode = (ImageView) findViewById(R.id.imageScanBarCode);
+		imageScanBarCode.setOnClickListener(this);
 
 		// spinnerPurchase = (Spinner) findViewById(R.id.spinnerPurchase);
 

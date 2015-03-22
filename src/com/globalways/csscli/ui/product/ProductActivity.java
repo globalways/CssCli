@@ -2,6 +2,9 @@ package com.globalways.csscli.ui.product;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -66,9 +69,25 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 	}
 
 	private void jumpNewProduct() {
-		startActivity(new Intent(this,ProductAddNewActivity.class));
+		AlertDialog.Builder builder = new Builder(this);
+		builder.setPositiveButton("先扫码", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(ProductActivity.this, ProductAddNewActivity.class);
+				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.SCAN_FIRST.getStep());
+				startActivity(intent);
+			}
+		});
+		builder.setNegativeButton("直接添加", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(ProductActivity.this, ProductAddNewActivity.class);
+				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.INFO_FIRST.getStep());
+				startActivity(intent);
+			}
+		});
+		builder.create().show();
 	}
-
 
 	/** PullToRefreshListView的下拉或上拉监听接口 */
 	@Override
@@ -86,23 +105,24 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 
 	/** 加载ProductList数据，isRefresh为true时，刷新；isRefresh为false时，加载更多 */
 	private void loadProductList(final boolean isRefresh) {
-		ProductManager.getInstance().getProductList(MyApplication.getStoreid(), isRefresh, new ManagerCallBack<List<ProductEntity>>() {
-			@Override
-			public void onSuccess(List<ProductEntity> returnContent) {
-				super.onSuccess(returnContent);
-				productListAdapter.setData(isRefresh, returnContent);
-				layoutContainer.setVisibility(View.VISIBLE);
-				productDetailFragment.setEntity(productListAdapter.getItemByPosition(0));
-				refreshListView.onRefreshComplete();
-			}
+		ProductManager.getInstance().getProductList(MyApplication.getStoreid(), isRefresh,
+				new ManagerCallBack<List<ProductEntity>>() {
+					@Override
+					public void onSuccess(List<ProductEntity> returnContent) {
+						super.onSuccess(returnContent);
+						productListAdapter.setData(isRefresh, returnContent);
+						layoutContainer.setVisibility(View.VISIBLE);
+						productDetailFragment.setEntity(productListAdapter.getItemByPosition(0));
+						refreshListView.onRefreshComplete();
+					}
 
-			@Override
-			public void onFailure(int code, String msg) {
-				super.onFailure(code, msg);
-				Toast.makeText(ProductActivity.this, msg, Toast.LENGTH_SHORT).show();
-				refreshListView.onRefreshComplete();
-			}
-		});
+					@Override
+					public void onFailure(int code, String msg) {
+						super.onFailure(code, msg);
+						Toast.makeText(ProductActivity.this, msg, Toast.LENGTH_SHORT).show();
+						refreshListView.onRefreshComplete();
+					}
+				});
 	}
 
 	/** 初始化UI、设置监听 */

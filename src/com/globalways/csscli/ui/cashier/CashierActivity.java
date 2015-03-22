@@ -16,7 +16,7 @@ import com.globalways.csscli.ui.BaseFragmentActivity;
 /**
  * 收银台
  * 
- * @author james
+ * @author James.Fan
  *
  */
 public class CashierActivity extends BaseFragmentActivity implements OnClickListener {
@@ -50,6 +50,15 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 	 */
 	public void addCashierProduct(ProductEntity entity) {
 		cashierListAdapter.addItem(entity);
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		if (null != cashierQRCodeFragment) {
+			cashierQRCodeFragment.setTotalPrice(totalPrice);
+		}
+	}
+
+	public void showSignDialog() {
 	}
 
 	/** 初始化UI、设置监听 */

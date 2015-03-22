@@ -86,6 +86,10 @@
             android:name=".ui.product.ProductAddNewActivity"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name=".ui.product.ProductScanCodeActivity"
+            android:screenOrientation="landscape" >
+        </activity>
         <!-- 雇员管理 -->
         <activity
             android:name=".ui.employee.EmployeeActivity"

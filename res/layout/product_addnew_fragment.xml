@@ -82,15 +82,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="商品二维码/条形码" />
+                        android:text="商品条形码" />
 
                     <EditText
                         android:id="@+id/editCode"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="5" />
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/imageScanBarCode"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:clickable="true"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/logo" />
                 </TableRow>
 
                 <TableRow

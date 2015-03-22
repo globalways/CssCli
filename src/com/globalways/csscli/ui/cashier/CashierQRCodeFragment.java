@@ -68,7 +68,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	private View layoutView;
 	private ImageView imageProductAva;
 	private TextView textProductName, textProductPrice, textNumber;
-	private Button btnLess, btnAdd, btnAddCashier;
+	private Button btnLess, btnAdd, btnAddCashier, btnSingle;
 
 	// scanner variable
 	private InactivityTimer inactivityTimer;
@@ -81,11 +81,8 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	private Map<DecodeHintType, ?> decodeHints;
 	private String characterSet;
 	private boolean hasSurface;
-	private boolean copyToClipboard;
 	private IntentSource source;
-	private String sourceUrl;
 	private Result savedResultToShow;
-	private Result lastResult;
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	@Override
@@ -105,6 +102,10 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		cameraView.getLayoutParams().height = cameraAreaHeight;
 		cameraView.getLayoutParams().width = cameraAreaWidth;
 		return layoutView;
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		btnSingle.setText("商品总价：￥" + totalPrice / 100.00);
 	}
 
 	@Override
@@ -175,7 +176,6 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		MyLog.d(TAG, result.getText());
 		loadProductDetail(result.getText());
 		Toast.makeText(getActivity(), result.getText(), Toast.LENGTH_SHORT).show();
-		restartPreviewAfterDelay(1000L);
 	}
 
 	/**
@@ -193,6 +193,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 					public void onSuccess(ProductEntity returnContent) {
 						super.onSuccess(returnContent);
 						productEntity = returnContent;
+						productEntity.setShoppingNumber(1);
 						refreshView();
 					}
 
@@ -225,22 +226,29 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 			if (productEntity != null) {
 				String text1 = textNumber.getText().toString().trim();
 				if (Integer.valueOf(textNumber.getText().toString().trim()) > 1) {
-					textNumber.setText(Integer.valueOf(text1) - 1 + "");
+					productEntity.setShoppingNumber(Integer.valueOf(text1) - 1);
+					textNumber.setText(productEntity.getShoppingNumber() + "");
 				}
 				btnLess.setEnabled(!textNumber.getText().toString().trim().equals("1"));
 			}
 			break;
 		case R.id.btnAdd:
 			if (productEntity != null) {
-				textNumber.setText(Integer.valueOf(textNumber.getText().toString().trim()) + 1 + "");
+				productEntity.setShoppingNumber(productEntity.getShoppingNumber() + 1);
+				textNumber.setText(productEntity.getShoppingNumber() + "");
 				btnLess.setEnabled(!textNumber.getText().toString().trim().equals("1"));
 			}
 			break;
 		case R.id.btnAddCashier:
 			if (productEntity != null) {
 				((CashierActivity) getActivity()).addCashierProduct(productEntity);
+				// 重置扫码
+				restartPreviewAfterDelay(10L);
 			}
 			reset();
+			break;
+		case R.id.btnSingle:
+			((CashierActivity) getActivity()).showSignDialog();
 			break;
 		}
 	}
@@ -266,6 +274,8 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		btnAdd.setOnClickListener(this);
 		btnAddCashier = (Button) layoutView.findViewById(R.id.btnAddCashier);
 		btnAddCashier.setOnClickListener(this);
+		btnSingle = (Button) layoutView.findViewById(R.id.btnSingle);
+		btnSingle.setOnClickListener(this);
 	}
 
 	/** 弹出输入数量的对话框 */
@@ -329,7 +339,9 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				productEntity.setShoppingNumber(Integer.valueOf(editText.getText().toString().trim()));
+				if (productEntity != null) {
+					productEntity.setShoppingNumber(Integer.valueOf(editText.getText().toString().trim()));
+				}
 				textNumber.setText(editText.getText().toString());
 			}
 		});
@@ -422,7 +434,6 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	@Override
 	public void handleDecode(Result rawResult, Bitmap barcode, float scaleFactor) {
 		inactivityTimer.onActivity();
-		lastResult = rawResult;
 		// ResultHandler resultHandler =
 		// ResultHandlerFactory.makeResultHandler(this, rawResult);
 
@@ -462,6 +473,8 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 				handleResult(rawResult);
 			}
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -499,7 +512,6 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 
 	private void resetStatusView() {
 		viewfinderView.setVisibility(View.VISIBLE);
-		lastResult = null;
 	}
 
 	@Override
