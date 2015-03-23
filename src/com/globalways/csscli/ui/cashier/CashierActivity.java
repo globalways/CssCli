@@ -23,6 +23,7 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 
 	private TextView textLeft, textCenter;
 	private View layoutContainer;
+	private CashierOrderFragment cashierOrderFragment;
 	private ListView listViewShopping;
 	private CashierListAdapter cashierListAdapter;
 	private CashierQRCodeFragment cashierQRCodeFragment;
@@ -43,6 +44,28 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		}
 	}
 
+	/** 显示下单窗口 */
+	public void showSignDialog() {
+		if (cashierOrderFragment == null) {
+			cashierOrderFragment = new CashierOrderFragment();
+		}
+		layoutContainer.setVisibility(View.VISIBLE);
+		cashierOrderFragment.setOrderData();
+	}
+
+	/**
+	 * 隐藏下单窗口
+	 * 
+	 * @param isSign
+	 *            true，已下单就就清空收银台购物车
+	 */
+	public void hideSignDialog(boolean isSign) {
+		layoutContainer.setVisibility(View.GONE);
+		if (isSign) {
+			cashierListAdapter.clear();
+		}
+	}
+
 	/**
 	 * 向购物车添加商品
 	 * 
@@ -52,13 +75,11 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		cashierListAdapter.addItem(entity);
 	}
 
+	/**刷新总价*/
 	public void setTotalPrice(int totalPrice) {
 		if (null != cashierQRCodeFragment) {
 			cashierQRCodeFragment.setTotalPrice(totalPrice);
 		}
-	}
-
-	public void showSignDialog() {
 	}
 
 	/** 初始化UI、设置监听 */
@@ -72,8 +93,8 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		textCenter.setText("收银台");
 		textCenter.setVisibility(View.VISIBLE);
 
-		// layoutContainer = findViewById(R.id.layoutContainer);
-		// layoutContainer.setVisibility(View.GONE);
+		layoutContainer = findViewById(R.id.layoutContainer);
+		layoutContainer.setVisibility(View.GONE);
 		cashierQRCodeFragment = new CashierQRCodeFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.layoutContainer, cashierQRCodeFragment)
 				.show(cashierQRCodeFragment).commit();

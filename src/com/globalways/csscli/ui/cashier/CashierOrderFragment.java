@@ -46,24 +46,44 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 		initView();
 	}
 
+	public void setOrderData() {
+	}
+
 	@Override
 	public void onClick(View arg0) {
 		switch (arg0.getId()) {
 		case R.id.btnCancel:
+			((CashierActivity) getActivity()).hideSignDialog(false);
 			break;
 		case R.id.btnNext:
+			toSignOrder();
 			break;
 		case R.id.btnCancelSign:
+			((CashierActivity) getActivity()).hideSignDialog(true);
 			break;
 		case R.id.btnComfirm:
+			((CashierActivity) getActivity()).hideSignDialog(true);
 			break;
 		}
 	}
 
 	private void toSignOrder() {
+		String apr=editApr.getText().toString().trim();
+		String desc=editDesc.getText().toString().trim();
+		refreshView();
+	}
+	
+	private void refreshView() {
+		viewStepOne.setVisibility(View.GONE);
+		viewStepTwo.setVisibility(View.VISIBLE);
 	}
 
 	private void initView() {
+		viewStepOne=(View) layoutView.findViewById(R.id.viewStepOne);
+		viewStepOne.setVisibility(View.VISIBLE);
+		viewStepTwo=(View) layoutView.findViewById(R.id.viewStepTwo);
+		viewStepTwo.setVisibility(View.GONE);
+		
 		textTotalPrice = (TextView) layoutView.findViewById(R.id.textTotalPrice);
 		textSignTotalPrice1 = (TextView) layoutView.findViewById(R.id.textSignTotalPrice1);
 		editApr = (EditText) layoutView.findViewById(R.id.editApr);

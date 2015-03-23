@@ -24,6 +24,12 @@ import com.globalways.csscli.R;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.tools.PicassoImageLoader;
 
+/**
+ * 收银台购物车列表adapter
+ * 
+ * @author James
+ *
+ */
 public class CashierListAdapter extends BaseAdapter {
 
 	private List<ProductEntity> list = null;
@@ -41,6 +47,7 @@ public class CashierListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	/** 向收银台添加商品 */
 	public void addItem(ProductEntity entity) {
 		if (list == null) {
 			list = new ArrayList<ProductEntity>();
@@ -50,6 +57,13 @@ public class CashierListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	/** 清空收银台列表 */
+	public void clear() {
+		list = null;
+		notifyDataSetChanged();
+	}
+
+	/** 刷新总价 */
 	private void refreshTotalPrice() {
 		int totalPrice = 0;
 		for (int i = 0; i < list.size(); i++) {
@@ -58,6 +72,7 @@ public class CashierListAdapter extends BaseAdapter {
 		((CashierActivity) context).setTotalPrice(totalPrice);
 	}
 
+	/** 根据position获取商品实体 */
 	public ProductEntity getItemByPosition(int position) {
 		if (null != list) {
 			return list.get(position);
