@@ -22,7 +22,7 @@ import com.globalways.csscli.ui.BaseFragmentActivity;
 public class CashierActivity extends BaseFragmentActivity implements OnClickListener {
 
 	private TextView textLeft, textCenter;
-	private View layoutContainer;
+	private View dialogContainer;
 	private CashierOrderFragment cashierOrderFragment;
 	private ListView listViewShopping;
 	private CashierListAdapter cashierListAdapter;
@@ -46,11 +46,8 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 
 	/** 显示下单窗口 */
 	public void showSignDialog() {
-		if (cashierOrderFragment == null) {
-			cashierOrderFragment = new CashierOrderFragment();
-		}
-		layoutContainer.setVisibility(View.VISIBLE);
-		cashierOrderFragment.setOrderData();
+		dialogContainer.setVisibility(View.VISIBLE);
+		cashierOrderFragment.setOrderData(cashierListAdapter.getCashierList(), cashierListAdapter.getTotalPrice());
 	}
 
 	/**
@@ -60,7 +57,7 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 	 *            true，已下单就就清空收银台购物车
 	 */
 	public void hideSignDialog(boolean isSign) {
-		layoutContainer.setVisibility(View.GONE);
+		dialogContainer.setVisibility(View.GONE);
 		if (isSign) {
 			cashierListAdapter.clear();
 		}
@@ -75,8 +72,8 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		cashierListAdapter.addItem(entity);
 	}
 
-	/**刷新总价*/
-	public void setTotalPrice(int totalPrice) {
+	/** 刷新总价 */
+	public void setTotalPrice(long totalPrice) {
 		if (null != cashierQRCodeFragment) {
 			cashierQRCodeFragment.setTotalPrice(totalPrice);
 		}
@@ -93,8 +90,12 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		textCenter.setText("收银台");
 		textCenter.setVisibility(View.VISIBLE);
 
-		layoutContainer = findViewById(R.id.layoutContainer);
-		layoutContainer.setVisibility(View.GONE);
+		dialogContainer = findViewById(R.id.dialogContainer);
+		dialogContainer.setVisibility(View.GONE);
+		cashierOrderFragment = new CashierOrderFragment();
+		getSupportFragmentManager().beginTransaction().add(R.id.dialogContainer, cashierOrderFragment)
+				.show(cashierOrderFragment).commit();
+
 		cashierQRCodeFragment = new CashierQRCodeFragment();
 		getSupportFragmentManager().beginTransaction().add(R.id.layoutContainer, cashierQRCodeFragment)
 				.show(cashierQRCodeFragment).commit();

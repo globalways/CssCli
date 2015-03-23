@@ -68,7 +68,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	private View layoutView;
 	private ImageView imageProductAva;
 	private TextView textProductName, textProductPrice, textNumber;
-	private Button btnLess, btnAdd, btnAddCashier, btnSingle;
+	private Button btnLess, btnAdd, btnAddCashier, btnOrder;
 
 	// scanner variable
 	private InactivityTimer inactivityTimer;
@@ -104,8 +104,8 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		return layoutView;
 	}
 
-	public void setTotalPrice(int totalPrice) {
-		btnSingle.setText("商品总价：￥" + totalPrice / 100.00);
+	public void setTotalPrice(long totalPrice) {
+		btnOrder.setText("商品总价：￥" + totalPrice / 100.00);
 	}
 
 	@Override
@@ -258,7 +258,8 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		textNumber.setText("1");
 		textProductName.setText("");
 		textProductPrice.setText("");
-		// productAva.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.logo));
+		imageProductAva.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.logo));
+		btnOrder.setText("去结算");
 	}
 
 	private void initView() {
@@ -274,8 +275,8 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		btnAdd.setOnClickListener(this);
 		btnAddCashier = (Button) layoutView.findViewById(R.id.btnAddCashier);
 		btnAddCashier.setOnClickListener(this);
-		btnSingle = (Button) layoutView.findViewById(R.id.btnSingle);
-		btnSingle.setOnClickListener(this);
+		btnOrder = (Button) layoutView.findViewById(R.id.btnSingle);
+		btnOrder.setOnClickListener(this);
 	}
 
 	/** 弹出输入数量的对话框 */

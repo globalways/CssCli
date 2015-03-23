@@ -55,6 +55,7 @@ public class HttpUtils implements HttpClientDao {
 			}
 			MyLog.d(TAG, "get RequestParams = " + params.toString());
 		}
+		MyLog.d(TAG, "get Request url = " + url);
 		mHttpUtil.setTimeout(10 * 1000);
 		mHttpUtil.get(url, rp, new AsyncHttpResponseHandler() {
 			@Override
@@ -97,8 +98,9 @@ public class HttpUtils implements HttpClientDao {
 			for (String key : params.keySet()) {
 				rp.put(key, params.get(key));
 			}
+			MyLog.d(TAG, "post RequestParams = " + params.toString());
 		}
-		MyLog.d(TAG, "post RequestParams = " + params.toString());
+		MyLog.d(TAG, "post Request url = " + url);
 		mHttpUtil.setTimeout(10 * 1000);
 		// 超时时间3秒
 		mHttpUtil.post(url, rp, new AsyncHttpResponseHandler() {

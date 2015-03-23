@@ -21,4 +21,6 @@ public class HttpApi {
 	public static final String QINIU_GET_UPLOAD_TOKEN = HOME_URI + "/v2/public/qiniu/uptoken";
 
 	public static final String ORDER_SIGN = HOME_URI + "/v2/orders";
+	public static final String ORDER_CASH_DONE = HOME_URI + "/v2/orders/:oid/cashDone";
+	public static final String ORDER_CANCEL = HOME_URI + "/v2/orders/:oid/storeCancel";
 }

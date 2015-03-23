@@ -63,13 +63,30 @@ public class CashierListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
+	/**
+	 * 获取收银台商品列表
+	 * 
+	 * @return
+	 */
+	public List<ProductEntity> getCashierList() {
+		if (list != null) {
+			return list;
+		}
+		return null;
+	}
+
 	/** 刷新总价 */
 	private void refreshTotalPrice() {
+		((CashierActivity) context).setTotalPrice(getTotalPrice());
+	}
+
+	/** 获取总价 */
+	public long getTotalPrice() {
 		int totalPrice = 0;
 		for (int i = 0; i < list.size(); i++) {
 			totalPrice += (list.get(i).getShoppingNumber() * list.get(i).getProduct_price());
 		}
-		((CashierActivity) context).setTotalPrice(totalPrice);
+		return totalPrice;
 	}
 
 	/** 根据position获取商品实体 */
