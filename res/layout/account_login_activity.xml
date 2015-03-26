@@ -1,73 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerVertical="true"
     android:background="@drawable/bg_login" >
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@null"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_login" />
-
-    <ScrollView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" >
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="40dp" >
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="30dp"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo" />
+
+        <com.globalways.csscli.view.ClearableEditText
+            android:id="@+id/editAccount"
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:drawableLeft="@drawable/icon_acount"
+            android:gravity="center_vertical|left"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textColor="@color/base_white" />
+
+        <View
+            android:layout_width="400dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#b3ffffff" />
+
+        <com.globalways.csscli.view.ClearableEditText
+            android:id="@+id/editPsd"
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:drawableLeft="@drawable/icon_psd"
+            android:gravity="center_vertical|left"
+            android:inputType="textPassword"
+            android:maxLength="20"
+            android:textColor="@color/base_white" />
+
+        <View
+            android:layout_width="400dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#b3ffffff" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="40dp" >
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:background="@color/selector_login_btn_bg"
+            android:text="登录"
+            android:textColor="@color/base_white" />
+    </LinearLayout>
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"
-                android:background="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/logo" />
-
-            <com.globalways.csscli.view.ClearableEditText
-                android:id="@+id/editAccount"
-                android:layout_width="400dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:drawableLeft="@drawable/icon_acount"
-                android:gravity="center_vertical|left"
-                android:textColor="@color/base_white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#b3ffffff" />
-
-            <com.globalways.csscli.view.ClearableEditText
-                android:id="@+id/editPsd"
-                android:layout_width="400dp"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:drawableLeft="@drawable/icon_psd"
-                android:gravity="center_vertical|left"
-                android:textColor="@color/base_white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#b3ffffff" />
-
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:background="@color/selector_login_btn_bg"
-                android:text="登录"
-                android:textColor="@color/base_white" />
-        </LinearLayout>
-    </ScrollView>
-
-</RelativeLayout>
+</ScrollView>

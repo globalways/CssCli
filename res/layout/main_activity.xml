@@ -28,6 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_store"
+                android:enabled="false"
                 android:text="商铺管理" />
 
             <Button
@@ -37,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_product"
-                android:text="商铺商品管理" />
+                android:text="商品管理" />
 
             <Button
                 android:id="@+id/btnEmployeeManager"
@@ -46,6 +47,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_employee"
+                android:enabled="false"
                 android:text="雇员管理" />
         </TableRow>
 
@@ -70,6 +72,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_purchase"
+                android:enabled="false"
                 android:text="进货渠道管理" />
 
             <Button
@@ -79,6 +82,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_order"
+                android:enabled="false"
                 android:text="订单管理" />
         </TableRow>
 
@@ -94,6 +98,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_stock"
+                android:enabled="false"
                 android:text="库存管理" />
 
             <Button
@@ -103,6 +108,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_statistics"
+                android:enabled="false"
                 android:text="统计" />
 
             <Button
@@ -112,6 +118,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_settings"
+                android:enabled="false"
                 android:text="系统设置" />
         </TableRow>
     </TableLayout>

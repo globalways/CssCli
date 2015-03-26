@@ -6,14 +6,21 @@
 
             <solid android:color="@color/base_gray" />
 
-            <stroke android:width="1px" android:color="#eeeeee" />
+            <stroke android:width="1px" android:color="@color/base_gray" />
+        </shape></item>
+    <item android:state_enabled="false"><shape>
+            <padding android:bottom="12dp" android:left="12dp" android:right="12dp" android:top="12dp" />
+
+            <solid android:color="#80eeeeee" />
+
+            <stroke android:width="1px" android:color="@color/base_gray" />
         </shape></item>
     <item><shape>
             <padding android:bottom="12dp" android:left="12dp" android:right="12dp" android:top="12dp" />
 
             <solid android:color="@color/base_white" />
 
-            <stroke android:width="1px" android:color="#eeeeee" />
+            <stroke android:width="1px" android:color="@color/base_gray" />
         </shape></item>
 
 </selector>

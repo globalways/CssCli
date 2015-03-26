@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,8 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		OnItemClickListener {
 	private static final String TAG = ProductActivity.class.getSimpleName();
 
-	private TextView textLeft, textCenter, textRight;
+	private TextView textCenter;
+	private ImageButton imgBtnLeft, imgBtnRight;
 
 	private PullToRefreshListView refreshListView;
 	private ListView listView;
@@ -49,6 +51,8 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_split_screen);
+		// 布局内容会从view以下开始
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		initView();
 
 		// 初始化完成后加载StoreList数据
@@ -59,10 +63,10 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			finish();
 			break;
-		case R.id.textRight:
+		case R.id.imgBtnRight:
 			jumpNewProduct();
 			break;
 		}
@@ -74,7 +78,8 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent intent = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.SCAN_FIRST.getStep());
+				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
+						ProductAddNewActivity.ScanStep.SCAN_FIRST.getStep());
 				startActivity(intent);
 			}
 		});
@@ -82,7 +87,8 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent intent = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.INFO_FIRST.getStep());
+				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
+						ProductAddNewActivity.ScanStep.INFO_FIRST.getStep());
 				startActivity(intent);
 			}
 		});
@@ -127,19 +133,17 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 
 	/** 初始化UI、设置监听 */
 	private void initView() {
-		textLeft = (TextView) findViewById(R.id.textleft);
-		textLeft.setText("返回");
-		textLeft.setVisibility(View.VISIBLE);
-		textLeft.setOnClickListener(this);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setVisibility(View.VISIBLE);
+		imgBtnLeft.setOnClickListener(this);
 
 		textCenter = (TextView) findViewById(R.id.textCenter);
 		textCenter.setText("商铺商品管理");
 		textCenter.setVisibility(View.VISIBLE);
 
-		textRight = (TextView) findViewById(R.id.textRight);
-		textRight.setText("添加商品");
-		textRight.setVisibility(View.VISIBLE);
-		textRight.setOnClickListener(this);
+		imgBtnRight = (ImageButton) findViewById(R.id.imgBtnRight);
+		imgBtnRight.setVisibility(View.VISIBLE);
+		imgBtnRight.setOnClickListener(this);
 
 		refreshListView = (PullToRefreshListView) findViewById(R.id.refreshListView);
 		refreshListView.setOnRefreshListener(this);

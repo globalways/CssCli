@@ -31,14 +31,16 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.cashier_fragment);
+		setContentView(R.layout.cashier_activity);
+		// 布局内容会从view以下开始
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		initView();
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			finish();
 			break;
 		}

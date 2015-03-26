@@ -13,6 +13,10 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
+    
+    <style name="ActionBarTheme" parent="android:Theme.Light">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
 
     <!-- Activity切换动画 -->
     <style name="AnimationActivity" parent="@android:style/Animation.Activity">

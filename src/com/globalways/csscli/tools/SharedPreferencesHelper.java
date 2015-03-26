@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.globalways.csscli.entity.UserEntity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 /**
  * SharedPreferences数据存储类
  * 
@@ -17,6 +21,15 @@ public class SharedPreferencesHelper {
 
 	/** 错误记录 **/
 	private static final String ERROR_FLAG = "errorFlag";
+	/** 用户信息 */
+	private static final String USER_INFO = "userInfo";
+	private static final String USER_ACCOUNT = "userAccount";
+
+	/** 用户帐号 */
+	private class UserAccount {
+		private static final String USER_NAME = "userName";
+		private static final String USER_PSD = "userPsd";
+	}
 
 	private SharedPreferencesHelper() {
 	}
@@ -27,6 +40,89 @@ public class SharedPreferencesHelper {
 			mContext = context;
 		}
 		return mSharedPreferencesHelper;
+	}
+
+	/**
+	 * 保存用户帐号
+	 */
+	public synchronized void saveUserAccount(String username, String password) {
+		if (username == null || password == null) {
+			return;
+		}
+		SharedPreferences errorFlag = mContext.getSharedPreferences(USER_ACCOUNT, Context.MODE_PRIVATE);
+		Editor editor = errorFlag.edit();
+		editor.putString(UserAccount.USER_NAME, username);
+		editor.putString(UserAccount.USER_PSD, password);
+		editor.commit();
+		MyLog.d(TAG, "saveUserAccount");
+	}
+
+	/**
+	 * 获取用户帐号
+	 * 
+	 * @return
+	 */
+	public synchronized String getUserName() {
+		SharedPreferences errorFlag = mContext.getSharedPreferences(USER_ACCOUNT, Context.MODE_PRIVATE);
+		String userInfo = errorFlag.getString(UserAccount.USER_NAME, null);
+		if (userInfo == null || userInfo.isEmpty()) {
+			return null;
+		}
+		MyLog.d(TAG, "getUserName");
+		return userInfo;
+	}
+
+	/**
+	 * 获取用户密码
+	 * 
+	 * @return
+	 */
+	public synchronized String getUserPsd() {
+		SharedPreferences errorFlag = mContext.getSharedPreferences(USER_ACCOUNT, Context.MODE_PRIVATE);
+		String userInfo = errorFlag.getString(UserAccount.USER_PSD, null);
+		if (userInfo == null || userInfo.isEmpty()) {
+			return null;
+		}
+		MyLog.d(TAG, "getUserPsd");
+		return userInfo;
+	}
+
+	/**
+	 * 保存用户信息
+	 * 
+	 * @param entity
+	 */
+	public synchronized void saveUserInfo(UserEntity entity) {
+		if (entity == null) {
+			return;
+		}
+		SharedPreferences errorFlag = mContext.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE);
+		Gson gson = new Gson();
+		String userInfo = gson.toJson(entity, new TypeToken<UserEntity>() {
+		}.getType());
+		Editor editor = errorFlag.edit();
+		editor.putString(USER_INFO, userInfo);
+		editor.commit();
+		MyLog.d(TAG, "saveUserInfo");
+	}
+
+	/**
+	 * 获取用户信息
+	 * 
+	 * @return
+	 */
+	public synchronized UserEntity getUserInfo() {
+		SharedPreferences errorFlag = mContext.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE);
+		String userInfo = errorFlag.getString(USER_INFO, null);
+		if (userInfo == null) {
+			return null;
+		}
+		Gson gson = new Gson();
+		UserEntity entity = new UserEntity();
+		entity = gson.fromJson(userInfo, new TypeToken<UserEntity>() {
+		}.getType());
+		MyLog.d(TAG, "getUserInfo");
+		return entity;
 	}
 
 	/**
