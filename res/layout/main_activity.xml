@@ -3,28 +3,117 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_white"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.2" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_login" />
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.6"
-        android:horizontalSpacing="20dp"
-        android:listSelector="@null"
-        android:numColumns="3"
-        android:verticalSpacing="20dp" >
-    </GridView>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.2" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <Button
+                android:id="@+id/btnStoreManager"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_store"
+                android:text="商铺管理" />
+
+            <Button
+                android:id="@+id/btnProductManager"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_product"
+                android:text="商铺商品管理" />
+
+            <Button
+                android:id="@+id/btnEmployeeManager"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_employee"
+                android:text="雇员管理" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <Button
+                android:id="@+id/btnCashierManager"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_cashier"
+                android:text="收银台" />
+
+            <Button
+                android:id="@+id/btnPurchaseManager"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_purchase"
+                android:text="进货渠道管理" />
+
+            <Button
+                android:id="@+id/btnOrderManager"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_order"
+                android:text="订单管理" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <Button
+                android:id="@+id/btnStockManager"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_stock"
+                android:text="库存管理" />
+
+            <Button
+                android:id="@+id/btnStatistics"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_statistics"
+                android:text="统计" />
+
+            <Button
+                android:id="@+id/btnSettings"
+                style="@style/MainButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/icon_settings"
+                android:text="系统设置" />
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>

@@ -1,8 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:background="@drawable/bg_login" >
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_login" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="40dp" >
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+
+            <com.globalways.csscli.view.ClearableEditText
+                android:id="@+id/editAccount"
+                android:layout_width="400dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:drawableLeft="@drawable/icon_acount"
+                android:gravity="center_vertical|left"
+                android:textColor="@color/base_white" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#b3ffffff" />
+
+            <com.globalways.csscli.view.ClearableEditText
+                android:id="@+id/editPsd"
+                android:layout_width="400dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:drawableLeft="@drawable/icon_psd"
+                android:gravity="center_vertical|left"
+                android:textColor="@color/base_white" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#b3ffffff" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@color/selector_login_btn_bg"
+                android:text="登录"
+                android:textColor="@color/base_white" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

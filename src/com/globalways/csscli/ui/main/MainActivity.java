@@ -1,33 +1,14 @@
 package com.globalways.csscli.ui.main;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
-import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.ui.BaseActivity;
-import com.globalways.csscli.ui.cashier.CashierActivity;
-import com.globalways.csscli.ui.employee.EmployeeActivity;
-import com.globalways.csscli.ui.order.OrderActivity;
-import com.globalways.csscli.ui.product.ProductActivity;
-import com.globalways.csscli.ui.purchase.PurchaseActivity;
-import com.globalways.csscli.ui.settings.SettingsActivity;
-import com.globalways.csscli.ui.statistics.StatisticsActivity;
-import com.globalways.csscli.ui.store.StoreActivity;
+import com.globalways.csscli.ui.UITools;
 
-public class MainActivity extends BaseActivity implements OnItemClickListener {
-
-	private GridView gridView;
-	private MainButtonAdapter mainBtnAdapter;
-	private Class<?>[] mainClass = { StoreActivity.class, ProductActivity.class, EmployeeActivity.class,
-			CashierActivity.class, PurchaseActivity.class, OrderActivity.class, StatisticsActivity.class,
-			SettingsActivity.class };
+public class MainActivity extends BaseActivity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +17,49 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 		initView();
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		Intent intent = new Intent(this, GalleryActivity.class);
-//		intent.putExtra("purpose", GalleryActivity.Purpose.MULTI_PIC);
-//		startActivity(intent);
-		switch (position) {
-		case 1:
-		case 3:
-			Intent intent = new Intent(this, mainClass[position]);
-			startActivity(intent);
-			break;
-		default:
-			Toast.makeText(this, "正在开发，敬请期待……", Toast.LENGTH_SHORT).show();
-			break;
-		}
+	private void initView() {
+		findViewById(R.id.btnStoreManager).setOnClickListener(this);
+		findViewById(R.id.btnProductManager).setOnClickListener(this);
+		findViewById(R.id.btnEmployeeManager).setOnClickListener(this);
+		findViewById(R.id.btnCashierManager).setOnClickListener(this);
+		findViewById(R.id.btnPurchaseManager).setOnClickListener(this);
+		findViewById(R.id.btnOrderManager).setOnClickListener(this);
+		findViewById(R.id.btnStockManager).setOnClickListener(this);
+		findViewById(R.id.btnStatistics).setOnClickListener(this);
+		findViewById(R.id.btnSettings).setOnClickListener(this);
 	}
 
-	private void initView() {
-		gridView = (GridView) findViewById(R.id.gridView);
-		gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
-		mainBtnAdapter = new MainButtonAdapter(this);
-		gridView.setAdapter(mainBtnAdapter);
-		mainBtnAdapter.setData(getResources().getStringArray(R.array.mainViewButton));
-		gridView.setOnItemClickListener(this);
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btnStoreManager:
+			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			break;
+		case R.id.btnProductManager:
+			UITools.jumpProductActivity(this);
+			break;
+		case R.id.btnEmployeeManager:
+			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			break;
+		case R.id.btnCashierManager:
+			UITools.jumpCashierActivity(this);
+			break;
+		case R.id.btnPurchaseManager:
+			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			break;
+		case R.id.btnOrderManager:
+			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			break;
+		case R.id.btnStockManager:
+			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			break;
+		case R.id.btnStatistics:
+			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			break;
+		case R.id.btnSettings:
+			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			break;
+		}
 	}
 
 }
