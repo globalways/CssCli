@@ -28,7 +28,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="商品名称"
+                        android:text="商品名称*"
                         android:textColor="@color/base_black_333333" />
 
                     <com.globalways.csscli.view.ClearableEditText
@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="商品品牌"
+                        android:text="商品品牌*"
                         android:textColor="@color/base_black_333333" />
 
                     <com.globalways.csscli.view.ClearableEditText
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="商品价格"
+                        android:text="商品价格*"
                         android:textColor="@color/base_black_333333" />
 
                     <com.globalways.csscli.view.ClearableEditText
@@ -314,7 +314,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:horizontalSpacing="20dp"
-                android:listSelector="@color/base_gray"
+                android:listSelector="@drawable/selector_gallery_item"
                 android:numColumns="4"
                 android:paddingBottom="40dp"
                 android:paddingLeft="40dp"

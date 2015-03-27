@@ -37,8 +37,10 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginTop="5dp"
+            android:background="@color/selector_menu_btn_single_bg"
             android:gravity="center"
-            android:text="取消"  />
+            android:text="取消"
+            android:textColor="@color/base_green" />
     </LinearLayout>
 
 </LinearLayout>

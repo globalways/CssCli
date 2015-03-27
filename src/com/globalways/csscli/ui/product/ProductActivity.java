@@ -64,14 +64,12 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			break;
 		case R.id.imgBtnRight:
 			Intent intentAdd = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-			intentAdd.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
-					ProductAddNewActivity.ScanStep.INFO_FIRST.getStep());
+			intentAdd.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.INFO_FIRST);
 			startActivity(intentAdd);
 			break;
 		case R.id.imgBtnRight1:
 			Intent intentScan = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-			intentScan.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
-					ProductAddNewActivity.ScanStep.SCAN_FIRST.getStep());
+			intentScan.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.SCAN_FIRST);
 			startActivity(intentScan);
 			break;
 		}

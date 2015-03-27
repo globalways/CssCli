@@ -3,6 +3,7 @@
     android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/base_white"
     android:orientation="vertical" >
 
     <include layout="@layout/title" />
@@ -11,7 +12,6 @@
         android:id="@+id/gvGallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gallery_default_bg"
         android:gravity="center"
         android:horizontalSpacing="30dp"
         android:listSelector="@drawable/selector_gallery_item"

@@ -8,272 +8,315 @@
 
     <include layout="@layout/title" />
 
-    <ScrollView
-        android:id="@+id/scrollViewProductDetail"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <ScrollView
+            android:id="@+id/scrollViewProductDetail"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp" >
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="商品名称*"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editName"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="50" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="商品品牌*"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editBrand"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="50" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="标签"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editTag"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="5" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="商品价格*"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editPrice"
+                            style="@style/EditNumStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="20" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text=" 分/ "
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editUnit"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="5" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="会员折扣（0-100）"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editApr"
+                            style="@style/EditNumStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="3" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="进货渠道"
+                            android:textColor="@color/base_black_333333" />
+
+                        <Spinner
+                            android:id="@+id/spinnerPurchase"
+                            style="@android:style/Widget.Spinner.DropDown"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:spinnerMode="dropdown" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="现有库存"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editStock"
+                            style="@style/EditNumStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:digits=".0123456789"
+                            android:maxLength="20" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="库存告急提醒"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editStockLimit"
+                            style="@style/EditNumStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxLength="20" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="店长推荐"
+                            android:textColor="@color/base_black_333333" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxRecommend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:text="是否上架"
+                            android:textColor="@color/base_black_333333" />
+
+                        <CheckBox
+                            android:id="@+id/checkBoxLock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="商品描述"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editDesc"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:gravity="top|left"
+                            android:maxLength="240"
+                            android:singleLine="false" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="20dp"
+                            android:text="商品条形码"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editCode"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/imageScanBarCode"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:clickable="true"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:src="@drawable/icon_scan" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/base_gray" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp" >
+            android:layout_weight="0.4"
+            android:orientation="vertical" >
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="点击+号添加商品照片" />
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品名称" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editName"
-                        style="@style/EditTextStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="50" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品品牌" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editBrand"
-                        style="@style/EditTextStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="50" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品标签" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editTag"
-                        style="@style/EditTextStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="5" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品条形码" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editCode"
-                        style="@style/EditTextStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:id="@+id/imageScanBarCode"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center_vertical"
-                        android:clickable="true"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:src="@drawable/logo" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品价格（单位：分)" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editPrice"
-                        style="@style/EditNumStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="20" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品单位" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editUnit"
-                        style="@style/EditTextStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="5" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="会员折扣（0-100）" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editApr"
-                        style="@style/EditNumStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="3" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="进货渠道" />
-
-                    <Spinner
-                        android:id="@+id/spinnerPurchase"
-                        style="@android:style/Widget.Spinner.DropDown"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:spinnerMode="dropdown" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="现有库存" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editStock"
-                        style="@style/EditNumStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:digits=".0123456789"
-                        android:maxLength="20" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="库存告急提醒"
-                        android:visibility="gone" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editStockLimit"
-                        style="@style/EditNumStye"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:maxLength="20"
-                        android:visibility="gone" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="店长推荐" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxRecommend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="false" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="是否上架" />
-
-                    <CheckBox
-                        android:id="@+id/checkBoxLock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:text="商品描述" />
-
-                    <com.globalways.csscli.view.ClearableEditText
-                        android:id="@+id/editDesc"
-                        style="@style/EditTextStye"
-                        android:layout_width="0dp"
-                        android:layout_height="80dp"
-                        android:layout_weight="1"
-                        android:gravity="top|left"
-                        android:maxLength="240"
-                        android:singleLine="false" />
-                </TableRow>
-            </TableLayout>
-
-            <com.globalways.csscli.view.NoScrollGridView
+            <GridView
                 android:id="@+id/gridViewPic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:horizontalSpacing="10dp"
-                android:numColumns="6"
-                android:padding="10dp"
-                android:verticalSpacing="10dp" >
-            </com.globalways.csscli.view.NoScrollGridView>
+                android:horizontalSpacing="20dp"
+                android:listSelector="@drawable/selector_gallery_item"
+                android:numColumns="2"
+                android:verticalSpacing="10dp" />
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>

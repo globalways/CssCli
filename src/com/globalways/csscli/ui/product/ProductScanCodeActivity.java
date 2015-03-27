@@ -16,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.globalways.csscli.R;
@@ -59,6 +60,13 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 		// 布局内容会从view以下开始
 		findViewById(R.id.camera_view).setFitsSystemWindows(true);
 		mTintManager.setStatusBarDarkMode(false, this);
+
+		findViewById(R.id.btnCancel).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ProductScanCodeActivity.this.finish();
+			}
+		});
 
 		// scanner
 		inactivityTimer = new InactivityTimer(this);

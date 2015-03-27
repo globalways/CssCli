@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,7 +34,6 @@ import com.globalways.csscli.ui.gallery.GalleryPicPreviewActivity;
 import com.globalways.csscli.view.BottomMenuDialog;
 import com.globalways.csscli.view.ClearableEditText;
 import com.globalways.csscli.view.MenuItemEntity;
-import com.globalways.csscli.view.NoScrollGridView;
 import com.globalways.csscli.view.SimpleProgressDialog;
 
 /**
@@ -51,32 +51,23 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	private static final int CODE_SCAN_BAR_REQUEST = 13;
 	public static final String KEY_FIRST_STEP = "firstStep";
 	public static final String KEY_SCAN_RESULT = "scanResult";
-	private ScanStep scanStep;
+	private int scanStep;
 
-	public enum ScanStep {
+	public class ScanStep {
 		/** 先扫码 */
-		SCAN_FIRST(1),
+		public static final int SCAN_FIRST = 1;
 		/** 先填信息 */
-		INFO_FIRST(2);
-		private ScanStep(int step) {
-			this.step = step;
-		}
-
-		private int step;
-
-		public int getStep() {
-			return step;
-		}
+		public static final int INFO_FIRST = 2;
 	}
 
 	private TextView textCenter;
-	private ImageButton imgBtnLeft;
+	private ImageButton imgBtnLeft, imgBtnRight;
 	private ClearableEditText editName, editBrand, editPrice, editUnit, editApr, editTag, editCode, editStock,
 			editStockLimit, editDesc;
 	private CheckBox checkBoxRecommend, checkBoxLock;
 	private ImageView imageScanBarCode;
 
-	private NoScrollGridView gridViewPic;
+	private GridView gridViewPic;
 	private ProductSelectPicAdapter picAdapter;
 	private ArrayList<GalleryPicEntity> selectedImageList;
 
@@ -99,8 +90,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	}
 
 	private void initData() {
-		scanStep = getIntent().getIntExtra(KEY_FIRST_STEP, ScanStep.INFO_FIRST.getStep()) == ScanStep.INFO_FIRST
-				.getStep() ? ScanStep.INFO_FIRST : ScanStep.SCAN_FIRST;
+		scanStep = getIntent().getIntExtra(KEY_FIRST_STEP, ScanStep.INFO_FIRST);
 		if (scanStep == ScanStep.SCAN_FIRST) {
 			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_REQUEST);
 		}
@@ -187,6 +177,9 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		switch (v.getId()) {
 		case R.id.imgBtnLeft:
 			finish();
+			break;
+		case R.id.imgBtnRight:
+			addProduct();
 			break;
 		case R.id.imageScanBarCode:
 			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_BAR_REQUEST);
@@ -306,11 +299,14 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-		if (menuList == null) {
-			initMenuView();
+		if (picAdapter.getCount() - 1 != position) {
+			if (menuList == null) {
+				initMenuView();
+			}
+			mBottomMenuDialog.showDialog(position);
+			return true;
 		}
-		mBottomMenuDialog.showDialog(position);
-		return true;
+		return false;
 	}
 
 	/** 初始化菜单view */
@@ -339,6 +335,10 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		textCenter = (TextView) findViewById(R.id.textCenter);
 		textCenter.setText("添加新商品");
 
+		imgBtnRight = (ImageButton) findViewById(R.id.imgBtnRight);
+		imgBtnRight.setVisibility(View.VISIBLE);
+		imgBtnRight.setOnClickListener(this);
+
 		editName = (ClearableEditText) findViewById(R.id.editName);
 		editBrand = (ClearableEditText) findViewById(R.id.editBrand);
 		editPrice = (ClearableEditText) findViewById(R.id.editPrice);
@@ -360,7 +360,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 
 		// spinnerPurchase = (Spinner) findViewById(R.id.spinnerPurchase);
 
-		gridViewPic = (NoScrollGridView) findViewById(R.id.gridViewPic);
+		gridViewPic = (GridView) findViewById(R.id.gridViewPic);
 		picAdapter = new ProductSelectPicAdapter(this);
 		gridViewPic.setAdapter(picAdapter);
 		gridViewPic.setOnItemClickListener(this);

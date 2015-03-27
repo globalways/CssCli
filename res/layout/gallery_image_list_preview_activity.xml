@@ -3,6 +3,7 @@
     android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/base_white"
     android:orientation="vertical" >
 
     <include layout="@layout/title" />
@@ -10,8 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.0"
-        android:background="#000" >
+        android:layout_weight="1.0" >
 
         <com.globalways.csscli.ui.gallery.MyViewPager
             android:id="@+id/myViewPage"

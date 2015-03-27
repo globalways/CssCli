@@ -23,7 +23,7 @@ import com.globalways.csscli.view.MenuItemEntity.Type;
 /**
  * 底部弹出菜单列表
  * 
- * @author Administrator
+ * @author James.Fan
  */
 public class BottomMenuDialog<T> extends Dialog implements android.view.View.OnClickListener, AnimationListener {
 	private static final String TAG = BottomMenuDialog.class.getSimpleName();

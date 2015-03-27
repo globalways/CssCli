@@ -15,7 +15,7 @@ import com.globalways.csscli.view.MenuItemEntity.Type;
 /**
  * 底部弹出菜单单项布局
  * 
- * @author Administrator
+ * @author James.Fan
  *
  */
 public class BottomMenuItemView extends LinearLayout {
@@ -70,19 +70,19 @@ public class BottomMenuItemView extends LinearLayout {
 	public BottomMenuItemView setType(Type type) {
 		switch (type) {
 		case TOP:
-			textMenu.setBackgroundResource(R.drawable.selector_bottom_menu_btn_top);
+			textMenu.setBackgroundResource(R.color.selector_menu_btn_top_bg);
 			textBottomLine.setVisibility(View.VISIBLE);
 			break;
 		case MIDDLE:
-			textMenu.setBackgroundResource(R.drawable.selector_bottom_menu_btn_middle);
+			textMenu.setBackgroundResource(R.color.selector_menu_btn_middle_bg);
 			textBottomLine.setVisibility(View.VISIBLE);
 			break;
 		case BOTTOM:
-			textMenu.setBackgroundResource(R.drawable.selector_bottom_menu_btn_bottom);
+			textMenu.setBackgroundResource(R.color.selector_menu_btn_bottom_bg);
 			textBottomLine.setVisibility(View.GONE);
 			break;
 		case SINGLE:
-			textMenu.setBackgroundResource(R.drawable.selector_bottom_menu_btn_single);
+			textMenu.setBackgroundResource(R.color.selector_menu_btn_single_bg);
 			textBottomLine.setVisibility(View.GONE);
 			break;
 		}

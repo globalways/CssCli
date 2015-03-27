@@ -15,6 +15,6 @@
         android:id="@+id/textBottomLine"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#eeeeee" />
+        android:background="@color/base_gray" />
 
 </LinearLayout>

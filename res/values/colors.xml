@@ -12,10 +12,6 @@
     <color name="base_gray_60">#60eeeeee</color>
     <color name="base_orange">#EE7600</color>
 
-    <!-- gallery -->
-    <color name="gallery_default_bg">#FFF</color>
-    <color name="gallery_pressed_bg">#00F</color>
-
     <!-- scanner -->
     <color name="contents_text">#ff000000</color>
     <color name="encode_view">#ffffffff</color>

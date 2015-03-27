@@ -5,7 +5,7 @@ import com.globalways.csscli.R;
 /**
  * 菜单项实体类
  * 
- * @author Administrator
+ * @author James.Fan
  *
  */
 public class MenuItemEntity {
@@ -35,9 +35,8 @@ public class MenuItemEntity {
 			return colorId;
 		}
 	}
-
-	/** 菜单项显示位置，分为三种[top,middle,bottom,single] **/
-	public enum Type {
-		TOP, MIDDLE, BOTTOM, SINGLE
+	
+	public enum Type{
+		SINGLE, TOP, BOTTOM, MIDDLE
 	}
 }
