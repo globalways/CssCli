@@ -3,6 +3,7 @@ package com.globalways.csscli.ui.settings;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.globalways.csscli.R;
@@ -16,7 +17,8 @@ import com.globalways.csscli.ui.BaseFragmentActivity;
  */
 public class SettingsActivity extends BaseFragmentActivity implements OnClickListener {
 
-	private TextView textLeft, textCenter;
+	private TextView textCenter;
+	private ImageButton imgBtnLeft;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -28,7 +30,7 @@ public class SettingsActivity extends BaseFragmentActivity implements OnClickLis
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			finish();
 			break;
 		}
@@ -36,13 +38,11 @@ public class SettingsActivity extends BaseFragmentActivity implements OnClickLis
 
 	/** 初始化UI、设置监听 */
 	private void initView() {
-		textLeft = (TextView) findViewById(R.id.textleft);
-		textLeft.setText("返回");
-		textLeft.setVisibility(View.VISIBLE);
-		textLeft.setOnClickListener(this);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setOnClickListener(this);
+		imgBtnLeft.setVisibility(View.VISIBLE);
 
 		textCenter = (TextView) findViewById(R.id.textCenter);
 		textCenter.setText("系统设置");
-		textCenter.setVisibility(View.VISIBLE);
 	}
 }

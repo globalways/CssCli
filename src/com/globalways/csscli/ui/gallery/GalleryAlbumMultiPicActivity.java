@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +39,9 @@ import com.globalways.csscli.view.SimpleProgressDialog;
 public class GalleryAlbumMultiPicActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 	private static final String TAG = GalleryAlbumMultiPicActivity.class.getSimpleName();
 
-	private TextView tvleft, tvCenter;
+	private TextView tvCenter;
+	private ImageButton imgBtnLeft;
+
 	private GridView gvAlbum;
 	private GalleryAlbumEntity imageBucket;
 	private GetDataTask mGetDataTask;
@@ -60,23 +63,20 @@ public class GalleryAlbumMultiPicActivity extends BaseActivity implements OnClic
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery_album_pic_choose_activity);
+		// 布局内容会从view以下开始
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		getIntentArgs(getIntent());
 		initView();
-		initListener();
 		Log.d(TAG, "onCreate");
 	}
 
 	private void initView() {
-		tvleft = (TextView) findViewById(R.id.textleft);
-		tvleft.setText("返回");
-		tvleft.setVisibility(View.VISIBLE);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setVisibility(View.VISIBLE);
+		imgBtnLeft.setOnClickListener(this);
 		tvCenter = (TextView) findViewById(R.id.textCenter);
 		tvCenter.setVisibility(View.VISIBLE);
 		gvAlbum = (GridView) findViewById(R.id.gvAlbum);
-	}
-
-	private void initListener() {
-		tvleft.setOnClickListener(this);
 		gvAlbum.setOnItemClickListener(this);
 	}
 
@@ -144,7 +144,7 @@ public class GalleryAlbumMultiPicActivity extends BaseActivity implements OnClic
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			goBack();
 			break;
 		}

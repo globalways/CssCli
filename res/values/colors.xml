@@ -6,9 +6,11 @@
     <color name="base_black_333333">#333333</color>
     <color name="base_black_999999">#999999</color>
     <color name="base_white">#ffffff</color>
-    <color name="base_blue">#00923f</color>
-    <color name="base_green">#004080</color>
+    <color name="base_blue">#004080</color>
+    <color name="base_green">#00923f</color>
     <color name="base_gray">#eeeeee</color>
+    <color name="base_gray_60">#60eeeeee</color>
+    <color name="base_orange">#EE7600</color>
 
     <!-- gallery -->
     <color name="gallery_default_bg">#FFF</color>

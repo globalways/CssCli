@@ -13,7 +13,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
-    
+
     <style name="ActionBarTheme" parent="android:Theme.Light">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
@@ -48,11 +48,22 @@
         <item name="android:digits">0123456789</item>
         <item name="android:inputType">number</item>
         <item name="android:singleLine">true</item>
+        <item name="android:background">@color/selector_edittext_bg</item>
+        <item name="android:layout_marginTop">@dimen/edittext_margin_tb</item>
+        <item name="android:layout_marginBottom">@dimen/edittext_margin_tb</item>
     </style>
 
     <style name="EditTextStye">
         <item name="android:inputType">text</item>
         <item name="android:singleLine">true</item>
+        <item name="android:background">@color/selector_edittext_bg</item>
+        <item name="android:layout_marginTop">@dimen/edittext_margin_tb</item>
+        <item name="android:layout_marginBottom">@dimen/edittext_margin_tb</item>
+    </style>
+
+    <style name="BtnBlue">
+        <item name="android:background">@color/selector_btn_blue</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="MainButtonStyle">

@@ -97,7 +97,6 @@ public class ProductManager {
 	}
 
 	private static final int PAGE_SIZE = 20;
-	private int page = 1;
 
 	/**
 	 * 分页获取指定storeId的商品列表
@@ -106,13 +105,12 @@ public class ProductManager {
 	 * @param isRefresh
 	 * @param callBack
 	 */
-	public void getProductList(long storeid, final boolean isRefresh,
-			final ManagerCallBack<List<ProductEntity>> callBack) {
+	public void getProductList(long storeid, int page, final ManagerCallBack<List<ProductEntity>> callBack) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		// params.put("fields", fields);
 		// params.put("search", search);
 		params.put("size", PAGE_SIZE);
-		params.put("page", isRefresh ? 1 : page);
+		params.put("page", page);
 		HttpUtils.getInstance().sendGetRequest(HttpApi.PRODUCT_GET_LIST.replaceFirst(":sid", String.valueOf(storeid)),
 				1, params, new HttpClientUtilCallBack<String>() {
 					@Override
@@ -130,11 +128,6 @@ public class ProductManager {
 										}.getType());
 								if (null != callBack) {
 									callBack.onSuccess(list);
-								}
-								if (isRefresh) {
-									page = 1;
-								} else {
-									page++;
 								}
 							} else {
 								if (null != callBack) {
@@ -193,8 +186,8 @@ public class ProductManager {
 	 */
 	public void addProduct(ArrayList<GalleryPicEntity> selectedImageList, final long storeid, String product_name,
 			String product_brand, String product_bar, String product_desc, int product_price, String product_unit,
-			int product_apr, int stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
-			long purchase_channel, final ManagerCallBack<String> callBack) {
+			int product_apr, double stock_cnt, boolean is_recommend, boolean status, int stock_limit,
+			String product_tag, long purchase_channel, final ManagerCallBack<String> callBack) {
 		addProductParams = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {
 			return;
@@ -302,7 +295,7 @@ public class ProductManager {
 
 	public void update(long storeid, String product_bar, String product_name, String product_brand,
 			String product_desc, String product_avatar, int product_price, String product_unit, int product_apr,
-			int stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
+			double stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
 			long purchase_channel, final ManagerCallBack<String> callBack) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {

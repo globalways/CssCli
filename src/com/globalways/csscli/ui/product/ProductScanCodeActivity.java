@@ -30,12 +30,12 @@ import com.globalways.csscli.android.ScanCodeInterface;
 import com.globalways.csscli.android.ViewfinderView;
 import com.globalways.csscli.android.camera.CameraManager;
 import com.globalways.csscli.tools.MyLog;
-import com.globalways.csscli.ui.BaseActivity;
+import com.globalways.csscli.ui.BaseNoTitleActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 
-public class ProductScanCodeActivity extends BaseActivity implements ScanCodeInterface, SurfaceHolder.Callback {
+public class ProductScanCodeActivity extends BaseNoTitleActivity implements ScanCodeInterface, SurfaceHolder.Callback {
 	private static final String TAG = ProductScanCodeActivity.class.getSimpleName();
 
 	// scanner variable
@@ -56,6 +56,10 @@ public class ProductScanCodeActivity extends BaseActivity implements ScanCodeInt
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product_scan_code_activity);
+		// 布局内容会从view以下开始
+		findViewById(R.id.camera_view).setFitsSystemWindows(true);
+		mTintManager.setStatusBarDarkMode(false, this);
+
 		// scanner
 		inactivityTimer = new InactivityTimer(this);
 		beepManager = new BeepManager(this);

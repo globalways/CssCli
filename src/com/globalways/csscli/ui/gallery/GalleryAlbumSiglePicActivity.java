@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,8 @@ public class GalleryAlbumSiglePicActivity extends BaseActivity implements OnClic
 	private static final String tag = GalleryAlbumSiglePicActivity.class.getSimpleName();
 	private GalleryAlbumEntity imageBucket;
 	private GridView gvAlbum;
-	private TextView tvleft, tvCenter;
+	private TextView tvCenter;
+	private ImageButton imgBtnLeft;
 	private SimpleProgressDialog mSimpleProgressDialog;
 	private List<GalleryPicEntity> imageList = null;
 	private GalleryAlbumPicAdapter albumAdapter;
@@ -39,24 +41,23 @@ public class GalleryAlbumSiglePicActivity extends BaseActivity implements OnClic
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery_album_pic_choose_activity);
+		// 布局内容会从view以下开始
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		getIntentAgrs(getIntent());
 		initView();
-		initListener();
 	}
 
 	private void initView() {
-		gvAlbum = (GridView) findViewById(R.id.gvAlbum);
-		tvleft = (TextView) findViewById(R.id.textleft);
-		tvleft.setText("返回");
-		tvleft.setVisibility(View.VISIBLE);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setVisibility(View.VISIBLE);
+		imgBtnLeft.setOnClickListener(this);
+
 		tvCenter = (TextView) findViewById(R.id.textCenter);
 		tvCenter.setText("选择头像");
 		tvCenter.setVisibility(View.VISIBLE);
-	}
 
-	private void initListener() {
+		gvAlbum = (GridView) findViewById(R.id.gvAlbum);
 		gvAlbum.setOnItemClickListener(this);
-		tvleft.setOnClickListener(this);
 	}
 
 	private void getIntentAgrs(Intent intent) {
@@ -96,12 +97,6 @@ public class GalleryAlbumSiglePicActivity extends BaseActivity implements OnClic
 		}
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		// UIPage.LAST_ACTIVITY = UIPage.AlbumSiglePicChooseActivity;
-	}
-
 	private void goBack() {
 		finish();
 	}
@@ -109,7 +104,7 @@ public class GalleryAlbumSiglePicActivity extends BaseActivity implements OnClic
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			goBack();
 			break;
 		}
@@ -130,9 +125,9 @@ public class GalleryAlbumSiglePicActivity extends BaseActivity implements OnClic
 			return;
 		}
 		if (null != imageItem.imagePath && !"".equals(imageItem.imagePath) && new File(imageItem.imagePath).exists()) {
-//			Intent intent = new Intent(this, FaceImgCutterActivity.class);
-//			intent.putExtra("imagePath", imageItem.imagePath);
-//			startActivity(intent);
+			// Intent intent = new Intent(this, FaceImgCutterActivity.class);
+			// intent.putExtra("imagePath", imageItem.imagePath);
+			// startActivity(intent);
 		} else {
 			Toast.makeText(this, "对不起，所选图片不存在！", Toast.LENGTH_LONG).show();
 		}

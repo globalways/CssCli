@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +26,12 @@ import com.globalways.csscli.http.manager.ProductManager;
 import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.QRCodeTools;
 import com.globalways.csscli.ui.BaseActivity;
+import com.globalways.csscli.ui.UITools;
 import com.globalways.csscli.ui.gallery.GalleryActivity;
 import com.globalways.csscli.ui.gallery.GalleryPicEntity;
 import com.globalways.csscli.ui.gallery.GalleryPicPreviewActivity;
 import com.globalways.csscli.view.BottomMenuDialog;
+import com.globalways.csscli.view.ClearableEditText;
 import com.globalways.csscli.view.MenuItemEntity;
 import com.globalways.csscli.view.NoScrollGridView;
 import com.globalways.csscli.view.SimpleProgressDialog;
@@ -50,7 +52,6 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	public static final String KEY_FIRST_STEP = "firstStep";
 	public static final String KEY_SCAN_RESULT = "scanResult";
 	private ScanStep scanStep;
-	private static boolean isJumped = false;
 
 	public enum ScanStep {
 		/** 先扫码 */
@@ -68,9 +69,10 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		}
 	}
 
-	private TextView textLeft, textCenter, textRight;
-	private EditText editName, editBrand, editPrice, editUnit, editApr, editTag, editCode, editStock, editStockLimit,
-			editDesc;
+	private TextView textCenter;
+	private ImageButton imgBtnLeft;
+	private ClearableEditText editName, editBrand, editPrice, editUnit, editApr, editTag, editCode, editStock,
+			editStockLimit, editDesc;
 	private CheckBox checkBoxRecommend, checkBoxLock;
 	private ImageView imageScanBarCode;
 
@@ -90,6 +92,8 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.product_addnew_fragment);
+		// 布局内容会从view以下开始
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		initView();
 		initData();
 	}
@@ -97,8 +101,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	private void initData() {
 		scanStep = getIntent().getIntExtra(KEY_FIRST_STEP, ScanStep.INFO_FIRST.getStep()) == ScanStep.INFO_FIRST
 				.getStep() ? ScanStep.INFO_FIRST : ScanStep.SCAN_FIRST;
-		if (scanStep == ScanStep.SCAN_FIRST && !isJumped) {
-			isJumped = true;
+		if (scanStep == ScanStep.SCAN_FIRST) {
 			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_REQUEST);
 		}
 	}
@@ -108,7 +111,6 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (RESULT_OK == resultCode) {
-			isJumped = false;
 			switch (requestCode) {
 			case CODE_SELECT_IMAGE:
 				// 获取选择到的照片
@@ -146,22 +148,22 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	 *            二维码或者条形码的内容
 	 */
 	private void loadProductDetail(String productCode) {
-//		mSimpleProgressDialog.setText("正在加载数据……");
-//		mSimpleProgressDialog.showDialog();
+		// mSimpleProgressDialog.setText("正在加载数据……");
+		// mSimpleProgressDialog.showDialog();
 		ProductManager.getInstance().getProductDetail(MyApplication.getStoreid(), productCode,
 				new ManagerCallBack<ProductEntity>() {
 					@Override
 					public void onSuccess(ProductEntity returnContent) {
 						super.onSuccess(returnContent);
 						refreshView(returnContent);
-//						mSimpleProgressDialog.cancleDialog();
+						// mSimpleProgressDialog.cancleDialog();
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						super.onFailure(code, msg);
 						Toast.makeText(ProductAddNewActivity.this, msg, Toast.LENGTH_SHORT).show();
-//						mSimpleProgressDialog.cancleDialog();
+						// mSimpleProgressDialog.cancleDialog();
 					}
 				});
 	}
@@ -183,11 +185,8 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			finish();
-			break;
-		case R.id.textRight:
-			addProduct();
 			break;
 		case R.id.imageScanBarCode:
 			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_BAR_REQUEST);
@@ -249,7 +248,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		// int product_apr =
 		// Integer.valueOf(editApr.getText().toString().trim());
 		int product_apr = 100;
-		int stock_cnt = Integer.valueOf(editStock.getText().toString().trim());
+		double stock_cnt = Double.valueOf(editStock.getText().toString().trim());
 		// int stock_limit =
 		// Integer.valueOf(editStockLimit.getText().toString().trim());
 		int stock_limit = 0;
@@ -333,30 +332,25 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	}
 
 	private void initView() {
-		textLeft = (TextView) findViewById(R.id.textleft);
-		textLeft.setText("返回");
-		textLeft.setVisibility(View.VISIBLE);
-		textLeft.setOnClickListener(this);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setVisibility(View.VISIBLE);
+		imgBtnLeft.setOnClickListener(this);
 
 		textCenter = (TextView) findViewById(R.id.textCenter);
 		textCenter.setText("添加新商品");
-		textCenter.setVisibility(View.VISIBLE);
 
-		textRight = (TextView) findViewById(R.id.textRight);
-		textRight.setText("完成");
-		textRight.setVisibility(View.VISIBLE);
-		textRight.setOnClickListener(this);
-
-		editName = (EditText) findViewById(R.id.editName);
-		editBrand = (EditText) findViewById(R.id.editBrand);
-		editPrice = (EditText) findViewById(R.id.editPrice);
-		editUnit = (EditText) findViewById(R.id.editUnit);
-		editApr = (EditText) findViewById(R.id.editApr);
-		editTag = (EditText) findViewById(R.id.editTag);
-		editCode = (EditText) findViewById(R.id.editCode);
-		editStock = (EditText) findViewById(R.id.editStock);
-		editStockLimit = (EditText) findViewById(R.id.editStockLimit);
-		editDesc = (EditText) findViewById(R.id.editDesc);
+		editName = (ClearableEditText) findViewById(R.id.editName);
+		editBrand = (ClearableEditText) findViewById(R.id.editBrand);
+		editPrice = (ClearableEditText) findViewById(R.id.editPrice);
+		UITools.editNumLimit(editPrice);
+		editUnit = (ClearableEditText) findViewById(R.id.editUnit);
+		editApr = (ClearableEditText) findViewById(R.id.editApr);
+		editTag = (ClearableEditText) findViewById(R.id.editTag);
+		editCode = (ClearableEditText) findViewById(R.id.editCode);
+		editStock = (ClearableEditText) findViewById(R.id.editStock);
+		UITools.editNumDoubleLimit(editStock);
+		editStockLimit = (ClearableEditText) findViewById(R.id.editStockLimit);
+		editDesc = (ClearableEditText) findViewById(R.id.editDesc);
 
 		checkBoxRecommend = (CheckBox) findViewById(R.id.checkBoxRecommend);
 		checkBoxLock = (CheckBox) findViewById(R.id.checkBoxLock);

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.globalways.csscli.R;
@@ -28,7 +29,8 @@ public class GalleryPicPreviewActivity extends BaseActivity implements OnClickLi
 	/** 当前是已经选择的照片中的第几个 */
 	public static final String KEY_SELECTED_INDEX = "SelectedIndex";
 
-	private TextView tvleft, tvCenter, textIndex;
+	private TextView tvCenter, textIndex;
+	private ImageButton imgBtnLeft;
 	private GalleryPreviewPicAdapter mImagePagerAdapter;
 	private MyViewPager myViewPage;
 	/** 预览图片地址集合 **/
@@ -39,24 +41,23 @@ public class GalleryPicPreviewActivity extends BaseActivity implements OnClickLi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery_image_list_preview_activity);
+		// 布局内容会从view以下开始
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		initView();
-		initListener();
 		getIntentArgs(getIntent());
 	}
 
 	private void initView() {
 		textIndex = (TextView) findViewById(R.id.textIndex);
-		tvleft = (TextView) findViewById(R.id.textleft);
-		tvleft.setText("返回");
-		tvleft.setVisibility(View.VISIBLE);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setVisibility(View.VISIBLE);
+		imgBtnLeft.setOnClickListener(this);
+
 		tvCenter = (TextView) findViewById(R.id.textCenter);
 		tvCenter.setText("图片预览");
 		tvCenter.setVisibility(View.VISIBLE);
-		myViewPage = (MyViewPager) findViewById(R.id.myViewPage);
-	}
 
-	private void initListener() {
-		tvleft.setOnClickListener(this);
+		myViewPage = (MyViewPager) findViewById(R.id.myViewPage);
 		myViewPage.setOnPageChangeListener(this);
 	}
 
@@ -120,7 +121,7 @@ public class GalleryPicPreviewActivity extends BaseActivity implements OnClickLi
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			goBack();
 			break;
 		}

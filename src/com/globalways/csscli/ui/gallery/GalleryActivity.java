@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +41,9 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 	/** 选择照片的requestCode */
 	private static final int CODE_SELECT_IMAGE = 10;
 
-	private TextView textleft, textCenter, textRight;
+	private TextView textCenter;
+	private ImageButton imgBtnLeft, imgBtnRight;
+
 	private GridView gridViewGallery;
 	private GalleryAlbumAdapter mGalleryAdapter;
 	private List<GalleryAlbumEntity> imageBucketList = null;
@@ -73,27 +76,26 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery_activity);
+		// 布局内容会从view以下开始
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		getIntentArgs(getIntent());
 		initView();
-		initListener();
 	}
 
 	private void initView() {
-		textleft = (TextView) findViewById(R.id.textleft);
-		textleft.setText("取消");
-		textleft.setVisibility(View.VISIBLE);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setOnClickListener(this);
+		imgBtnLeft.setVisibility(View.VISIBLE);
+		
 		textCenter = (TextView) findViewById(R.id.textCenter);
 		textCenter.setText("相册");
-		textCenter.setVisibility(View.VISIBLE);
-		textRight = (TextView) findViewById(R.id.textRight);
-		textRight.setText("确定");
-		textRight.setVisibility(mPurpose == Purpose.MULTI_PIC ? View.VISIBLE : View.GONE);
+		
+		imgBtnRight = (ImageButton) findViewById(R.id.imgBtnRight);
+		imgBtnRight.setOnClickListener(this);
+		imgBtnRight.setVisibility(View.VISIBLE);
+		
+		imgBtnRight.setVisibility(mPurpose == Purpose.MULTI_PIC ? View.VISIBLE : View.GONE);
 		gridViewGallery = (GridView) findViewById(R.id.gvGallery);
-	}
-
-	private void initListener() {
-		textleft.setOnClickListener(this);
-		textRight.setOnClickListener(this);
 		gridViewGallery.setOnItemClickListener(this);
 	}
 
@@ -201,10 +203,10 @@ public class GalleryActivity extends BaseActivity implements OnClickListener, On
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.textleft:
+		case R.id.imgBtnLeft:
 			goBack();
 			break;
-		case R.id.textRight:
+		case R.id.imgBtnRight:
 			ok();
 			break;
 		}

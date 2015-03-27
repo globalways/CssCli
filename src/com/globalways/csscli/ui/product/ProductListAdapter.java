@@ -17,7 +17,10 @@ import com.globalways.csscli.tools.PicassoImageLoader;
 
 public class ProductListAdapter extends BaseAdapter {
 
+	private static final int NEXT_PAGE = 1;
+
 	private List<ProductEntity> list = null;
+	private int page = NEXT_PAGE;
 	private ProductEntity chooseProduct;
 	private PicassoImageLoader imageLoader;
 	private Context context;
@@ -31,11 +34,20 @@ public class ProductListAdapter extends BaseAdapter {
 	public void setData(boolean isRefresh, List<ProductEntity> list) {
 		if (isRefresh) {
 			this.list = list;
+			page = NEXT_PAGE;
 			chooseProduct = list.get(0);
 		} else {
 			this.list.addAll(list);
 		}
+		page++;
 		notifyDataSetChanged();
+	}
+
+	public int getPage(boolean isRefresh) {
+		if (isRefresh) {
+			page = NEXT_PAGE;
+		}
+		return page;
 	}
 
 	public void setChooseItem(int position) {
@@ -84,9 +96,9 @@ public class ProductListAdapter extends BaseAdapter {
 			mItemView = (ItemView) convertView.getTag();
 		}
 		if (chooseProduct.getId() == list.get(position).getId()) {
-			mItemView.viewItem.setBackgroundColor(context.getResources().getColor(R.color.base_white));
+			mItemView.viewItem.setBackgroundColor(context.getResources().getColor(R.color.base_gray_60));
 		} else {
-			mItemView.viewItem.setBackgroundColor(context.getResources().getColor(R.color.base_beige_white));
+			mItemView.viewItem.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
 		}
 		imageLoader.showListRoundImage(list.get(position).getProduct_avatar(), R.drawable.logo, R.drawable.logo,
 				mItemView.productAva);

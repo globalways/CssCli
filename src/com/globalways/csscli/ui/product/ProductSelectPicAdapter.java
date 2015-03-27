@@ -85,7 +85,7 @@ public class ProductSelectPicAdapter extends BaseAdapter {
 				}
 			}
 		} else {
-			itemView.imageSelect.setImageResource(R.drawable.icon_add_img);
+			itemView.imageSelect.setImageResource(R.drawable.icon_add_pic);
 		}
 	}
 

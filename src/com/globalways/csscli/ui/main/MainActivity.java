@@ -5,10 +5,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.globalways.csscli.R;
-import com.globalways.csscli.ui.BaseActivity;
+import com.globalways.csscli.ui.BaseNoTitleActivity;
 import com.globalways.csscli.ui.UITools;
 
-public class MainActivity extends BaseActivity implements OnClickListener {
+public class MainActivity extends BaseNoTitleActivity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

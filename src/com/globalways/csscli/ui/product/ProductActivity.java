@@ -2,9 +2,6 @@ package com.globalways.csscli.ui.product;
 
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,7 +36,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 	private static final String TAG = ProductActivity.class.getSimpleName();
 
 	private TextView textCenter;
-	private ImageButton imgBtnLeft, imgBtnRight;
+	private ImageButton imgBtnLeft, imgBtnRight, imgBtnRight1;
 
 	private PullToRefreshListView refreshListView;
 	private ListView listView;
@@ -56,8 +53,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		initView();
 
 		// 初始化完成后加载StoreList数据
-		refreshListView.setRefreshing();
-		loadProductList(true);
+		reloadData();
 	}
 
 	@Override
@@ -67,32 +63,23 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			finish();
 			break;
 		case R.id.imgBtnRight:
-			jumpNewProduct();
+			Intent intentAdd = new Intent(ProductActivity.this, ProductAddNewActivity.class);
+			intentAdd.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
+					ProductAddNewActivity.ScanStep.INFO_FIRST.getStep());
+			startActivity(intentAdd);
+			break;
+		case R.id.imgBtnRight1:
+			Intent intentScan = new Intent(ProductActivity.this, ProductAddNewActivity.class);
+			intentScan.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
+					ProductAddNewActivity.ScanStep.SCAN_FIRST.getStep());
+			startActivity(intentScan);
 			break;
 		}
 	}
 
-	private void jumpNewProduct() {
-		AlertDialog.Builder builder = new Builder(this);
-		builder.setPositiveButton("先扫码", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Intent intent = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
-						ProductAddNewActivity.ScanStep.SCAN_FIRST.getStep());
-				startActivity(intent);
-			}
-		});
-		builder.setNegativeButton("直接添加", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Intent intent = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-				intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP,
-						ProductAddNewActivity.ScanStep.INFO_FIRST.getStep());
-				startActivity(intent);
-			}
-		});
-		builder.create().show();
+	public void reloadData() {
+		refreshListView.setRefreshing();
+		loadProductList(true);
 	}
 
 	/** PullToRefreshListView的下拉或上拉监听接口 */
@@ -111,7 +98,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 
 	/** 加载ProductList数据，isRefresh为true时，刷新；isRefresh为false时，加载更多 */
 	private void loadProductList(final boolean isRefresh) {
-		ProductManager.getInstance().getProductList(MyApplication.getStoreid(), isRefresh,
+		ProductManager.getInstance().getProductList(MyApplication.getStoreid(), productListAdapter.getPage(isRefresh),
 				new ManagerCallBack<List<ProductEntity>>() {
 					@Override
 					public void onSuccess(List<ProductEntity> returnContent) {
@@ -139,11 +126,14 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 
 		textCenter = (TextView) findViewById(R.id.textCenter);
 		textCenter.setText("商铺商品管理");
-		textCenter.setVisibility(View.VISIBLE);
 
 		imgBtnRight = (ImageButton) findViewById(R.id.imgBtnRight);
+		imgBtnRight.setImageDrawable(getResources().getDrawable(R.drawable.icon_add));
 		imgBtnRight.setVisibility(View.VISIBLE);
 		imgBtnRight.setOnClickListener(this);
+		imgBtnRight1 = (ImageButton) findViewById(R.id.imgBtnRight1);
+		imgBtnRight1.setVisibility(View.VISIBLE);
+		imgBtnRight1.setOnClickListener(this);
 
 		refreshListView = (PullToRefreshListView) findViewById(R.id.refreshListView);
 		refreshListView.setOnRefreshListener(this);

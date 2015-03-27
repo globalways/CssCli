@@ -8,5 +8,7 @@
     <dimen name="cashier_btn_hw">35dp</dimen>
     
     <dimen name="gallery_item_padding">2dp</dimen>
+    
+    <dimen name="edittext_margin_tb">3dp</dimen>
 
 </resources>

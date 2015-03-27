@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_white"
@@ -32,7 +33,7 @@
                         android:layout_marginRight="20dp"
                         android:text="商品名称" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editName"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -51,7 +52,7 @@
                         android:layout_marginRight="20dp"
                         android:text="商品品牌" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editBrand"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -70,7 +71,7 @@
                         android:layout_marginRight="20dp"
                         android:text="商品标签" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editTag"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -84,7 +85,7 @@
                         android:layout_marginRight="20dp"
                         android:text="商品条形码" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editCode"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -112,7 +113,7 @@
                         android:layout_marginRight="20dp"
                         android:text="商品价格（单位：分)" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editPrice"
                         style="@style/EditNumStye"
                         android:layout_width="0dp"
@@ -126,7 +127,7 @@
                         android:layout_marginRight="20dp"
                         android:text="商品单位" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editUnit"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -146,7 +147,7 @@
                         android:layout_marginRight="20dp"
                         android:text="会员折扣（0-100）" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editApr"
                         style="@style/EditNumStye"
                         android:layout_width="0dp"
@@ -185,12 +186,13 @@
                         android:layout_marginRight="20dp"
                         android:text="现有库存" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editStock"
                         style="@style/EditNumStye"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:digits=".0123456789"
                         android:maxLength="20" />
 
                     <TextView
@@ -200,7 +202,7 @@
                         android:text="库存告急提醒"
                         android:visibility="gone" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editStockLimit"
                         style="@style/EditNumStye"
                         android:layout_width="0dp"
@@ -249,7 +251,7 @@
                         android:layout_marginRight="20dp"
                         android:text="商品描述" />
 
-                    <EditText
+                    <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editDesc"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"

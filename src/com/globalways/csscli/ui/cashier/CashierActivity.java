@@ -6,6 +6,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,7 +22,8 @@ import com.globalways.csscli.ui.BaseFragmentActivity;
  */
 public class CashierActivity extends BaseFragmentActivity implements OnClickListener {
 
-	private TextView textLeft, textCenter;
+	private TextView textCenter;
+	private ImageButton imgBtnLeft;
 	private View dialogContainer;
 	private CashierOrderFragment cashierOrderFragment;
 	private ListView listViewShopping;
@@ -83,14 +85,12 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 
 	/** 初始化UI、设置监听 */
 	private void initView() {
-		textLeft = (TextView) findViewById(R.id.textleft);
-		textLeft.setText("返回");
-		textLeft.setVisibility(View.VISIBLE);
-		textLeft.setOnClickListener(this);
+		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
+		imgBtnLeft.setOnClickListener(this);
+		imgBtnLeft.setVisibility(View.VISIBLE);
 
 		textCenter = (TextView) findViewById(R.id.textCenter);
 		textCenter.setText("收银台");
-		textCenter.setVisibility(View.VISIBLE);
 
 		dialogContainer = findViewById(R.id.dialogContainer);
 		dialogContainer.setVisibility(View.GONE);

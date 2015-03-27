@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class BaseActivity extends Activity {
+public class BaseNoTitleActivity extends Activity {
 
 	protected SystemBarTintManager mTintManager;
 
@@ -21,8 +21,6 @@ public class BaseActivity extends Activity {
 		}
 		mTintManager = new SystemBarTintManager(this);
 		mTintManager.setStatusBarDarkMode(true, this);
-		mTintManager.setStatusBarTintEnabled(true);
-		mTintManager.setStatusBarTintResource(android.R.color.white);
 	}
 
 	@Override
@@ -44,5 +42,4 @@ public class BaseActivity extends Activity {
 		}
 		win.setAttributes(winParams);
 	}
-
 }
