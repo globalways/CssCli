@@ -20,6 +20,7 @@ import com.globalways.csscli.http.manager.ProductManager;
 import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.MyLog;
 import com.globalways.csscli.ui.BaseFragmentActivity;
+import com.globalways.csscli.ui.UITools;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -34,6 +35,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 public class ProductActivity extends BaseFragmentActivity implements OnClickListener, OnRefreshListener<ListView>,
 		OnItemClickListener {
 	private static final String TAG = ProductActivity.class.getSimpleName();
+
+	private static final int CODE_SCAN_REQUEST = 11;
 
 	private TextView textCenter;
 	private ImageButton imgBtnLeft, imgBtnRight, imgBtnRight1;
@@ -63,15 +66,24 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			finish();
 			break;
 		case R.id.imgBtnRight:
-			Intent intentAdd = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-			intentAdd.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.INFO_FIRST);
-			startActivity(intentAdd);
+			UITools.jumpProductAddNewActivity(this, ProductAddNewActivity.ScanStep.INFO_FIRST,
+					ProductAddNewActivity.ScanProductExist.NOT_EXIST, null);
 			break;
 		case R.id.imgBtnRight1:
-			Intent intentScan = new Intent(ProductActivity.this, ProductAddNewActivity.class);
-			intentScan.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, ProductAddNewActivity.ScanStep.SCAN_FIRST);
-			startActivity(intentScan);
+			UITools.jumpProductScanCodeActivity(this, CODE_SCAN_REQUEST,
+					ProductScanCodeActivity.OperationType.SCAN_PRODUCT);
 			break;
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == RESULT_OK) {
+			switch (requestCode) {
+			case CODE_SCAN_REQUEST:
+				break;
+			}
 		}
 	}
 

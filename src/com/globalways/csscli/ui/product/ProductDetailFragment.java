@@ -89,7 +89,7 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btnUpdate:
-			toUpdateProductInfo();
+			updateOrAdd();
 			break;
 		case R.id.btnReset:
 			refreshView();
@@ -97,7 +97,10 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 		}
 	}
 
-	private void toUpdateProductInfo() {
+	/**
+	 * 修改商品信息
+	 */
+	private void updateOrAdd() {
 		String product_name = editName.getText().toString().trim();
 		if (product_name == null || product_name.isEmpty()) {
 			Toast.makeText(getActivity(), "请输入商品名", Toast.LENGTH_SHORT).show();
@@ -108,28 +111,35 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 			Toast.makeText(getActivity(), "请输入商品品牌", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		String product_avatar = null;
 		String product_desc = editDesc.getText().toString().trim();
-		int product_price = Integer.valueOf(editPrice.getText().toString().trim());
+
+		// 价格
+		String price = editPrice.getText().toString().trim();
+		if (price == null || price.isEmpty()) {
+			UITools.ToastMsg(getActivity(), "请输入商品价格");
+			return;
+		}
+		int product_price = Integer.valueOf(price);
+
+		// 单位
 		String product_unit = editUnit.getText().toString().trim();
 		if (product_unit == null || product_unit.isEmpty()) {
 			Toast.makeText(getActivity(), "请输入商品单位", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		// int product_apr =
-		// Integer.valueOf(editApr.getText().toString().trim());
-		int product_apr = 100;
-		double stock_cnt = Double.valueOf(editStock.getText().toString().trim());
-		// int stock_limit =
-		// Integer.valueOf(editStockLimit.getText().toString().trim());
-		int stock_limit = 0;
+
+		// 库存
+		String stock = editStock.getText().toString().trim();
+		double stock_cnt = 0;
+		if (stock != null && !stock.isEmpty()) {
+			stock_cnt = Double.valueOf(stock);
+		}
 		String product_tag = editTag.getText().toString().trim();
-		long purchase_channel = 0;
+
 		mSimpleProgressDialog.showDialog();
-		ProductManager.getInstance().update(entity.getStore_id(), entity.getProduct_bar(), product_name, product_brand,
-				product_desc, product_avatar, product_price, product_unit, product_apr, stock_cnt,
-				checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), stock_limit, product_tag, purchase_channel,
-				new ManagerCallBack<String>() {
+		ProductManager.getInstance().updateOrAdd(false, null, null, product_name, product_brand,
+				entity.getProduct_qr(), entity.getProduct_bar(), product_desc, product_price, product_unit, stock_cnt,
+				checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), product_tag, new ManagerCallBack<String>() {
 					@Override
 					public void onSuccess(String returnContent) {
 						super.onSuccess(returnContent);
@@ -140,7 +150,6 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 						builder.setPositiveButton("关闭", new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								((ProductActivity) getActivity()).reloadData();
 							}
 						});
 						builder.create().show();
@@ -149,8 +158,8 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 					@Override
 					public void onFailure(int code, String msg) {
 						super.onFailure(code, msg);
-						Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 						mSimpleProgressDialog.cancleDialog();
+						Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 					}
 				});
 	}

@@ -108,7 +108,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="添加" />
+                android:background="@color/selector_btn_blue"
+                android:text="添加"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
 
@@ -120,6 +122,8 @@
         android:layout_margin="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:text="去结算" />
+        android:background="@color/selector_btn_orange"
+        android:text="去结算"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

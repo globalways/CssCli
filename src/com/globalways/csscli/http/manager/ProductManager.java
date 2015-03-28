@@ -15,6 +15,7 @@ import com.globalways.csscli.http.HttpClientDao.ErrorCode;
 import com.globalways.csscli.http.HttpClientDao.HttpClientUtilCallBack;
 import com.globalways.csscli.http.HttpCode;
 import com.globalways.csscli.http.HttpUtils;
+import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.MyLog;
 import com.globalways.csscli.tools.QRCodeTools;
 import com.globalways.csscli.tools.QRCodeTools.CodeType;
@@ -153,9 +154,14 @@ public class ProductManager {
 	private Map<String, Object> addProductParams;
 
 	/**
-	 * 添加商品
+	 * 添加商品或修改商品信息
 	 * 
-	 * @param storeid
+	 * @param isAdd
+	 *            新增商品时，为true
+	 * @param selectedImageList
+	 *            修改商品照片时，选择的本地照片列表
+	 * @param productPic
+	 *            商品原有照片列表
 	 * @param product_name
 	 *            商品名称，必填
 	 * @param product_brand
@@ -164,30 +170,24 @@ public class ProductManager {
 	 *            条形码，选填
 	 * @param product_desc
 	 *            商品描述，可选
-	 * @param product_avatar
-	 *            商品图片key列表，用英文逗号分割，选填
 	 * @param product_price
 	 *            商品价格，单位：分，必填
 	 * @param product_unit
 	 *            商品单位，必填
-	 * @param product_apr
-	 *            商品的会员折扣0-100，选填
 	 * @param stock_cnt
 	 *            库存剩余量，选填
 	 * @param is_recommend
 	 *            是否是店长推荐的商品，选填
-	 * @param stock_limit
-	 *            库存告急线，库存低于该值则该进货了，选填
+	 * @param status
+	 *            是否启用商品
 	 * @param product_tag
 	 *            商品标签，选填
-	 * @param purchase_channel
-	 *            送货渠道ID，选填
 	 * @param callBack
 	 */
-	public void addProduct(ArrayList<GalleryPicEntity> selectedImageList, final long storeid, String product_name,
-			String product_brand, String product_bar, String product_desc, int product_price, String product_unit,
-			int product_apr, double stock_cnt, boolean is_recommend, boolean status, int stock_limit,
-			String product_tag, long purchase_channel, final ManagerCallBack<String> callBack) {
+	public void updateOrAdd(final boolean isAdd, ArrayList<GalleryPicEntity> selectedImageList,
+			final ArrayList<String> productPic, String product_name, String product_brand, final String product_qr,
+			String product_bar, String product_desc, int product_price, String product_unit, double stock_cnt,
+			boolean is_recommend, boolean status, String product_tag, final ManagerCallBack<String> callBack) {
 		addProductParams = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {
 			return;
@@ -207,9 +207,6 @@ public class ProductManager {
 			return;
 		}
 		addProductParams.put("product_unit", product_unit);
-		if (product_apr != 100) {
-			addProductParams.put("product_apr", product_apr);
-		}
 		if (stock_cnt != 0) {
 			addProductParams.put("stock_cnt", stock_cnt);
 		}
@@ -217,31 +214,34 @@ public class ProductManager {
 		addProductParams.put("is_recommend", is_recommend ? 1 : 2);
 		// 1，推荐，2不推荐
 		addProductParams.put("status", status ? 1 : 2);
-		if (stock_limit != 0) {
-			addProductParams.put("stock_limit", stock_limit);
-		}
 		if (product_tag != null && !product_tag.isEmpty()) {
 			addProductParams.put("product_tag", product_tag);
 		}
-		if (purchase_channel != 0) {
-			addProductParams.put("purchase_channel", purchase_channel);
-		}
 		if (selectedImageList != null && selectedImageList.size() > 1) {
 			MyLog.e("imagelist", selectedImageList.toString());
-			String[] key = null, path = new String[selectedImageList.size() - 1];
+			String[] path = new String[selectedImageList.size() - 1];
 			for (int i = 0; i < selectedImageList.size() - 1; i++) {
 				path[i] = selectedImageList.get(i).imagePath;
 			}
-			ImageUpLoadManager.getInstance().upLoadImage(key, path, new ManagerCallBack<String>() {
+			new ImageUpLoadManager().upLoadImage(path, new ManagerCallBack<List<String>>() {
 				@Override
-				public void onSuccess(String returnContent) {
-					addProductParams.put("product_avatar", returnContent);
-					toAddProduct(addProductParams, storeid, callBack);
-				};
+				public void onSuccess(List<String> returnContent) {
+					super.onSuccess(returnContent);
+					StringBuilder qiniuRequest = new StringBuilder();
+					for (int i = 0; i < returnContent.size(); i++) {
+						qiniuRequest.append(returnContent.get(i));
+						qiniuRequest.append(",");
+					}
+					if (productPic != null) {
+						for (int i = 0; i < productPic.size(); i++) {
+							qiniuRequest.append(productPic.get(i));
+							qiniuRequest.append(",");
+						}
+					}
+					qiniuRequest.delete(qiniuRequest.length() - 1, qiniuRequest.length());
 
-				@Override
-				public void onProgress(int progress) {
-					super.onProgress(progress);
+					addProductParams.put("product_avatar", qiniuRequest.toString());
+					AddOrUpdateProduct(isAdd ? null : product_qr, addProductParams, callBack);
 				}
 
 				@Override
@@ -252,128 +252,71 @@ public class ProductManager {
 				};
 			});
 		} else {
-			toAddProduct(addProductParams, storeid, callBack);
+			if (productPic != null) {
+				StringBuilder qiniuRequest = new StringBuilder();
+				for (int i = 0; i < productPic.size(); i++) {
+					qiniuRequest.append(productPic.get(i));
+					qiniuRequest.append(",");
+				}
+				qiniuRequest.delete(qiniuRequest.length() - 1, qiniuRequest.length());
+
+				addProductParams.put("product_avatar", qiniuRequest.toString());
+			} else {
+				addProductParams.put("product_avatar", "");
+			}
+			AddOrUpdateProduct(isAdd ? null : product_qr, addProductParams, callBack);
 		}
 	}
 
-	private void toAddProduct(Map<String, Object> params, long storeid, final ManagerCallBack<String> callBack) {
-		HttpUtils.getInstance().sendPostRequest(
-				HttpApi.PRODUCT_ADD_PRODUCT.replaceFirst(":sid", String.valueOf(storeid)), 1, params,
-				new HttpClientUtilCallBack<String>() {
-					@Override
-					public void onSuccess(String url, long flag, String returnContent) {
-						super.onSuccess(url, flag, returnContent);
-						addProductParams = null;
-						JSONObject jsonObject;
-						try {
-							jsonObject = new JSONObject(returnContent);
-							int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
-							if (code == HttpCode.SUCCESS) {
-								if (null != callBack) {
-									callBack.onSuccess(null);
-								}
-							} else {
-								if (null != callBack) {
-									callBack.onFailure(code,
-											jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
-								}
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-
-					@Override
-					public void onFailure(String url, long flag, ErrorCode errorCode) {
-						super.onFailure(url, flag, errorCode);
+	private void AddOrUpdateProduct(String qrCode, Map<String, Object> params, final ManagerCallBack<String> callBack) {
+		if (qrCode != null && params != null) {
+			StringBuilder fields = new StringBuilder();
+			for (String key : params.keySet()) {
+				fields.append(key).append(",");
+			}
+			fields.delete(fields.length() - 1, fields.length());
+			params.put("fields", fields.toString());
+		}
+		String url;
+		if (qrCode == null) {
+			url = HttpApi.PRODUCT_ADD_PRODUCT.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()));
+		} else {
+			url = HttpApi.PRODUCT_UPDATE_INFO.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()))
+					.replaceFirst(":qr", String.valueOf(qrCode));
+			MyLog.e(qrCode, qrCode);
+		}
+		HttpUtils.getInstance().sendPostRequest(url, 1, params, new HttpClientUtilCallBack<String>() {
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				addProductParams = null;
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
 						if (null != callBack) {
-							callBack.onFailure(errorCode.code(), errorCode.msg());
+							callBack.onSuccess(null);
 						}
-					}
-				});
-	}
-
-	public void update(long storeid, String product_bar, String product_name, String product_brand,
-			String product_desc, String product_avatar, int product_price, String product_unit, int product_apr,
-			double stock_cnt, boolean is_recommend, boolean status, int stock_limit, String product_tag,
-			long purchase_channel, final ManagerCallBack<String> callBack) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		if (product_name == null || product_name.isEmpty()) {
-			return;
-		}
-		params.put("product_name", product_name);
-		if (product_brand != null && !product_brand.isEmpty()) {
-			params.put("product_brand", product_brand);
-		}
-		if (product_bar != null && !product_bar.isEmpty()) {
-			params.put("product_bar", product_bar);
-		}
-		if (product_desc != null && !product_desc.isEmpty()) {
-			params.put("product_desc", product_desc);
-		}
-		if (product_avatar != null && !product_avatar.isEmpty()) {
-			params.put("product_avatar", product_avatar);
-		}
-		params.put("product_price", product_price);
-		if (product_unit == null || product_unit.isEmpty()) {
-			return;
-		}
-		params.put("product_unit", product_unit);
-		if (product_apr != 100) {
-			params.put("product_apr", product_apr);
-		}
-		if (stock_cnt != 0) {
-			params.put("stock_cnt", stock_cnt);
-		}
-		// 1，推荐，2不推荐
-		params.put("is_recommend", is_recommend ? 1 : 2);
-		// 1，推荐，2不推荐
-		params.put("status", status ? 1 : 2);
-		if (stock_limit != 0) {
-			params.put("stock_limit", stock_limit);
-		}
-		if (product_tag != null && !product_tag.isEmpty()) {
-			params.put("product_tag", product_tag);
-		}
-		if (purchase_channel != 0) {
-			params.put("purchase_channel", purchase_channel);
-		}
-		HttpUtils.getInstance().sendPostRequest(
-				HttpApi.PRODUCT_UPDATE_INFO.replaceFirst(":sid", String.valueOf(storeid)).replaceFirst(":bar",
-						product_bar), 1, params, new HttpClientUtilCallBack<String>() {
-					@Override
-					public void onSuccess(String url, long flag, String returnContent) {
-						super.onSuccess(url, flag, returnContent);
-						JSONObject jsonObject;
-						try {
-							jsonObject = new JSONObject(returnContent);
-							int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
-							if (code == HttpCode.SUCCESS) {
-								if (null != callBack) {
-									callBack.onSuccess(null);
-								}
-							} else {
-								if (null != callBack) {
-									callBack.onFailure(code,
-											jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
-								}
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-
-					@Override
-					public void onFailure(String url, long flag, ErrorCode errorCode) {
-						super.onFailure(url, flag, errorCode);
+					} else {
 						if (null != callBack) {
-							callBack.onFailure(errorCode.code(), errorCode.msg());
+							callBack.onFailure(code, jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
 						}
 					}
-				});
-	}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
 
-	public void deleteProduct(final ManagerCallBack<String> callBack) {
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				addProductParams = null;
+				if (null != callBack) {
+					callBack.onFailure(errorCode.code(), errorCode.msg());
+				}
+			}
+		});
 	}
 
 }

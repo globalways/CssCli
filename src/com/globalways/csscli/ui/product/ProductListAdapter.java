@@ -100,8 +100,13 @@ public class ProductListAdapter extends BaseAdapter {
 		} else {
 			mItemView.viewItem.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
 		}
-		imageLoader.showListRoundImage(list.get(position).getProduct_avatar(), R.drawable.logo, R.drawable.logo,
-				mItemView.productAva);
+		String ava = list.get(position).getProduct_avatar();
+		if (ava == null || ava.isEmpty()) {
+			mItemView.productAva.setImageResource(R.drawable.logo);
+		} else {
+			imageLoader.showListRoundImage(list.get(position).getProduct_avatar(), R.drawable.logo, R.drawable.logo,
+					mItemView.productAva);
+		}
 		mItemView.productName.setText(list.get(position).getProduct_name());
 		mItemView.productTag.setText(list.get(position).getProduct_tag());
 		mItemView.productSales.setText("销量: " + ((int) list.get(position).getSales_cnt()) + " "

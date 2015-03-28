@@ -1,6 +1,8 @@
 package com.globalways.csscli.http.manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -15,90 +17,52 @@ import com.globalways.csscli.http.HttpUtils;
 import com.globalways.csscli.tools.MyLog;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.qiniu.android.storage.UploadOptions;
 
 public class ImageUpLoadManager {
 	private static final String TAG = ImageUpLoadManager.class.getSimpleName();
 
-	private static ImageUpLoadManager imageUpLoadManager;
-
-	private ImageUpLoadManager() {
+	public ImageUpLoadManager() {
 	}
 
-	public static ImageUpLoadManager getInstance() {
-		if (imageUpLoadManager == null) {
-			imageUpLoadManager = new ImageUpLoadManager();
-		}
-		return imageUpLoadManager;
-	}
-
-	/**
-	 * this function make sure HttpUtils is singleton.
-	 *
-	 * @return
-	 */
-	private Object readResolve() {
-		return imageUpLoadManager;
-	}
-
-	private StringBuilder qiniuRequest;
+	private List<String> qiniuList = new ArrayList<String>();;
 	private boolean isGoOn = true;
 
 	/**
 	 * 上传图片到七牛服务器
 	 * 
-	 * @param key
-	 *            如果是更新，key为当前在七牛服务器的key，如果是新增为null
 	 * @param path
 	 *            path为图片在本地的绝对路径
 	 * @param callBack
 	 */
-	public void upLoadImage(final String[] key, final String[] path, final ManagerCallBack<String> callBack) {
-		final int size = path.length;
+	public void upLoadImage(final String[] path, final ManagerCallBack<List<String>> callBack) {
 		for (int i = 0; i < path.length; i++) {
 			MyLog.d(TAG, "path: " + path[i].toString());
 			if (!isGoOn) {
 				return;
 			}
 			final int index = i;
-			getUploadToken(key == null ? null : key[index], new ManagerCallBack<String>() {
+			getUploadToken(null, new ManagerCallBack<String>() {
 				@Override
 				public void onSuccess(String token) {
 					MyLog.d(TAG, "index token : " + index + ":" + token);
 					UploadManager uploadManager = new UploadManager();
-					uploadManager.put(path[index], key == null ? null : key[index], token, new UpCompletionHandler() {
+					uploadManager.put(path[index], null, token, new UpCompletionHandler() {
 						@Override
 						public void complete(String key, ResponseInfo info, JSONObject response) {
 							try {
-								if (qiniuRequest != null && qiniuRequest.length() > 0) {
-									qiniuRequest.append(",");
-									qiniuRequest.append(response.getString(Config.QINIU_KEY));
-								} else {
-									qiniuRequest = new StringBuilder();
-									qiniuRequest.append(response.getString(Config.QINIU_KEY));
-								}
-								MyLog.d(TAG, "index qiniuRequest : " + index + " " + qiniuRequest.toString());
+								qiniuList.add(response.getString(Config.QINIU_KEY));
+								MyLog.d(TAG, "index qiniuRequest : " + index + " " + qiniuList.toString());
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
-							if (index == size - 1 && qiniuRequest != null) {
+							if (qiniuList.size() == path.length) {
 								if (callBack != null) {
-									callBack.onSuccess(qiniuRequest.toString());
+									callBack.onSuccess(qiniuList);
 								}
 							}
 						}
-					}, new UploadOptions(null, null, false, new UpProgressHandler() {
-						@Override
-						public void progress(String arg0, double arg1) {
-							if (callBack != null) {
-								int progress = (int) (arg1 * 100 * index / size);
-								callBack.onProgress(progress);
-								MyLog.d(TAG, "upload progress:" + progress);
-							}
-						}
-					}, null));
+					}, null);
 				}
 
 				@Override

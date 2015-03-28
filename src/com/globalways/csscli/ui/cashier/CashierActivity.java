@@ -1,8 +1,5 @@
 package com.globalways.csscli.ui.cashier;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +51,10 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		cashierOrderFragment.setOrderData(cashierListAdapter.getCashierList(), cashierListAdapter.getTotalPrice());
 	}
 
+	public int getCount() {
+		return cashierListAdapter.getCount();
+	}
+
 	/**
 	 * 隐藏下单窗口
 	 * 
@@ -64,6 +65,9 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		dialogContainer.setVisibility(View.GONE);
 		if (isSign) {
 			cashierListAdapter.clear();
+			if (null != cashierQRCodeFragment) {
+				cashierQRCodeFragment.orderFinish();
+			}
 		}
 	}
 
@@ -105,14 +109,6 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		listViewShopping = (ListView) findViewById(R.id.listViewShopping);
 		cashierListAdapter = new CashierListAdapter(this);
 		listViewShopping.setAdapter(cashierListAdapter);
-
-		ProductEntity entity = new ProductEntity();
-		entity.setProduct_name("美味辣条");
-		entity.setProduct_price(300);
-		entity.setProduct_unit("袋");
-		entity.setShoppingNumber(5);
-		List<ProductEntity> list = new ArrayList<ProductEntity>();
-		list.add(entity);
-		cashierListAdapter.setData(list);
 	}
+
 }

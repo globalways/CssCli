@@ -8,12 +8,12 @@ import com.globalways.csscli.R;
 import com.globalways.csscli.http.manager.LoginManager;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.tools.MD5;
-import com.globalways.csscli.ui.BaseActivity;
+import com.globalways.csscli.ui.BaseNoTitleActivity;
 import com.globalways.csscli.ui.UITools;
 import com.globalways.csscli.view.ClearableEditText;
 import com.globalways.csscli.view.SimpleProgressDialog;
 
-public class LoginActivity extends BaseActivity implements OnClickListener {
+public class LoginActivity extends BaseNoTitleActivity implements OnClickListener {
 
 	private ClearableEditText editAccount, editPsd;
 	/** 进度条 **/

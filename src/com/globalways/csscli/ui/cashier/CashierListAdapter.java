@@ -52,7 +52,21 @@ public class CashierListAdapter extends BaseAdapter {
 		if (list == null) {
 			list = new ArrayList<ProductEntity>();
 		}
-		list.add(entity);
+		if (list.size() > 0) {
+			boolean isAdd = false;
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getProduct_qr().equals(entity.getProduct_qr())) {
+					list.get(i).setShoppingNumber(list.get(i).getShoppingNumber() + entity.getShoppingNumber());
+					isAdd = true;
+					break;
+				}
+			}
+			if (!isAdd) {
+				list.add(entity);
+			}
+		} else {
+			list.add(entity);
+		}
 		refreshTotalPrice();
 		notifyDataSetChanged();
 	}

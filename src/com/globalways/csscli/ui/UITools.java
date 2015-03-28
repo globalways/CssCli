@@ -1,5 +1,6 @@
 package com.globalways.csscli.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
@@ -10,8 +11,16 @@ import com.globalways.csscli.ui.account.LoginActivity;
 import com.globalways.csscli.ui.cashier.CashierActivity;
 import com.globalways.csscli.ui.main.MainActivity;
 import com.globalways.csscli.ui.product.ProductActivity;
+import com.globalways.csscli.ui.product.ProductAddNewActivity;
+import com.globalways.csscli.ui.product.ProductScanCodeActivity;
 import com.globalways.csscli.view.ClearableEditText;
 
+/**
+ * UI工具类
+ * 
+ * @author James.Fan
+ *
+ */
 public class UITools {
 
 	/**
@@ -48,6 +57,42 @@ public class UITools {
 	 */
 	public static void jumpCashierActivity(Context context) {
 		context.startActivity(new Intent(context, CashierActivity.class));
+	}
+
+	/**
+	 * 跳转扫码界面，扫描二维码或条形码
+	 * 
+	 * @param context
+	 * @param requestCode
+	 * @param operationType
+	 *            必须是ProductScanCodeActivity类的内部类OperationType内的值，
+	 *            默认值为OperationType.GET_CODE
+	 */
+	public static void jumpProductScanCodeActivity(Activity activity, int requestCode, int operationType) {
+		Intent intent = new Intent(activity, ProductScanCodeActivity.class);
+		intent.putExtra(ProductScanCodeActivity.KEY_OPERATION_TYPE, operationType);
+		activity.startActivityForResult(intent, requestCode);
+	}
+
+	/**
+	 * 跳转到添加商品界面
+	 * 
+	 * @param context
+	 * @param firstStep
+	 *            从商品管理界面跳入时，fristStep=ProductAddNewActivity.ScanStep.INFO_FIRST
+	 *            ，productCode=null；
+	 *            从扫码界面跳入时，fristStep=ProductAddNewActivity.ScanStep
+	 *            .SCAN_FIRST，productCode=扫描结果
+	 * @param productCode
+	 */
+	public static void jumpProductAddNewActivity(Context context, int firstStep, int isExist, String productCode) {
+		Intent intent = new Intent(context, ProductAddNewActivity.class);
+		intent.putExtra(ProductAddNewActivity.KEY_FIRST_STEP, firstStep);
+		if (firstStep == ProductAddNewActivity.ScanStep.SCAN_FIRST) {
+			intent.putExtra(ProductAddNewActivity.KEY_PRODUCT_CODE, productCode);
+			intent.putExtra(ProductAddNewActivity.KEY_PRODUCT_EXIST, isExist);
+		}
+		context.startActivity(intent);
 	}
 
 	/**

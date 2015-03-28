@@ -4,27 +4,21 @@
     <item android:state_pressed="true"><shape>
             <padding android:bottom="12dp" android:left="20dp" android:right="20dp" android:top="12dp" />
 
-            <solid android:color="@color/base_gray_60" />
-
-            <stroke android:width="1px" android:color="@color/base_black_999999" />
+            <solid android:color="#ff6e4d" />
 
             <corners android:bottomLeftRadius="5dp" android:bottomRightRadius="5dp" android:topLeftRadius="5dp" android:topRightRadius="5dp" />
         </shape></item>
     <item android:state_enabled="false"><shape>
             <padding android:bottom="12dp" android:left="20dp" android:right="20dp" android:top="12dp" />
 
-            <solid android:color="@color/base_gray_60" />
-
-            <stroke android:width="1px" android:color="@color/base_black_999999" />
+            <solid android:color="#80ff6e4d" />
 
             <corners android:bottomLeftRadius="5dp" android:bottomRightRadius="5dp" android:topLeftRadius="5dp" android:topRightRadius="5dp" />
         </shape></item>
     <item><shape>
             <padding android:bottom="12dp" android:left="20dp" android:right="20dp" android:top="12dp" />
 
-            <solid android:color="@color/base_gray" />
-
-            <stroke android:width="1px" android:color="@color/base_black_999999" />
+            <solid android:color="#f84e27" />
 
             <corners android:bottomLeftRadius="5dp" android:bottomRightRadius="5dp" android:topLeftRadius="5dp" android:topRightRadius="5dp" />
         </shape></item>

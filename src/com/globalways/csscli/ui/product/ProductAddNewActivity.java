@@ -42,16 +42,24 @@ import com.globalways.csscli.view.SimpleProgressDialog;
  * @author James
  *
  */
-public class ProductAddNewActivity extends BaseActivity implements OnClickListener, OnItemClickListener,
-		OnItemLongClickListener {
+public class ProductAddNewActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
 
 	/** 跳转相册选择照片的requestCode */
 	private static final int CODE_SELECT_IMAGE = 11;
-	private static final int CODE_SCAN_REQUEST = 12;
-	private static final int CODE_SCAN_BAR_REQUEST = 13;
+	private static final int CODE_SCAN_BAR_REQUEST = 12;
 	public static final String KEY_FIRST_STEP = "firstStep";
-	public static final String KEY_SCAN_RESULT = "scanResult";
-	private int scanStep;
+	public static final String KEY_PRODUCT_CODE = "productCode";
+	public static final String KEY_PRODUCT_EXIST = "productExist";
+	private int productIsExist = ScanProductExist.EXIST;
+
+	public class ScanProductExist {
+		/** 扫描的商品Code是否已经入库 */
+		public static final int EXIST = 22;
+		public static final int NOT_EXIST = 23;
+	}
+
+	private String productCode;
+	private String productQr;
 
 	public class ScanStep {
 		/** 先扫码 */
@@ -67,8 +75,9 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	private CheckBox checkBoxRecommend, checkBoxLock;
 	private ImageView imageScanBarCode;
 
-	private GridView gridViewPic;
+	private GridView gridViewPic, gridViewWebPic;
 	private ProductSelectPicAdapter picAdapter;
+	private ProductPicAdapter picWebAdapter;
 	private ArrayList<GalleryPicEntity> selectedImageList;
 
 	/** 菜单dialog */
@@ -90,9 +99,20 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	}
 
 	private void initData() {
-		scanStep = getIntent().getIntExtra(KEY_FIRST_STEP, ScanStep.INFO_FIRST);
-		if (scanStep == ScanStep.SCAN_FIRST) {
-			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_REQUEST);
+		if (getIntent().getIntExtra(KEY_FIRST_STEP, ScanStep.INFO_FIRST) == ScanStep.SCAN_FIRST) {
+			productCode = getIntent().getStringExtra(KEY_PRODUCT_CODE);
+			productIsExist = getIntent().getIntExtra(KEY_PRODUCT_EXIST, ScanProductExist.EXIST);
+			if (productIsExist == ScanProductExist.EXIST) {
+				textCenter.setText("修改商品信息");
+				loadProductDetail(productCode);
+			} else {
+				findViewById(R.id.viewWebPic).setVisibility(View.GONE);
+			}
+			if (productCode != null) {
+				editCode.setText(productCode);
+			}
+		} else {
+			findViewById(R.id.viewWebPic).setVisibility(View.GONE);
 		}
 	}
 
@@ -109,18 +129,10 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 				selectedImageList.add(new GalleryPicEntity());
 				picAdapter.setData(selectedImageList);
 				break;
-			case CODE_SCAN_REQUEST:
-				// 扫描完成后，加载商品信息，如果是条形码，则将结果填充到对应输入框内
-				String productCode = data.getStringExtra(KEY_SCAN_RESULT);
-				Toast.makeText(this, productCode, Toast.LENGTH_SHORT).show();
-				if (new QRCodeTools().isBarCode(productCode)) {
-					editCode.setText(data.getStringExtra(KEY_SCAN_RESULT));
-				}
-				loadProductDetail(productCode);
-				break;
 			case CODE_SCAN_BAR_REQUEST:
-				if (new QRCodeTools().isBarCode(data.getStringExtra(KEY_SCAN_RESULT))) {
-					editCode.setText(data.getStringExtra(KEY_SCAN_RESULT));
+				if (new QRCodeTools().isBarCode(data.getStringExtra(ProductScanCodeActivity.KEY_SCAN_RESULT))) {
+					productCode = data.getStringExtra(ProductScanCodeActivity.KEY_SCAN_RESULT);
+					editCode.setText(productCode);
 				} else {
 					Toast.makeText(this, "Scan bar code error", Toast.LENGTH_SHORT).show();
 				}
@@ -138,28 +150,32 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	 *            二维码或者条形码的内容
 	 */
 	private void loadProductDetail(String productCode) {
-		// mSimpleProgressDialog.setText("正在加载数据……");
-		// mSimpleProgressDialog.showDialog();
+		if (productCode == null) {
+			return;
+		}
+		mSimpleProgressDialog.setText("正在加载数据……");
+		mSimpleProgressDialog.showDialog();
 		ProductManager.getInstance().getProductDetail(MyApplication.getStoreid(), productCode,
 				new ManagerCallBack<ProductEntity>() {
 					@Override
 					public void onSuccess(ProductEntity returnContent) {
 						super.onSuccess(returnContent);
 						refreshView(returnContent);
-						// mSimpleProgressDialog.cancleDialog();
+						mSimpleProgressDialog.cancleDialog();
 					}
 
 					@Override
 					public void onFailure(int code, String msg) {
 						super.onFailure(code, msg);
 						Toast.makeText(ProductAddNewActivity.this, msg, Toast.LENGTH_SHORT).show();
-						// mSimpleProgressDialog.cancleDialog();
+						mSimpleProgressDialog.cancleDialog();
 					}
 				});
 	}
 
 	private void refreshView(ProductEntity entity) {
 		editName.setText(entity.getProduct_name());
+		editBrand.setText(entity.getProduct_brand());
 		editPrice.setText(entity.getProduct_price() + "");
 		editUnit.setText(entity.getProduct_unit());
 		editApr.setText(entity.getProduct_apr() + "");
@@ -168,8 +184,14 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		editStockLimit.setText(entity.getStock_limit() + "");
 		editDesc.setText(entity.getProduct_desc());
 
+		editCode.setText(entity.getProduct_bar());
+		editCode.setEnabled(false);
+		imageScanBarCode.setEnabled(false);
+		productQr = entity.getProduct_qr();
+
 		checkBoxRecommend.setChecked(entity.getStatus() == 1);
 		checkBoxLock.setChecked(entity.getIs_recommend() == 1);
+		picWebAdapter.setData(entity.getProduct_avatar());
 	}
 
 	@Override
@@ -179,10 +201,11 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 			finish();
 			break;
 		case R.id.imgBtnRight:
-			addProduct();
+			updateOrAdd(findViewById(R.id.viewWebPic).getVisibility() == View.GONE);
 			break;
 		case R.id.imageScanBarCode:
-			startActivityForResult(new Intent(this, ProductScanCodeActivity.class), CODE_SCAN_BAR_REQUEST);
+			UITools.jumpProductScanCodeActivity(this, CODE_SCAN_BAR_REQUEST,
+					ProductScanCodeActivity.OperationType.GET_CODE);
 			break;
 		}
 	}
@@ -219,7 +242,12 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		}
 	}
 
-	private void addProduct() {
+	/**
+	 * 添加或修改商品信息
+	 * 
+	 * @param isAdd
+	 */
+	private void updateOrAdd(final boolean isAdd) {
 		String product_name = editName.getText().toString().trim();
 		if (product_name == null || product_name.isEmpty()) {
 			Toast.makeText(this, "请输入商品名", Toast.LENGTH_SHORT).show();
@@ -230,35 +258,44 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 			Toast.makeText(this, "请输入商品品牌", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		String product_bar = null;
+		String product_bar = editCode.getText().toString().trim();
 		String product_desc = editDesc.getText().toString().trim();
-		int product_price = Integer.valueOf(editPrice.getText().toString().trim());
+
+		// 价格
+		String price = editPrice.getText().toString().trim();
+		if (price == null || price.isEmpty()) {
+			UITools.ToastMsg(this, "请输入商品价格");
+			return;
+		}
+		int product_price = Integer.valueOf(price);
+
+		// 单位
 		String product_unit = editUnit.getText().toString().trim();
 		if (product_unit == null || product_unit.isEmpty()) {
 			Toast.makeText(this, "请输入商品单位", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		// int product_apr =
-		// Integer.valueOf(editApr.getText().toString().trim());
-		int product_apr = 100;
-		double stock_cnt = Double.valueOf(editStock.getText().toString().trim());
-		// int stock_limit =
-		// Integer.valueOf(editStockLimit.getText().toString().trim());
-		int stock_limit = 0;
+
+		// 库存
+		String stock = editStock.getText().toString().trim();
+		double stock_cnt = 0;
+		if (stock != null && !stock.isEmpty()) {
+			stock_cnt = Double.valueOf(stock);
+		}
 		String product_tag = editTag.getText().toString().trim();
-		long purchase_channel = 0;
-		mSimpleProgressDialog.setText("正在为您创建商品....");
+
+		mSimpleProgressDialog.setText("正在上传，请稍后...");
 		mSimpleProgressDialog.showDialog();
-		ProductManager.getInstance().addProduct(selectedImageList, MyApplication.getStoreid(), product_name,
-				product_brand, product_bar, product_desc, product_price, product_unit, product_apr, stock_cnt,
-				checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), stock_limit, product_tag, purchase_channel,
+		ProductManager.getInstance().updateOrAdd(isAdd, selectedImageList, isAdd ? null : picWebAdapter.getPicList(),
+				product_name, product_brand, isAdd ? null : productQr, product_bar, product_desc, product_price,
+				product_unit, stock_cnt, checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), product_tag,
 				new ManagerCallBack<String>() {
 					@Override
 					public void onSuccess(String returnContent) {
 						super.onSuccess(returnContent);
 						mSimpleProgressDialog.cancleDialog();
 						AlertDialog.Builder builder = new Builder(ProductAddNewActivity.this);
-						builder.setMessage("添加成功！");
+						builder.setMessage(isAdd ? "添加成功！" : "修改成功！");
 						builder.setTitle("提示！");
 						builder.setPositiveButton("关闭", new DialogInterface.OnClickListener() {
 							@Override
@@ -270,11 +307,6 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 					}
 
 					@Override
-					public void onProgress(int progress) {
-						super.onProgress(progress);
-					}
-
-					@Override
 					public void onFailure(int code, String msg) {
 						super.onFailure(code, msg);
 						mSimpleProgressDialog.cancleDialog();
@@ -283,45 +315,32 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 				});
 	}
 
-	public void resetView() {
-		editName.setText("");
-		editPrice.setText("");
-		editUnit.setText("");
-		editApr.setText("");
-		editTag.setText("");
-		editStock.setText("");
-		editStockLimit.setText("");
-		editDesc.setText("");
-
-		checkBoxRecommend.setChecked(false);
-		checkBoxLock.setChecked(true);
-	}
-
-	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-		if (picAdapter.getCount() - 1 != position) {
-			if (menuList == null) {
-				initMenuView();
-			}
-			mBottomMenuDialog.showDialog(position);
-			return true;
+	/**
+	 * 初始化移除菜单view
+	 * 
+	 * @param isWeb
+	 *            当前调用该方法的是网络图片列表，还是本地图片列表
+	 */
+	private void initMenuView(final boolean isWeb) {
+		if (menuList == null) {
+			menuList = new ArrayList<MenuItemEntity>();
+			MenuItemEntity menuItemEntity1 = new MenuItemEntity(1, "移除这张照片", MenuItemEntity.Color.ALERT);
+			menuList.add(menuItemEntity1);
+			mBottomMenuDialog = new BottomMenuDialog<Integer>(this);
+			mBottomMenuDialog.setMenuList(menuList);
 		}
-		return false;
-	}
-
-	/** 初始化菜单view */
-	private void initMenuView() {
-		menuList = new ArrayList<MenuItemEntity>();
-		MenuItemEntity menuItemEntity1 = new MenuItemEntity(1, "移除这张照片", MenuItemEntity.Color.ALERT);
-		menuList.add(menuItemEntity1);
-		mBottomMenuDialog = new BottomMenuDialog<Integer>(this);
-		mBottomMenuDialog.setMenuList(menuList);
 		mBottomMenuDialog.setOnItemClickListener(new BottomMenuDialog.OnItemClickListener<Integer>() {
 			@Override
 			public void onItemClick(int menuId, Integer prams) {
-				if (selectedImageList != null && selectedImageList.size() > 0) {
-					selectedImageList.remove(prams);
-					picAdapter.remove(prams);
+				if (isWeb) {
+					if (picWebAdapter.getCount() > 0) {
+						picWebAdapter.remove(prams);
+					}
+				} else {
+					if (selectedImageList != null && selectedImageList.size() > 0) {
+						selectedImageList.remove(prams);
+						picAdapter.remove(prams);
+					}
 				}
 			}
 		});
@@ -360,11 +379,33 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 
 		// spinnerPurchase = (Spinner) findViewById(R.id.spinnerPurchase);
 
+		gridViewWebPic = (GridView) findViewById(R.id.gridViewWebPic);
+		picWebAdapter = new ProductPicAdapter(this);
+		gridViewWebPic.setAdapter(picWebAdapter);
+		gridViewWebPic.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				initMenuView(true);
+				mBottomMenuDialog.showDialog(position);
+				return true;
+			}
+		});
+
 		gridViewPic = (GridView) findViewById(R.id.gridViewPic);
 		picAdapter = new ProductSelectPicAdapter(this);
 		gridViewPic.setAdapter(picAdapter);
 		gridViewPic.setOnItemClickListener(this);
-		gridViewPic.setOnItemLongClickListener(this);
+		gridViewPic.setOnItemLongClickListener(new OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				if (picAdapter.getCount() - 1 != position) {
+					initMenuView(false);
+					mBottomMenuDialog.showDialog(position);
+					return true;
+				}
+				return false;
+			}
+		});
 		selectedImageList = new ArrayList<GalleryPicEntity>();
 		selectedImageList.add(new GalleryPicEntity());
 		picAdapter.setData(selectedImageList);

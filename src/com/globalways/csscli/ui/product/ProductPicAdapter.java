@@ -1,5 +1,8 @@
 package com.globalways.csscli.ui.product;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +16,7 @@ import com.globalways.csscli.tools.PicassoImageLoader;
 
 public class ProductPicAdapter extends BaseAdapter {
 
-	private String[] pics;
+	private ArrayList<String> pics;
 	private PicassoImageLoader imagerLoader;
 	private Context context;
 
@@ -24,9 +27,34 @@ public class ProductPicAdapter extends BaseAdapter {
 
 	public void setData(String productAva) {
 		if (productAva != null && !productAva.isEmpty()) {
-			pics = productAva.split(",");
+			pics = new ArrayList<String>();
+			pics.addAll(Arrays.asList(productAva.split(",")));
 		} else {
 			pics = null;
+		}
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * 获取照片列表
+	 * 
+	 * @return
+	 */
+	public ArrayList<String> getPicList() {
+		if (pics != null && pics.size() > 0) {
+			return pics;
+		}
+		return null;
+	}
+
+	/**
+	 * 移除指定项
+	 * 
+	 * @param position
+	 */
+	public void remove(int position) {
+		if (pics != null && pics.size() > 0) {
+			pics.remove(position);
 		}
 		notifyDataSetChanged();
 	}
@@ -36,7 +64,7 @@ public class ProductPicAdapter extends BaseAdapter {
 		if (pics == null) {
 			return 0;
 		}
-		return pics.length;
+		return pics.size();
 	}
 
 	@Override
@@ -44,7 +72,7 @@ public class ProductPicAdapter extends BaseAdapter {
 		if (pics == null) {
 			return null;
 		}
-		return pics[position];
+		return pics.get(position);
 	}
 
 	@Override
@@ -64,7 +92,7 @@ public class ProductPicAdapter extends BaseAdapter {
 		} else {
 			mItemView = (ItemView) convertView.getTag();
 		}
-		imagerLoader.showImage(pics[position], 300, 300, R.drawable.logo, R.drawable.logo, mItemView.imageSelect);
+		imagerLoader.showImage(pics.get(position), 300, 300, R.drawable.logo, R.drawable.logo, mItemView.imageSelect);
 		return convertView;
 	}
 

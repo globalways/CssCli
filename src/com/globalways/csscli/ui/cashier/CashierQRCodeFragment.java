@@ -105,7 +105,9 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	}
 
 	public void setTotalPrice(long totalPrice) {
-		btnOrder.setText("商品总价：￥" + totalPrice / 100.00);
+		if (totalPrice > 0) {
+			btnOrder.setText("商品总价：￥" + totalPrice / 100.00);
+		}
 	}
 
 	@Override
@@ -123,48 +125,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		initView();
-
-		productEntity = new ProductEntity();
-		productEntity.setProduct_name("美味辣条");
-		productEntity.setProduct_price(300);
-		productEntity.setProduct_unit("袋");
-		productEntity.setShoppingNumber(5);
 		refreshView();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		// CameraManager must be initialized here, not in onCreate(). This is
-		// necessary because we don't
-		// want to open the camera driver and measure the screen size if we're
-		// going to show the help on
-		// first launch. That led to bugs where the scanning rectangle was the
-		// wrong size and partially
-		// off screen.
-		cameraManager = new CameraManager(this.getActivity().getApplication());
-
-		viewfinderView = (ViewfinderView) this.getActivity().findViewById(R.id.viewfinder_view);
-		viewfinderView.setCameraManager(cameraManager);
-
-		SurfaceView surfaceView = (SurfaceView) this.getActivity().findViewById(R.id.preview_view);
-		SurfaceHolder surfaceHolder = surfaceView.getHolder();
-		if (hasSurface) {
-			// The activity was paused but not stopped, so the surface still
-			// exists. Therefore
-			// surfaceCreated() won't be called, so init the camera here.
-			initCamera(surfaceHolder);
-		} else {
-			// Install the callback and wait for surfaceCreated() to init the
-			// camera.
-			surfaceHolder.addCallback(this);
-		}
-		beepManager.updatePrefs();
-		ambientLightManager.start(cameraManager);
-		inactivityTimer.onResume();
-		source = IntentSource.NONE;
-		decodeFormats = null;
-		characterSet = null;
 	}
 
 	/**
@@ -174,8 +135,17 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	 */
 	public void handleResult(Result result) {
 		MyLog.d(TAG, result.getText());
+		addCashierProduct();
 		loadProductDetail(result.getText());
-		Toast.makeText(getActivity(), result.getText(), Toast.LENGTH_SHORT).show();
+		// 重置扫码
+		restartPreviewAfterDelay(1000L);
+	}
+
+	/**
+	 * 订单结束后调用
+	 */
+	public void orderFinish() {
+		btnOrder.setText("去结算");
 	}
 
 	/**
@@ -206,12 +176,21 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	}
 
 	private void refreshView() {
-		textNumber.setText("1");
-		new PicassoImageLoader(getActivity()).showImage(productEntity.getProduct_avatar(), R.drawable.logo,
-				R.drawable.logo, imageProductAva);
-		textProductName.setText(productEntity.getProduct_name());
-		textProductPrice.setText("￥ " + productEntity.getProduct_price() / 100.00 + " / "
-				+ productEntity.getProduct_unit() + "  ");
+		if (productEntity != null) {
+			textNumber.setText("1");
+			new PicassoImageLoader(getActivity()).showImage(productEntity.getProduct_avatar(), R.drawable.logo,
+					R.drawable.logo, imageProductAva);
+			textProductName.setText(productEntity.getProduct_name());
+			textProductPrice.setText("￥ " + productEntity.getProduct_price() / 100.00 + " / "
+					+ productEntity.getProduct_unit() + "  ");
+		}
+	}
+
+	private void addCashierProduct() {
+		if (productEntity != null) {
+			((CashierActivity) getActivity()).addCashierProduct(productEntity);
+			reset();
+		}
 	}
 
 	@Override
@@ -240,15 +219,16 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 			}
 			break;
 		case R.id.btnAddCashier:
-			if (productEntity != null) {
-				((CashierActivity) getActivity()).addCashierProduct(productEntity);
-				// 重置扫码
-				restartPreviewAfterDelay(10L);
-			}
-			reset();
+			addCashierProduct();
 			break;
 		case R.id.btnSingle:
-			((CashierActivity) getActivity()).showSignDialog();
+			if (productEntity != null) {
+				addCashierProduct();
+			} else {
+				if (((CashierActivity) getActivity()).getCount() > 0) {
+					((CashierActivity) getActivity()).showSignDialog();
+				}
+			}
 			break;
 		}
 	}
@@ -259,7 +239,6 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		textProductName.setText("");
 		textProductPrice.setText("");
 		imageProductAva.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.logo));
-		btnOrder.setText("去结算");
 	}
 
 	private void initView() {
@@ -347,6 +326,41 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 			}
 		});
 		builder.create().show();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		// CameraManager must be initialized here, not in onCreate(). This is
+		// necessary because we don't
+		// want to open the camera driver and measure the screen size if we're
+		// going to show the help on
+		// first launch. That led to bugs where the scanning rectangle was the
+		// wrong size and partially
+		// off screen.
+		cameraManager = new CameraManager(this.getActivity().getApplication());
+
+		viewfinderView = (ViewfinderView) this.getActivity().findViewById(R.id.viewfinder_view);
+		viewfinderView.setCameraManager(cameraManager);
+
+		SurfaceView surfaceView = (SurfaceView) this.getActivity().findViewById(R.id.preview_view);
+		SurfaceHolder surfaceHolder = surfaceView.getHolder();
+		if (hasSurface) {
+			// The activity was paused but not stopped, so the surface still
+			// exists. Therefore
+			// surfaceCreated() won't be called, so init the camera here.
+			initCamera(surfaceHolder);
+		} else {
+			// Install the callback and wait for surfaceCreated() to init the
+			// camera.
+			surfaceHolder.addCallback(this);
+		}
+		beepManager.updatePrefs();
+		ambientLightManager.start(cameraManager);
+		inactivityTimer.onResume();
+		source = IntentSource.NONE;
+		decodeFormats = null;
+		characterSet = null;
 	}
 
 	/*

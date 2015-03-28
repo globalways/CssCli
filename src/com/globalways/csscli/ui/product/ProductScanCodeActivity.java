@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -17,7 +19,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.android.AmbientLightManager;
@@ -30,8 +31,14 @@ import com.globalways.csscli.android.PreferencesActivity;
 import com.globalways.csscli.android.ScanCodeInterface;
 import com.globalways.csscli.android.ViewfinderView;
 import com.globalways.csscli.android.camera.CameraManager;
+import com.globalways.csscli.entity.ProductEntity;
+import com.globalways.csscli.http.manager.ManagerCallBack;
+import com.globalways.csscli.http.manager.ProductManager;
+import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.MyLog;
 import com.globalways.csscli.ui.BaseNoTitleActivity;
+import com.globalways.csscli.ui.UITools;
+import com.globalways.csscli.view.SimpleProgressDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -53,6 +60,20 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 	private IntentSource source;
 	private Result savedResultToShow;
 
+	private SimpleProgressDialog mSimpleProgressDialog;
+
+	public static final String KEY_SCAN_RESULT = "scanResult";
+
+	public static final String KEY_OPERATION_TYPE = "operationType";
+	private int operationType = OperationType.GET_CODE;
+
+	public class OperationType {
+		/** 扫码商品二维码或条形，扫码完成后查询该商品是否已经入库，已入库就进入修改页面；未入库提示添加 */
+		public static final int SCAN_PRODUCT = 0;
+		/** 扫码获取商品的条形码，获取成功后，直接intent返回数据 */
+		public static final int GET_CODE = 1;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,9 +82,12 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 		findViewById(R.id.camera_view).setFitsSystemWindows(true);
 		mTintManager.setStatusBarDarkMode(false, this);
 
+		operationType = getIntent().getIntExtra(KEY_OPERATION_TYPE, OperationType.GET_CODE);
+
 		findViewById(R.id.btnCancel).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				setResult(RESULT_CANCELED);
 				ProductScanCodeActivity.this.finish();
 			}
 		});
@@ -74,6 +98,78 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 		ambientLightManager = new AmbientLightManager(this);
 		hasSurface = false;
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+	}
+
+	/**
+	 * 处理扫描获取到的数据
+	 * 
+	 * @param result
+	 */
+	public void handleResult(Result result) {
+		MyLog.d(TAG, result.getText());
+		switch (operationType) {
+		case OperationType.GET_CODE:
+			setResult(RESULT_OK, new Intent().putExtra(KEY_SCAN_RESULT, result.getText()));
+			ProductScanCodeActivity.this.finish();
+			break;
+		case OperationType.SCAN_PRODUCT:
+			loadProductDetail(result.getText());
+			break;
+		}
+		// restartPreviewAfterDelay(1000L);
+	}
+
+	/**
+	 * 扫码成功后调用这个方法，获取商品的详细信息
+	 * 
+	 * @param type
+	 *            二维码还是条形码
+	 * @param productCode
+	 *            二维码或者条形码的内容
+	 */
+	private void loadProductDetail(final String productCode) {
+		mSimpleProgressDialog = new SimpleProgressDialog(this, true);
+		mSimpleProgressDialog.setText("正在加载数据……").showDialog();
+		ProductManager.getInstance().getProductDetail(MyApplication.getStoreid(), productCode,
+				new ManagerCallBack<ProductEntity>() {
+					@Override
+					public void onSuccess(ProductEntity returnContent) {
+						super.onSuccess(returnContent);
+						mSimpleProgressDialog.cancleDialog();
+						UITools.ToastMsg(ProductScanCodeActivity.this, "onSuccess");
+						UITools.jumpProductAddNewActivity(ProductScanCodeActivity.this,
+								ProductAddNewActivity.ScanStep.SCAN_FIRST,
+								ProductAddNewActivity.ScanProductExist.EXIST, productCode);
+						ProductScanCodeActivity.this.finish();
+					}
+
+					@Override
+					public void onFailure(int code, String msg) {
+						super.onFailure(code, msg);
+						UITools.ToastMsg(ProductScanCodeActivity.this, msg);
+						mSimpleProgressDialog.cancleDialog();
+						AlertDialog.Builder builder = new Builder(ProductScanCodeActivity.this);
+						builder.setMessage("商品尚未入库，可以入库！");
+						builder.setTitle("提示！");
+						builder.setPositiveButton("入库", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								UITools.jumpProductAddNewActivity(ProductScanCodeActivity.this,
+										ProductAddNewActivity.ScanStep.SCAN_FIRST,
+										ProductAddNewActivity.ScanProductExist.NOT_EXIST, productCode);
+								ProductScanCodeActivity.this.finish();
+							}
+						});
+						builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								setResult(RESULT_CANCELED);
+								ProductScanCodeActivity.this.finish();
+							}
+						});
+						builder.create().show();
+					}
+				});
 	}
 
 	@Override
@@ -109,19 +205,6 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 		source = IntentSource.NONE;
 		decodeFormats = null;
 		characterSet = null;
-	}
-
-	/**
-	 * 处理扫描获取到的数据
-	 * 
-	 * @param result
-	 */
-	public void handleResult(Result result) {
-		MyLog.d(TAG, result.getText());
-		Toast.makeText(this, result.getText(), Toast.LENGTH_SHORT).show();
-		setResult(RESULT_OK, new Intent().putExtra(ProductAddNewActivity.KEY_SCAN_RESULT, result.getText()));
-		ProductScanCodeActivity.this.finish();
-		// restartPreviewAfterDelay(1000L);
 	}
 
 	/*

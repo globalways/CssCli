@@ -23,6 +23,7 @@ import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.OrderManager;
 import com.globalways.csscli.ui.BaseFragment;
+import com.globalways.csscli.view.ClearableEditText;
 import com.globalways.csscli.view.SimpleProgressDialog;
 
 /**
@@ -37,16 +38,18 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 	private View viewStepOne, viewStepTwo;
 	/** Step one */
 	private TextView textTotalPrice, textSignTotalPrice1;
-	private EditText editApr, editDesc;
+	private ClearableEditText editApr, editDesc;
 	private Button btnCancel, btnNext;
 
 	/** Step one */
 	private TextView textSignNum, textSignTotalPrice2, textKeepChange;
-	private EditText editCash;
+	private ClearableEditText editCash;
 	private Button btnCancelSign, btnComfirm;
 
 	/** 进度条 **/
 	private SimpleProgressDialog mSimpleProgressDialog;
+
+	private long totalPrice;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 		viewStepOne.setVisibility(View.VISIBLE);
 		viewStepTwo.setVisibility(View.GONE);
 		this.cashierList = cashierList;
+		this.totalPrice = totalPrice;
 		textTotalPrice.setText("￥" + totalPrice / 100.00);
 		textSignTotalPrice1.setText("￥" + totalPrice / 100.00);
 	}
@@ -90,14 +94,13 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 
 	private List<ProductEntity> cashierList;
 	private OrderEntity orderEntity;;
-	private long totalPrice;
 
 	/** 创建订单 */
 	private void toSignOrder() {
 		long discount_amount = 0;
 		String text = editApr.getText().toString().trim();
 		if (text != null && !text.isEmpty()) {
-			discount_amount = Long.valueOf(text);
+			discount_amount = (long) (Float.valueOf(text) * 100);
 		}
 		String desc = editDesc.getText().toString().trim();
 		if (cashierList == null || cashierList.size() <= 0) {
@@ -130,7 +133,7 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 
 			textSignNum.setText(orderEntity.getOrder_id());
 			textSignTotalPrice2.setText("￥" + orderEntity.getOrder_amount() / 100.00);
-		}else{
+		} else {
 			Toast.makeText(getActivity(), "订单信息有误", Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -210,7 +213,7 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 
 		textTotalPrice = (TextView) layoutView.findViewById(R.id.textTotalPrice);
 		textSignTotalPrice1 = (TextView) layoutView.findViewById(R.id.textSignTotalPrice1);
-		editApr = (EditText) layoutView.findViewById(R.id.editApr);
+		editApr = (ClearableEditText) layoutView.findViewById(R.id.editApr);
 		editApr.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -224,17 +227,31 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 			public void afterTextChanged(Editable s) {
 				String text = editApr.getText().toString().trim();
 				if (text != null && !text.isEmpty()) {
-					long price = Long.valueOf(text);
+					if (text.startsWith("00") || text.startsWith("01") || text.startsWith("02")
+							|| text.startsWith("03") || text.startsWith("04") || text.startsWith("05")
+							|| text.startsWith("06") || text.startsWith("07") || text.startsWith("08")
+							|| text.startsWith("09")) {
+						text = text.substring(1);
+						editApr.setText(text);
+						editApr.setSelection(editApr.getText().toString().trim().length());
+					}
+					if (text.startsWith(".")) {
+						text = text.replace(".", "0.");
+						editApr.setText(text);
+						editApr.setSelection(editApr.getText().toString().trim().length());
+					}
+					long price = (long) (Float.valueOf(text) * 100);
 					if (price > totalPrice) {
 						price = totalPrice;
-						editApr.setText(totalPrice + "");
+						editApr.setText(price / 100.00 + "");
 						editApr.setSelection(editApr.getText().toString().length());
 					}
 					textSignTotalPrice1.setText("￥" + (totalPrice - price) / 100.00);
 				}
 			}
 		});
-		editDesc = (EditText) layoutView.findViewById(R.id.editDesc);
+
+		editDesc = (ClearableEditText) layoutView.findViewById(R.id.editDesc);
 		btnCancel = (Button) layoutView.findViewById(R.id.btnCancel);
 		btnCancel.setOnClickListener(this);
 		btnNext = (Button) layoutView.findViewById(R.id.btnNext);
@@ -243,7 +260,7 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 		textSignNum = (TextView) layoutView.findViewById(R.id.textSignNum);
 		textSignTotalPrice2 = (TextView) layoutView.findViewById(R.id.textSignTotalPrice2);
 		textKeepChange = (TextView) layoutView.findViewById(R.id.textKeepChange);
-		editCash = (EditText) layoutView.findViewById(R.id.editCash);
+		editCash = (ClearableEditText) layoutView.findViewById(R.id.editCash);
 		editCash.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -255,17 +272,29 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (orderEntity == null) {
-					Toast.makeText(getActivity(), "订单信息有误", Toast.LENGTH_SHORT).show();
-					return;
-				}
 				String text = editCash.getText().toString().trim();
 				if (text != null && !text.isEmpty()) {
-					long price = Long.valueOf(text);
-					textKeepChange.setText("￥" + (price - orderEntity.getOrder_amount()) / 100.0);
+					if (text.startsWith("00") || text.startsWith("01") || text.startsWith("02")
+							|| text.startsWith("03") || text.startsWith("04") || text.startsWith("05")
+							|| text.startsWith("06") || text.startsWith("07") || text.startsWith("08")
+							|| text.startsWith("09")) {
+						text = text.substring(1);
+						editCash.setText(text);
+						editCash.setSelection(editCash.getText().toString().trim().length());
+					}
+					if (text.startsWith(".")) {
+						text = text.replace(".", "0.");
+						editCash.setText(text);
+						editCash.setSelection(editCash.getText().toString().trim().length());
+					}
+					long price = (long) (Float.valueOf(text) * 100);
+					if (price > orderEntity.getOrder_amount()) {
+						textKeepChange.setText("￥" + (price - orderEntity.getOrder_amount()) / 100.0);
+					}
 				}
 			}
 		});
+
 		btnCancelSign = (Button) layoutView.findViewById(R.id.btnCancelSign);
 		btnCancelSign.setOnClickListener(this);
 		btnComfirm = (Button) layoutView.findViewById(R.id.btnComfirm);
