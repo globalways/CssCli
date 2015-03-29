@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view"
+    style="@style/ActivityOuterStyle"
+    android:orientation="vertical" >
+
+    <include layout="@layout/title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="下载进度" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp" >
+
+        <ProgressBar
+            android:id="@+id/progressBarDownload"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/layer_list_download_progress"
+            android:secondaryProgress="0" />
+
+        <TextView
+            android:id="@+id/textDownLoadProcess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="已下载：0%" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnRetry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@color/selector_btn_blue"
+            android:text="重试"
+            android:textColor="@color/base_white" />
+
+        <Button
+            android:id="@+id/btnOpen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@color/selector_btn_green"
+            android:text="打开"
+            android:textColor="@color/base_white" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">商铺端</string>
+    <string name="app_name">环途-便利店</string>
     
     <string name="msg_intent_failed">Sorry, the requested application could not be launched. The barcode contents may be invalid.</string>
     <string name="msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>

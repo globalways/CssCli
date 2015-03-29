@@ -1,6 +1,9 @@
 package com.globalways.csscli.ui.main;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -8,6 +11,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.globalways.csscli.R;
+import com.globalways.csscli.http.manager.AppManager;
 import com.globalways.csscli.http.manager.LoginManager;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.tools.SharedPreferencesHelper;
@@ -29,7 +33,7 @@ public class WelcomeActivity extends Activity {
 		aa.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationEnd(Animation arg0) {
-				toLogin();
+				toCheckVersion();
 			}
 
 			@Override
@@ -38,6 +42,39 @@ public class WelcomeActivity extends Activity {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
+			}
+		});
+	}
+
+	private void toCheckVersion() {
+		new AppManager().toCheckVersion(this, new ManagerCallBack<String>() {
+			@Override
+			public void onSuccess(final String url) {
+				super.onSuccess(url);
+				AlertDialog.Builder builder = new Builder(WelcomeActivity.this);
+				builder.setMessage("当前有版本更新！会有新的功能开放哦！");
+				builder.setTitle("提示！");
+				builder.setPositiveButton("更新", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						UITools.jumpAppUpdateActivity(WelcomeActivity.this, url);
+						WelcomeActivity.this.finish();
+					}
+				});
+				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						toLogin();
+					}
+				});
+				builder.create().show();
+			}
+
+			@Override
+			public void onFailure(int code, String msg) {
+				super.onFailure(code, msg);
+				toLogin();
 			}
 		});
 	}

@@ -5,6 +5,8 @@ public class HttpApi {
 	private static final String HOME_URI = "http://123.57.132.7:8081";
 	private static final String VERSION = "";
 
+	public static final String VERSION_CHECK = HOME_URI + "/v1/version/varify";
+
 	public static final String ACCOUNT_LOGIN = HOME_URI + VERSION + "/v1/access/users/login";
 
 	public static final String HONG_ID_GET_BY_PAGE = HOME_URI + VERSION + "/v1/admins/members";

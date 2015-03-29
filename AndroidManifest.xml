@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.globalways.csscli"
     android:versionCode="2"
-    android:versionName="1.0" >
+    android:versionName="1.0.0" >
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -123,6 +123,10 @@
         <!-- 系统设置 -->
         <activity
             android:name=".ui.settings.SettingsActivity"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ui.settings.AppUpdateActivity"
             android:screenOrientation="landscape" >
         </activity>
         

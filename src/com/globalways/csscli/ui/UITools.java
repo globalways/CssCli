@@ -13,6 +13,7 @@ import com.globalways.csscli.ui.main.MainActivity;
 import com.globalways.csscli.ui.product.ProductActivity;
 import com.globalways.csscli.ui.product.ProductAddNewActivity;
 import com.globalways.csscli.ui.product.ProductScanCodeActivity;
+import com.globalways.csscli.ui.settings.AppUpdateActivity;
 import com.globalways.csscli.view.ClearableEditText;
 
 /**
@@ -92,6 +93,20 @@ public class UITools {
 			intent.putExtra(ProductAddNewActivity.KEY_PRODUCT_CODE, productCode);
 			intent.putExtra(ProductAddNewActivity.KEY_PRODUCT_EXIST, isExist);
 		}
+		context.startActivity(intent);
+	}
+
+	/**
+	 * 跳转到app下载界面
+	 * 
+	 * @param context
+	 * @param url
+	 *            下载地址
+	 * @param version
+	 */
+	public static void jumpAppUpdateActivity(Context context, String url) {
+		Intent intent = new Intent(context, AppUpdateActivity.class);
+		intent.putExtra(AppUpdateActivity.KEY_DOWNLOAD_URL, url);
 		context.startActivity(intent);
 	}
 
