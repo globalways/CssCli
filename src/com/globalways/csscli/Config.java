@@ -2,7 +2,7 @@ package com.globalways.csscli;
 
 public class Config {
 
-	public static final String APP_VERSION = "102";
+	public static final String APP_VERSION = "100";
 
 	public static final boolean DEBUG = true;
 

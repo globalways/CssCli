@@ -54,7 +54,7 @@ public class MainActivity extends BaseNoTitleActivity implements OnClickListener
 			UITools.ToastMsg(this, "正在开发，敬请期待……");
 			break;
 		case R.id.btnStatistics:
-			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			UITools.jumpStatisticsActivity(this);
 			break;
 		case R.id.btnSettings:
 			UITools.ToastMsg(this, "正在开发，敬请期待……");

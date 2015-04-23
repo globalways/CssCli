@@ -247,6 +247,8 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 						editApr.setSelection(editApr.getText().toString().length());
 					}
 					textSignTotalPrice1.setText("￥" + (totalPrice - price) / 100.00);
+				} else {
+					textSignTotalPrice1.setText("￥" + totalPrice / 100.00);
 				}
 			}
 		});

@@ -10,7 +10,7 @@ import com.globalways.csscli.http.HttpApi;
  */
 public class QRCodeTools {
 
-	private static final String PRODUCT = "PRODUCT:";
+	public static final String PRODUCT = "PRODUCT:";
 
 	public enum CodeType {
 		/** 条形码 */

@@ -14,6 +14,7 @@ import com.globalways.csscli.ui.product.ProductActivity;
 import com.globalways.csscli.ui.product.ProductAddNewActivity;
 import com.globalways.csscli.ui.product.ProductScanCodeActivity;
 import com.globalways.csscli.ui.settings.AppUpdateActivity;
+import com.globalways.csscli.ui.statistics.StatisticsActivity;
 import com.globalways.csscli.view.ClearableEditText;
 
 /**
@@ -58,6 +59,15 @@ public class UITools {
 	 */
 	public static void jumpCashierActivity(Context context) {
 		context.startActivity(new Intent(context, CashierActivity.class));
+	}
+
+	/**
+	 * 跳转到统计页面
+	 * 
+	 * @param context
+	 */
+	public static void jumpStatisticsActivity(Context context) {
+		context.startActivity(new Intent(context, StatisticsActivity.class));
 	}
 
 	/**

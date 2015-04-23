@@ -84,11 +84,13 @@ public class WelcomeActivity extends Activity {
 		if (username == null || username.isEmpty()) {
 			UITools.jumpLoginActivity(WelcomeActivity.this);
 			WelcomeActivity.this.finish();
+			return;
 		}
 		String password = SharedPreferencesHelper.getInstance(this).getUserPsd();
 		if (password == null || password.isEmpty()) {
 			UITools.jumpLoginActivity(WelcomeActivity.this);
 			WelcomeActivity.this.finish();
+			return;
 		}
 		new LoginManager().toLogin(this, username, password, new ManagerCallBack<String>() {
 			@Override

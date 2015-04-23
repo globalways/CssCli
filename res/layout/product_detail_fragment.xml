@@ -256,13 +256,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
+                        android:layout_marginTop="20dp"
                         android:text="商品二维码"
                         android:textColor="@color/base_black_333333" />
 
                     <ImageView
                         android:id="@+id/imageQRCode"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp" />
+                        android:layout_width="140dp"
+                        android:layout_height="140dp" />
                 </TableRow>
 
                 <LinearLayout

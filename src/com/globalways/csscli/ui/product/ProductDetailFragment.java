@@ -3,6 +3,7 @@ package com.globalways.csscli.ui.product;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +11,22 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.globalways.csscli.R;
+import com.globalways.csscli.android.encoding.EncodingHandler;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.ProductManager;
+import com.globalways.csscli.tools.QRCodeTools;
 import com.globalways.csscli.ui.BaseFragment;
 import com.globalways.csscli.ui.UITools;
 import com.globalways.csscli.view.ClearableEditText;
 import com.globalways.csscli.view.NoScrollGridView;
 import com.globalways.csscli.view.SimpleProgressDialog;
+import com.google.zxing.WriterException;
 
 /**
  * 商品详情fragment，可以查看或修改商品信息
@@ -40,6 +45,7 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 	private ProductPicAdapter picAdapter;
 	// private Spinner spinnerPurchase;
 	private ScrollView scrollViewProductDetail;
+	private ImageView imageQRCode;
 
 	private ProductEntity entity;
 	/** 进度条 **/
@@ -82,6 +88,15 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 
 			checkBoxRecommend.setChecked(entity.getIs_recommend() == 1 ? true : false);
 			checkBoxLock.setChecked(entity.getStatus() == 1 ? true : false);
+
+			try {
+				// 根据字符串生成二维码图片并显示在界面上，第二个参数为图片的大小（350*350）
+				Bitmap qrCodeBitmap = EncodingHandler.createQRCode(QRCodeTools.PRODUCT + entity.getProduct_qr(), 350);
+				imageQRCode.setImageBitmap(qrCodeBitmap);
+			} catch (WriterException e) {
+				e.printStackTrace();
+				Toast.makeText(getActivity(), "生成二维码失败", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 
@@ -181,6 +196,8 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 		btnUpdate.setOnClickListener(this);
 		btnReset = (Button) layoutView.findViewById(R.id.btnReset);
 		btnReset.setOnClickListener(this);
+
+		imageQRCode = (ImageView) layoutView.findViewById(R.id.imageQRCode);
 
 		checkBoxRecommend = (CheckBox) layoutView.findViewById(R.id.checkBoxRecommend);
 		checkBoxLock = (CheckBox) layoutView.findViewById(R.id.checkBoxLock);
