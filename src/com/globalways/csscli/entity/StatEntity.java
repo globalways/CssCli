@@ -2,9 +2,9 @@ package com.globalways.csscli.entity;
 
 import java.util.List;
 
-public class StatSellEntity {
+public class StatEntity {
 
-	private List<StatSellItemEntity> stat_items;
+	private List<StatItemEntity> stat_items;
 	/** 总销售金额 */
 	private double total_amount;
 	/** 总优惠金额 */
@@ -12,11 +12,11 @@ public class StatSellEntity {
 	/** 总销售数量 */
 	private int total_count;
 
-	public StatSellEntity() {
+	public StatEntity() {
 		super();
 	}
 
-	public StatSellEntity(List<StatSellItemEntity> stat_items, double total_amount, double total_discount,
+	public StatEntity(List<StatItemEntity> stat_items, double total_amount, double total_discount,
 			int total_count) {
 		super();
 		this.stat_items = stat_items;
@@ -31,11 +31,11 @@ public class StatSellEntity {
 				+ ", total_discount=" + total_discount + ", total_count=" + total_count + "]";
 	}
 
-	public List<StatSellItemEntity> getStat_items() {
+	public List<StatItemEntity> getStat_items() {
 		return stat_items;
 	}
 
-	public void setStat_items(List<StatSellItemEntity> stat_items) {
+	public void setStat_items(List<StatItemEntity> stat_items) {
 		this.stat_items = stat_items;
 	}
 

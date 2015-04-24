@@ -1,25 +1,33 @@
 package com.globalways.csscli.entity;
 
-public class StatBuyItemEntity {
 
+public class StatItemEntity {
+
+	/** 日期 */
 	private String date;
+	/** 金额 */
 	private double amount;
+	/** 优惠 */
+	private double discount;
+	/** 数量 */
 	private int count;
 
-	public StatBuyItemEntity() {
+	public StatItemEntity() {
 		super();
 	}
 
-	public StatBuyItemEntity(String date, double amount, int count) {
+	public StatItemEntity(String date, double amount, int discount, int count) {
 		super();
 		this.date = date;
 		this.amount = amount;
+		this.discount = discount;
 		this.count = count;
 	}
 
 	@Override
 	public String toString() {
-		return "StatBuyItemEntity [date=" + date + ", amount=" + amount + ", count=" + count + "]";
+		return "StatSellItemEntity [date=" + date + ", amount=" + amount + ", discount=" + discount + ", count=" + count
+				+ "]";
 	}
 
 	public String getDate() {
@@ -38,6 +46,14 @@ public class StatBuyItemEntity {
 		this.amount = amount;
 	}
 
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
+
 	public int getCount() {
 		return count;
 	}
@@ -45,5 +61,4 @@ public class StatBuyItemEntity {
 	public void setCount(int count) {
 		this.count = count;
 	}
-
 }

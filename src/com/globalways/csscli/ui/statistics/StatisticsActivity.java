@@ -29,8 +29,7 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 	private TextView textCenter;
 	private ImageButton imgBtnLeft;
 	private RadioButton radioSallStatistics, radioBuyStatistics;
-	private StatisticsBuyFragment buyFragment;
-	private StatisticsSellFragment sellFragment;
+	private StatisticsFragment buyFragment, sellFragment;
 	private Fragment[] fragmentArray;
 
 	@Override
@@ -71,8 +70,16 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 	 * 初始化Fragment，默认显示销售内容
 	 */
 	private void initFragment() {
-		sellFragment = new StatisticsSellFragment();
-		buyFragment = new StatisticsBuyFragment();
+		sellFragment = new StatisticsFragment();
+		Bundle argsSell = new Bundle();
+		argsSell.putInt(StatisticsFragment.KEY_STAT_TYPE, StatisticsFragment.StatType.TYPE_SELL);
+		sellFragment.setArguments(argsSell);
+
+		buyFragment = new StatisticsFragment();
+		Bundle argsBuy = new Bundle();
+		argsBuy.putInt(StatisticsFragment.KEY_STAT_TYPE, StatisticsFragment.StatType.TYPE_BUY);
+		buyFragment.setArguments(argsBuy);
+
 		fragmentArray = new Fragment[] { sellFragment, buyFragment };
 		radioSallStatistics.setChecked(true);
 		getSupportFragmentManager().beginTransaction().add(R.id.viewContainer, sellFragment).show(sellFragment)
