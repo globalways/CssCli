@@ -42,15 +42,16 @@ public class StatisticsManager {
 
 	private boolean isLoading = false;
 
-	public void getStat(boolean isSell, final ManagerCallBack2<StatEntity, String> callBack) {
+	public void getStat(boolean isSell, String startDate, String endDate,
+			final ManagerCallBack2<StatEntity, String> callBack) {
 		if (isLoading) {
 			return;
 		}
 		isLoading = true;
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("store_ids", MyApplication.getStoreid());
-		params.put("start_date", "2015-04-02");
-		params.put("end_date", "2015-04-23");
+		params.put("start_date", startDate);
+		params.put("end_date", endDate);
 		HttpUtils.getInstance().sendGetRequest(isSell ? HttpApi.STATISTICS_SALL : HttpApi.STATISTICS_BUY, 1, params,
 				new HttpClientUtilCallBack<String>() {
 					@Override
