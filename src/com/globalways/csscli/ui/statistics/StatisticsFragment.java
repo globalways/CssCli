@@ -25,6 +25,7 @@ import com.globalways.csscli.R;
 import com.globalways.csscli.entity.StatEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack2;
 import com.globalways.csscli.http.manager.StatisticsManager;
+import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.MyLog;
 
 public class StatisticsFragment extends Fragment implements OnClickListener, OnDateSetListener {
@@ -82,7 +83,11 @@ public class StatisticsFragment extends Fragment implements OnClickListener, OnD
 	}
 
 	private void loadData() {
-		StatisticsManager.getInstance().getStat(statType == StatType.TYPE_SELL, startDate, endDate,
+		if(StatisticsActivity.toStatStoreIds.size() == 0)
+		{
+			StatisticsActivity.toStatStoreIds.add(MyApplication.getStoreid());
+		}
+		StatisticsManager.getInstance().getStat(statType == StatType.TYPE_SELL, startDate, endDate, StatisticsActivity.toStatStoreIds ,
 				new ManagerCallBack2<StatEntity, String>() {
 					@Override
 					public void onSuccess(StatEntity returnContent, final String params) {
@@ -192,6 +197,15 @@ public class StatisticsFragment extends Fragment implements OnClickListener, OnD
 		// 在我实现的过程中,没有设置setWebChromeClient时无法调用页面的javascript
 		webViewStatistics.setWebChromeClient(new WebChromeClient());
 
+	}
+	
+	/**
+	 * 统计多个子店铺
+	 * @author wyp
+	 */
+	public void onStoreIDChanged()
+	{
+		loadData();
 	}
 
 }

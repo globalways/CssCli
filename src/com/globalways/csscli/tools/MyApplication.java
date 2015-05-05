@@ -2,6 +2,7 @@ package com.globalways.csscli.tools;
 
 import android.app.Application;
 
+import com.globalways.csscli.entity.StoreEntity;
 import com.globalways.csscli.entity.UserEntity;
 import com.globalways.csscli.ui.AppManager;
 
@@ -13,6 +14,10 @@ public class MyApplication extends Application {
 
 	public static MyApplication mContext;
 
+	private static long storeid = 46758;
+	private static StoreEntity currentEntity = new StoreEntity();
+	private static UserEntity userEntity;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -22,8 +27,6 @@ public class MyApplication extends Application {
 		// crashHandler.init(getApplicationContext());
 	}
 
-	private static long storeid = 46758;
-	private static UserEntity userEntity;
 
 	public static long getStoreid() {
 		return storeid;
@@ -43,6 +46,13 @@ public class MyApplication extends Application {
 
 	public static void setUserEntity(UserEntity userEntity) {
 		MyApplication.userEntity = userEntity;
+	}
+
+
+	public static StoreEntity getCurrentEntity() {
+		currentEntity.setStore_id(storeid);
+		currentEntity.setStore_name("本店");
+		return currentEntity;
 	}
 
 }

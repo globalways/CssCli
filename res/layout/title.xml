@@ -35,7 +35,18 @@
             android:singleLine="true"
             android:textColor="#333333"
             android:textSize="@dimen/title_text_size" />
-
+        
+		<!-- add by wyp -->
+        <Button
+            android:id="@+id/btnRight"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/title_height"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:gravity="center_vertical"
+            android:visibility="gone" />
+        <!-- end -->
+        
         <ImageButton
             android:id="@+id/imgBtnRight1"
             android:layout_width="wrap_content"

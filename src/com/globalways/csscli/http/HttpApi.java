@@ -26,6 +26,10 @@ public class HttpApi {
 	public static final String ORDER_CASH_DONE = HOME_URI + "/v2/orders/:oid/cashDone";
 	public static final String ORDER_CANCEL = HOME_URI + "/v2/orders/:oid/storeCancel";
 
+	// add by wyp
+	public static final String STORE_CHILDERN_ALL = HOME_URI + "/v2/merchants/stores/46758/children/all";
+	// end
+	
 	/** 销售统计 */
 	public static final String STATISTICS_SALL = HOME_URI + "/v2/orders/stat";
 	/** 采购统计 */
