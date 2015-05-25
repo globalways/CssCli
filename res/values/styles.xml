@@ -43,6 +43,24 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    
+    
+    <!-- 通用Dialog by wyp -->
+    <style name="CommonDialogTheme" parent="Theme.AlertDialogPro.Material.Light">
+	    <item name="alertDialogProStyle">@style/CommonDialogStyle</item>
+	    <!-- base color -->
+	    <item name="colorControlActivated">@color/base_orange</item>
+	    <!-- buttons -->
+	    <item name="adpButtonBarNeutralButtonStyle">@style/CommonDialogNeutralButton</item>
+	</style>
+    
+    <style name="CommonDialogStyle" parent="AlertDialogPro.Material.Light">
+        <item name="adpLayout">@layout/common_dialog</item>
+    </style>
+    <style name="CommonDialogNeutralButton" parent="Widget.AlertDialogPro.Material.Light.Button">
+        <item name="android:textColor">@color/base_orange</item>
+    </style>
+	<!-- end -->
 
     <style name="EditNumStye">
         <item name="android:digits">0123456789</item>
@@ -65,6 +83,18 @@
         <item name="android:background">@color/selector_btn_blue</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+    
+    <!-- add by wyp -->
+    <style name="BtnOrange">
+        <item name="android:background">@color/selector_btn_orange</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    
+    <style name="BtnGray">
+        <item name="android:background">@color/selector_btn_gray</item>
+        <item name="android:textColor">@color/base_black_333333</item>
+    </style>
+    <!-- end -->
 
     <style name="MainButtonStyle">
         <item name="android:background">@color/selector_main_btn_bg</item>

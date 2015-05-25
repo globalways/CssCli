@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+    
+    <!-- 采购批次号 -->
+    <TextView android:id="@+id/tv_purchaseBatchNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="采购批次号"
+        />
+    <!-- 采购时间 -->
+    <TextView android:id="@+id/tv_purchaseDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="采购时间"
+        />
+    <!-- 采购数量 -->
+    <TextView android:id="@+id/tv_purchaseAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="采购数量"
+        />
+    <!-- 采购总额 -->
+    <TextView android:id="@+id/tv_purchaseTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="采购总额"
+        />
+
+</LinearLayout>

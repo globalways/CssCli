@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/adp_parentPanel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/adp_topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@id/adp_title_template"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:minHeight="?attr/adpTitleMinHeight"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/adp_mtrl_alert_dialog_padding"
+            android:paddingRight="@dimen/adp_mtrl_alert_dialog_padding"
+            android:paddingTop="@dimen/adp_mtrl_alert_dialog_padding_top">
+
+            <ImageView
+                android:id="@id/adp_icon"
+                android:layout_width="32dip"
+                android:layout_height="32dip"
+                android:layout_marginRight="8dip"
+                android:scaleType="fitCenter"
+                android:src="@null" />
+
+            <TextView
+            android:id="@id/adp_alertTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+            
+        </LinearLayout>
+        <!-- If the client uses a customTitle, it will be added here. -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/adp_contentPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:minHeight="48dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@id/adp_scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+		            android:id="@id/adp_message"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:paddingLeft="@dimen/adp_mtrl_alert_dialog_padding"
+		            android:paddingRight="@dimen/adp_mtrl_alert_dialog_padding"
+		            android:paddingTop="@dimen/adp_mtrl_alert_dialog_padding_top" 
+		            android:gravity="center_vertical"
+		            android:layout_marginBottom="30dp"
+		            android:textSize="18sp"
+		            android:textColor="@color/base_black_333333" />
+
+                <View
+                    android:id="@id/adp_textSpacerNoButtons"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/adp_mtrl_alert_dialog_padding_top"
+                    android:visibility="gone" />
+                
+                
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@id/adp_customPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:minHeight="48dp">
+
+        <FrameLayout
+            android:id="@id/adp_custom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@id/adp_buttonPanel"
+        style="?attr/adpButtonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="locale"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="8dp">
+
+        <com.alertdialogpro.material.ButtonCompat
+            android:id="@id/adp_button3"
+            style="?attr/adpButtonBarNeutralButtonStyle"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="invisible"/>
+
+        <!-- <com.alertdialogpro.material.ButtonCompat
+            android:id="@id/adp_button2"
+            style="?attr/adpButtonBarNegativeButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.alertdialogpro.material.ButtonCompat
+            android:id="@id/adp_button1"
+            style="?attr/adpButtonBarPositiveButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" /> -->
+            
+         
+         <Button
+            android:id="@id/adp_button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/selector_btn_gray"
+            android:layout_marginRight="20dp"
+            android:text="取消"
+            android:textColor="@color/base_black_999999" />   
+            
+         <Button
+	          android:id="@id/adp_button1"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:background="@color/selector_btn_orange"
+	          android:text="确认"
+	          android:textColor="@android:color/white" />
+        
+        
+    </LinearLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/adp_parentPanel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_order_bg"
+    android:minWidth="380dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@id/adp_topPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@id/adp_alertTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/adp_contentPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@id/adp_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="30dp"
+            android:textSize="18sp"
+            android:textColor="@color/base_black_333333" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/adp_buttonPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@id/adp_button1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:background="@color/selector_btn_orange"
+            android:text="确认"
+            android:textColor="@android:color/white" />
+        
+        <Button
+            android:id="@id/adp_button2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/selector_btn_gray"
+            android:text="取消"
+            android:textColor="@color/base_black_999999" />
+
+    </LinearLayout> -->
+
+    <!--
+         <LinearLayout
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_order_bg" >
+
+                <TableLayout
+                    android:id="@+id/viewStepOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" >
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center_vertical"
+                            android:text="商品总价："
+                            android:textColor="@color/base_black_333333" />
+
+                        <TextView
+                            android:id="@+id/textTotalPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:textStyle="bold" 
+                            android:gravity="center_vertical"
+                            android:textColor="@android:color/holo_orange_dark" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="优惠："
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editApr"
+                            style="@style/EditNumStye"
+                            android:digits=".0123456789"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:singleLine="true" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="备注："
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            android:id="@+id/editDesc"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:gravity="top|left"
+                            android:singleLine="false" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:gravity="center_vertical" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="80dp"
+                            android:layout_marginRight="20dp"
+                            android:gravity="center_vertical"
+                            android:text="订单总价："
+                            android:textColor="@color/base_black_333333" />
+
+                        <TextView
+                            android:id="@+id/textSignTotalPrice1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="80dp"
+                            android:gravity="center_vertical"
+                            android:text="￥56.00"
+                            android:textColor="@android:color/holo_orange_dark"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal" >
+
+                        <Button
+                            android:id="@+id/btnCancel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="1"
+                            android:background="@color/selector_btn_gray"
+                            android:text="取消"
+                            android:textColor="@color/base_black_999999" />
+
+                        <Button
+                            android:id="@+id/btnNext"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/selector_btn_orange"
+                            android:text="确认订单（下一步）"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+                </TableLayout>
+            </FrameLayout>
+        </ScrollView>
+    </LinearLayout>
+    -->
+
+<!-- </LinearLayout> -->

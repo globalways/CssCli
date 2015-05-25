@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/purchase_search"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <Button
+            style="@style/BtnBlue"
+            android:id="@+id/btnToNewPurchaseRecord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="添加" />
+
+        <!-- 采购清单表 表头 -->
+
+        <include layout="@layout/purchase_fragment_list_item" />
+
+        <ListView
+            android:id="@+id/lv_purchase_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/base_gray_60" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:padding="10dp"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical" >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/base_black_333333"
+                    android:text="系统批次号" />
+
+                <com.globalways.csscli.view.ClearableEditText
+                    style="@style/EditTextStye"
+                    android:id="@+id/et_batch_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/base_black_333333"
+                    android:text="自定批次号" />
+
+                <com.globalways.csscli.view.ClearableEditText
+                    style="@style/EditTextStye"
+                    android:id="@+id/et_out_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/base_black_333333"
+                    android:text="总价" />
+
+                <com.globalways.csscli.view.ClearableEditText
+                    style="@style/EditTextStye"
+                    android:id="@+id/et_total"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:inputType="numberDecimal" />
+            </TableRow>
+        </TableLayout>
+
+        <GridView
+            android:id="@+id/gvPurchaseWebAvatars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="3"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/llNewPurchaseView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_HorizontalSrcollView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent" >
+
+                    <GridView
+                        android:id="@+id/gv_purchase_avatars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:horizontalSpacing="10dp"
+                        android:scrollbars="horizontal" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <RelativeLayout
+                android:id="@+id/rl_goods_list_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" >
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/base_black_333333"
+                    android:textSize="18sp"
+                    android:text="货品列表" />
+
+                <Button
+                    style="@style/BtnBlue"
+                    android:id="@+id/btn_title_new_goods"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="添加货物" />
+            </RelativeLayout>
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/purchase_fragment_goods_list_item" />
+
+            <ListView
+                android:id="@+id/lv_purchase_detail_goods"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="20dp"
+                android:background="@color/base_gray" />
+
+            <Button
+                style="@style/BtnOrange"
+                android:id="@+id/btnSaveNewPurchaseRecord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="保存" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

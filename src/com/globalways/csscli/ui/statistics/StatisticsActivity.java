@@ -19,12 +19,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alertdialogpro.AlertDialogPro.Builder;
 import com.globalways.csscli.R;
 import com.globalways.csscli.entity.StoreEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.StatisticsManager;
 import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.ui.BaseFragmentActivity;
+import com.globalways.csscli.view.CommonDialogManager;
 
 /**
  * 统计
@@ -168,8 +170,13 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 				}
 				
 				
+				Builder builder = CommonDialogManager.createDialogBuilder(context);
+				
+//				commonBuilder.
+				
 				// new & show dialog
-				new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT)
+				//new AlertDialog.Builder(context,AlertDialog.THEME_HOLO_LIGHT)
+				builder
 				.setTitle("选择多个店铺")
 				.setMultiChoiceItems(items,selected, new DialogInterface.OnMultiChoiceClickListener() {
 					

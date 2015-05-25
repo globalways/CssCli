@@ -13,6 +13,7 @@ import com.globalways.csscli.ui.main.MainActivity;
 import com.globalways.csscli.ui.product.ProductActivity;
 import com.globalways.csscli.ui.product.ProductAddNewActivity;
 import com.globalways.csscli.ui.product.ProductScanCodeActivity;
+import com.globalways.csscli.ui.purchase.PurchaseActivity;
 import com.globalways.csscli.ui.settings.AppUpdateActivity;
 import com.globalways.csscli.ui.statistics.StatisticsActivity;
 import com.globalways.csscli.view.ClearableEditText;
@@ -70,6 +71,15 @@ public class UITools {
 		context.startActivity(new Intent(context, StatisticsActivity.class));
 	}
 
+	/**
+	 * 进货渠道管理
+	 * @param context
+	 */
+	public static void jumpPerchaseActivity(Context context){
+		context.startActivity(new Intent(context,PurchaseActivity.class));
+	}
+	
+	
 	/**
 	 * 跳转扫码界面，扫描二维码或条形码
 	 * 

@@ -115,6 +115,7 @@
     </LinearLayout>
 
     <Button
+        style="@style/BtnOrange"
         android:id="@+id/btnSingle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -122,8 +123,7 @@
         android:layout_margin="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:background="@color/selector_btn_orange"
         android:text="去结算"
-        android:textColor="@android:color/white" />
+        />
 
 </LinearLayout>

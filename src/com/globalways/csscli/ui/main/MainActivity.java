@@ -45,7 +45,7 @@ public class MainActivity extends BaseNoTitleActivity implements OnClickListener
 			UITools.jumpCashierActivity(this);
 			break;
 		case R.id.btnPurchaseManager:
-			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			UITools.jumpPerchaseActivity(this);
 			break;
 		case R.id.btnOrderManager:
 			UITools.ToastMsg(this, "正在开发，敬请期待……");

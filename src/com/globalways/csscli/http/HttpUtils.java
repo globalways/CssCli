@@ -132,6 +132,108 @@ public class HttpUtils implements HttpClientDao {
 			}
 		});
 	}
+	
+	
+	
+	/**
+	 * send put request
+	 */
+	public void sendPutRequest(final String url, final long flag, Map<String, Object> params,
+			final HttpClientUtilCallBack<String> httpClientUtilCallBack)
+	{
+		// 组合参数,默认utf-8
+		RequestParams rp = new RequestParams();
+		if (null != params) {
+			for (String key : params.keySet()) {
+				rp.put(key, params.get(key));
+			}
+			MyLog.d(TAG, "post RequestURL = " + url);
+			MyLog.d(TAG, "post RequestParams = " + params.toString());
+		}
+		mHttpUtil.setTimeout(10 * 1000);
+		// 超时时间3秒
+		mHttpUtil.put(url, rp, new AsyncHttpResponseHandler() {
+			
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				String response = null;
+				try {
+					response = new String(arg2, "utf-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					if (null != httpClientUtilCallBack) {
+						httpClientUtilCallBack.onFailure(url, flag, ErrorCode.RESOLVE_EXCEPTION);
+					}
+					return;
+				}
+				MyLog.d(TAG, "PutRequest onSuccess: " + response);
+				if (null != httpClientUtilCallBack) {
+					httpClientUtilCallBack.onSuccess(url, flag, response);
+				}
+				
+			}
+			
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				MyLog.d(TAG, "PutRequest onFailure: " + arg1 + "|" + arg3.getMessage());
+				if (null != httpClientUtilCallBack) {
+					httpClientUtilCallBack.onFailure(url, flag, ErrorCode.EXCEPTION);
+				}
+				
+			}
+		});
+		
+	}
+	
+	public void sendDeleteRequest(final String url, final long flag, Map<String, Object> params,
+			final HttpClientUtilCallBack<String> httpClientUtilCallBack)
+	{
+		MyLog.d(TAG, "delete RequestURL = " + url);
+		// 组合参数,默认utf-8
+		RequestParams rp = new RequestParams();
+		if (null != params) {
+			for (String key : params.keySet()) {
+				rp.put(key, params.get(key));
+			}
+			MyLog.d(TAG, "delete RequestParams = " + params.toString());
+		}
+		// 超时时间3秒
+		mHttpUtil.setTimeout(10 * 1000);
+		mHttpUtil.delete(url, new AsyncHttpResponseHandler() {
+			
+			
+			@Override
+			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+				String response = null;
+				try {
+					response = new String(arg2, "utf-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					if (null != httpClientUtilCallBack) {
+						httpClientUtilCallBack.onFailure(url, flag, ErrorCode.RESOLVE_EXCEPTION);
+					}
+					return;
+				}
+				MyLog.d(TAG, "DeleteRequest onSuccess: " + response);
+				if (null != httpClientUtilCallBack) {
+					httpClientUtilCallBack.onSuccess(url, flag, response);
+				}
+				
+			}
+			
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2, Throwable arg3) {
+				MyLog.d(TAG, "DeleteRequest onFailure: " + arg1 + "|" + arg3.getMessage());
+				if (null != httpClientUtilCallBack) {
+					httpClientUtilCallBack.onFailure(url, flag, ErrorCode.EXCEPTION);
+				}
+				
+			}
+		});
+	}
+	
+	
+	
 
 	/**
 	 * 上传文件和其他数据

@@ -72,7 +72,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_purchase"
-                android:enabled="false"
                 android:text="进货渠道管理" />
 
             <Button

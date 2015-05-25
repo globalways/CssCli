@@ -27,11 +27,19 @@ public class HttpApi {
 	public static final String ORDER_CANCEL = HOME_URI + "/v2/orders/:oid/storeCancel";
 
 	// add by wyp
-	public static final String STORE_CHILDERN_ALL = HOME_URI + "/v2/merchants/stores/46758/children/all";
+	public static final String STORE_CHILDERN_ALL = HOME_URI + "/v2/merchants/stores/:sid/children/all";
 	// end
 	
 	/** 销售统计 */
 	public static final String STATISTICS_SALL = HOME_URI + "/v2/orders/stat";
 	/** 采购统计 */
 	public static final String STATISTICS_BUY = HOME_URI + "/v2/merchants/stores/purchases/stat";
+	
+	public static final String PURCHASES_ALL = HOME_URI + "/v2/merchants/stores/:sid/purchases/all";
+	public static final String PURCHASES_NEW = HOME_URI + "/v2/merchants/stores/:sid/purchases";
+	
+	public static final String SUPPLIERS_ALL = HOME_URI + "/v2/merchants/stores/:sid/suppliers/all";
+	public static final String SUPPLIERS_NEW = HOME_URI + "/v2/merchants/stores/:sid/suppliers";
+	public static final String SUPPLIERS_UPDATE = HOME_URI + "/v2/merchants/stores/:sid/suppliers/:supplierid";
+	public static final String SUPPLIERS_DELETE = HOME_URI + "/v2/merchants/stores/:sid/suppliers/:supplierid";
 }
