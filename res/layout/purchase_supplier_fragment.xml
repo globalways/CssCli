@@ -23,7 +23,9 @@
         <!-- table title -->
         <include layout="@layout/purchase_supplier_list_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical"
             />
         <!-- table data -->
         <ListView 
@@ -32,6 +34,19 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             />
+        
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+                    xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/refreshListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:divider="@color/base_gray"
+                    android:dividerHeight="1px"
+                    android:footerDividersEnabled="false"
+                    android:headerDividersEnabled="false"
+                    android:listSelector="@color/base_gray"
+                    ptr:ptrAnimationStyle="flip" />
         
     </LinearLayout>
     

@@ -7,8 +7,18 @@ package com.globalways.csscli.entity;
  */
 public class PurchaseGoodsEntity {
 	
-	
-	
+	/**
+	 * 批次号
+	 */
+	private String batch_id;
+	/**
+	 * 品牌
+	 */
+	private String product_brand;
+	/**
+	 * 单位
+	 */
+	private String product_unit;
 	/**
 	 * 品名
 	 */
@@ -77,5 +87,23 @@ public class PurchaseGoodsEntity {
 	public boolean equals(Object o) {
 		PurchaseGoodsEntity oEntity = (PurchaseGoodsEntity)o;
 		return this.getQr().equals(oEntity.getQr());
+	}
+	public String getBatch_id() {
+		return batch_id;
+	}
+	public void setBatch_id(String batch_id) {
+		this.batch_id = batch_id;
+	}
+	public String getProduct_brand() {
+		return product_brand;
+	}
+	public void setProduct_brand(String product_brand) {
+		this.product_brand = product_brand;
+	}
+	public String getProduct_unit() {
+		return product_unit;
+	}
+	public void setProduct_unit(String product_unit) {
+		this.product_unit = product_unit;
 	}
 }

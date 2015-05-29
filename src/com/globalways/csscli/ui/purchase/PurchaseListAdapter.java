@@ -1,6 +1,9 @@
 package com.globalways.csscli.ui.purchase;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.globalways.csscli.R;
@@ -54,9 +57,9 @@ public class PurchaseListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.purchase_fragment_list_item, parent, false);
 		}
 		((TextView)convertView.findViewById(R.id.tv_purchaseBatchNumber)).setText(pe.getBatch_id());
-		((TextView)convertView.findViewById(R.id.tv_purchaseDate)).setText(pe.getPurchase_time()+"");
+		((TextView)convertView.findViewById(R.id.tv_purchaseDate)).setText(new SimpleDateFormat("yyyyMMdd").format(Long.valueOf(pe.getPurchase_time() * 1000)));
 		((TextView)convertView.findViewById(R.id.tv_purchaseAmount)).setText(pe.getProducts_count()+"");
-		((TextView)convertView.findViewById(R.id.tv_purchaseTotal)).setText(pe.getPurchase_amount()+"");
+		((TextView)convertView.findViewById(R.id.tv_purchaseTotal)).setText(new DecimalFormat(".00").format((float)pe.getPurchase_amount()/100));
 		
 		return convertView;
 	}

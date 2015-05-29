@@ -11,7 +11,7 @@ public class PurchaseEntity {
 	@Expose
 	private String out_id;
 	@Expose
-	private long products_count;
+	private float products_count;
 	@Expose
 	private long purchase_amount;
 	
@@ -44,10 +44,10 @@ public class PurchaseEntity {
 	public void setOut_id(String out_id) {
 		this.out_id = out_id;
 	}
-	public long getProducts_count() {
+	public float getProducts_count() {
 		return products_count;
 	}
-	public void setProducts_count(long products_count) {
+	public void setProducts_count(float products_count) {
 		this.products_count = products_count;
 	}
 	public long getPurchase_amount() {

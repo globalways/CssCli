@@ -107,15 +107,16 @@ public class PurchaseManager {
 		{
 			sbQrs.append(e.getQr()).append(",");
 			sbCounts.append(e.getAmount()).append(",");
-			sbPrices.append(Float.parseFloat(e.getTotal())*100).append(",");
+			sbPrices.append((long)Float.parseFloat(e.getTotal())*100).append(",");
 			sbSuppliers.append("0").append(",");
 		}
 		
 		
-		params.put("product_qrs", sbQrs.toString());
-		params.put("purchase_counts", sbCounts.toString());
-		params.put("purchase_prices", sbPrices.toString());
-		params.put("purchase_suppliers", sbSuppliers.toString());
+		
+		params.put("product_qrs", sbQrs.toString().substring(0, sbQrs.toString().lastIndexOf(',')));
+		params.put("purchase_counts", sbCounts.toString().substring(0, sbCounts.toString().lastIndexOf(',')));
+		params.put("purchase_prices", sbPrices.toString().substring(0, sbPrices.toString().lastIndexOf(',')));
+		params.put("purchase_suppliers", sbSuppliers.toString().substring(0, sbSuppliers.toString().lastIndexOf(',')));
 		
 		
 		params.put("comment", "可选");
@@ -152,7 +153,12 @@ public class PurchaseManager {
 					}
 				};
 			});
+		}else{
+			// after upload imgs successfully 
+			AddPurchase(params, callBack);
 		}
+		
+		
 	}
 	
 	protected void AddPurchase(HashMap<String, Object> params,
@@ -191,4 +197,51 @@ public class PurchaseManager {
 			});
 		
 	}
+	
+	/**
+	 * 获取单个采购单货品列表 
+	 * @param batch_id
+	 * @param callBack
+	 */
+	public void getPurchaseProducts(String batch_id, final ManagerCallBack<List<PurchaseGoodsEntity>> callBack)
+	{
+		String url = HttpApi.PURCHASES_PRODUCT_LIST.replaceAll(":sid", String.valueOf(String.valueOf(MyApplication.getStoreid())));
+		url = url.replaceFirst(":batchid", batch_id);
+		HttpUtils.getInstance().sendGetRequest(url, 0, null, new HttpClientUtilCallBack<String>() {
+
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						List<PurchaseGoodsEntity> list = new ArrayList<PurchaseGoodsEntity>();
+						list = gson.fromJson(jsonObject.getString(Config.BODY), new TypeToken<List<PurchaseGoodsEntity>>() {
+						}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(list);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code, jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+			
+		});
+	}
+	
 }

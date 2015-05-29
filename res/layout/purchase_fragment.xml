@@ -9,13 +9,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
+        android:padding="10dp"
         android:orientation="vertical" >
-
-        <View
-            android:id="@+id/purchase_search"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
         <Button
             style="@style/BtnBlue"
             android:id="@+id/btnToNewPurchaseRecord"
@@ -26,13 +21,26 @@
 
         <!-- 采购清单表 表头 -->
 
-        <include layout="@layout/purchase_fragment_list_item" />
-
-        <ListView
-            android:id="@+id/lv_purchase_list"
+        <include layout="@layout/purchase_fragment_list_item"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_vertical"
+             />
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+                    xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/refreshListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:divider="@color/base_gray"
+                    android:dividerHeight="1px"
+                    android:footerDividersEnabled="false"
+                    android:headerDividersEnabled="false"
+                    android:listSelector="@color/base_gray"
+                    ptr:ptrAnimationStyle="flip" />
+        
     </LinearLayout>
 
     <View
@@ -115,10 +123,16 @@
             </TableRow>
         </TableLayout>
 
+        <ListView 
+            android:id="@+id/lvPurchaseGoodsFromWeb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
         <GridView
             android:id="@+id/gvPurchaseWebAvatars"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:numColumns="3"
             android:visibility="gone" />
 
@@ -174,7 +188,8 @@
 
             <include
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
                 layout="@layout/purchase_fragment_goods_list_item" />
 
             <ListView
@@ -183,7 +198,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="20dp"
-                android:background="@color/base_gray" />
+                />
 
             <Button
                 style="@style/BtnOrange"
