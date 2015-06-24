@@ -36,10 +36,13 @@ public class HttpApi {
 	public static final String STATISTICS_BUY = HOME_URI + "/v2/merchants/stores/purchases/stat";
 	
 	public static final String PURCHASES_ALL = HOME_URI + "/v2/merchants/stores/:sid/purchases/all";
+	public static final String PURCHASES_GET_LIST = HOME_URI + "/v2/merchants/stores/:sid/purchases";
 	public static final String PURCHASES_NEW = HOME_URI + "/v2/merchants/stores/:sid/purchases";
 	public static final String PURCHASES_PRODUCT_LIST = HOME_URI + "/v2/merchants/stores/:sid/purchases/:batchid/products";
 	
 	public static final String SUPPLIERS_ALL = HOME_URI + "/v2/merchants/stores/:sid/suppliers/all";
+	public static final String SUPPLIERS_GET_LIST = HOME_URI + "/v2/merchants/stores/:sid/suppliers";
+	public static final String SUPPLIER_SINGLE = HOME_URI + "/v2/merchants/stores/:sid/suppliers/:supplierid";
 	public static final String SUPPLIERS_NEW = HOME_URI + "/v2/merchants/stores/:sid/suppliers";
 	public static final String SUPPLIERS_UPDATE = HOME_URI + "/v2/merchants/stores/:sid/suppliers/:supplierid";
 	public static final String SUPPLIERS_DELETE = HOME_URI + "/v2/merchants/stores/:sid/suppliers/:supplierid";

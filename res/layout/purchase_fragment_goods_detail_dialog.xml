@@ -14,10 +14,12 @@
                 android:layout_marginRight="20dp" >
 
                 <TextView
+                    android:id="@+id/tvUnit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:text="数量" />
+                    android:textColor="@color/base_black_333333"
+                    android:text="数量/" />
 
                 <!-- <EditText
                     android:id="@+id/etGoodsCount"
@@ -44,16 +46,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
+                    android:textColor="@color/base_black_333333"
                     android:text="采购价" />
 
                 <com.globalways.csscli.view.ClearableEditText
                     style="@style/EditTextStye"
-                    android:id="@+id/etGoodsTotal"
+                    android:id="@+id/etGoodsPrice"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:digits="0123456789."
                     android:inputType="number"
                     android:hint="单位（元）"
+                    />
+            </TableRow>
+            
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/base_black_333333"
+                    android:text="供应商" />
+
+                <TextView
+                    style="@style/EditTextStye"
+                    android:id="@+id/tvSelectSupplier"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/base_black_333333"
                     />
             </TableRow>
 

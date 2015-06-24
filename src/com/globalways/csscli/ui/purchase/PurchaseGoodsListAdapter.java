@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.entity.PurchaseGoodsEntity;
+import com.globalways.csscli.tools.Tool;
 
 import android.content.Context;
 import android.util.Log;
@@ -57,15 +58,17 @@ public class PurchaseGoodsListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.purchase_fragment_goods_list_item, parent, false);
 			holder.tvGoodsName = ((TextView) convertView.findViewById(R.id.goods_name));
 			holder.tvGoodsCounts = ((TextView) convertView.findViewById(R.id.goods_counts));
-			holder.tvGoodsTotal = ((TextView) convertView.findViewById(R.id.goods_total));
+			holder.tvGoodsPrice = ((TextView) convertView.findViewById(R.id.goods_price));
+			holder.tvGoodsSupplier = ((TextView) convertView.findViewById(R.id.goods_supplier));
 			convertView.setTag(holder);
 			
 		}else{
 			holder = (ViewHolder)convertView.getTag();
 		}
-		holder.tvGoodsCounts.setText(String.valueOf(pge.getAmount()));
+		holder.tvGoodsCounts.setText(String.valueOf(pge.getPurchase_count()));
 		holder.tvGoodsName.setText(pge.getProduct_name());
-		holder.tvGoodsTotal.setText(pge.getTotal());
+		holder.tvGoodsPrice.setText(Tool.fenToYuan(pge.getPurchase_price()));
+		holder.tvGoodsSupplier.setText(pge.getSupplier() == null? "暂无" :pge.getSupplier().getName());
 		return convertView;
 	}
 	
@@ -73,7 +76,8 @@ public class PurchaseGoodsListAdapter extends BaseAdapter {
 	{
 		public TextView tvGoodsName;
 		public TextView tvGoodsCounts;
-		public TextView tvGoodsTotal;
+		public TextView tvGoodsPrice;
+		public TextView tvGoodsSupplier;
 	}
 
 }

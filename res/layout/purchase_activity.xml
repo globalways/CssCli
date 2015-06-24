@@ -23,10 +23,11 @@
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
                 android:checked="true"
-                android:drawableTop="@drawable/icon_sell"
+                android:drawableTop="@drawable/icon_purchase_tab"
                 android:padding="20dp"
+                android:gravity="center"
                 android:text="采购"
-                android:textColor="#333333" />
+                android:textColor="@color/base_black_333333" />
 
             <View
                 android:layout_width="match_parent"
@@ -39,10 +40,11 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
-                android:drawableTop="@drawable/icon_buy"
+                android:drawableTop="@drawable/icon_supplier"
                 android:padding="20dp"
+                android:gravity="center"
                 android:text="供应商"
-                android:textColor="#333333" />
+                android:textColor="@color/base_black_333333" />
         </RadioGroup>
 
         <View

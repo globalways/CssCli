@@ -7,6 +7,14 @@ package com.globalways.csscli.entity;
  */
 public class PurchaseGoodsEntity {
 	
+	
+	
+	
+	private int supplier_id;
+	/**
+	 * 供应商
+	 */
+	private SupplierEntity supplier;
 	/**
 	 * 批次号
 	 */
@@ -27,31 +35,27 @@ public class PurchaseGoodsEntity {
 	/**
 	 * 二维码
 	 */
-	private String qr;
+	private String product_qr;
 	/**
 	 * 单价
 	 */
-	private long unit_price; //分
+	private long purchase_price; //分
 	
 	/**
 	 * 数量
 	 */
-	private float amount;
+	private String purchase_count;
 	
-	/**
-	 * 总价
-	 */
-	private String total;
 	
 	public PurchaseGoodsEntity() {
 		// TODO Auto-generated constructor stub
 	}
 	public PurchaseGoodsEntity(PurchaseGoodsEntity entity) {
-		setAmount(entity.getAmount());
+		setPurchase_count(entity.getPurchase_count());
 		setProduct_name(entity.getProduct_name());
-		setQr(entity.getQr());
-		setTotal(entity.getTotal());
-		setUnit_price(entity.getUnit_price());
+		setProduct_qr(entity.getProduct_qr());
+		setPurchase_price(entity.getPurchase_price());
+		setPurchase_price(entity.getPurchase_price());
 	}
 	public String getProduct_name() {
 		return product_name;
@@ -59,34 +63,28 @@ public class PurchaseGoodsEntity {
 	public void setProduct_name(String product_name) {
 		this.product_name = product_name;
 	}
-	public String getQr() {
-		return qr;
+	public String getProduct_qr() {
+		return product_qr;
 	}
-	public void setQr(String qr) {
-		this.qr = qr;
+	public void setProduct_qr(String product_qr) {
+		this.product_qr = product_qr;
 	}
-	public long getUnit_price() {
-		return unit_price;
+	public long getPurchase_price() {
+		return purchase_price;
 	}
-	public void setUnit_price(long unit_price) {
-		this.unit_price = unit_price;
+	public void setPurchase_price(long purchase_price) {
+		this.purchase_price = purchase_price;
 	}
-	public String getTotal() {
-		return total;
+	public String getPurchase_count() {
+		return purchase_count;
 	}
-	public void setTotal(String total) {
-		this.total = total;
-	}
-	public float getAmount() {
-		return amount;
-	}
-	public void setAmount(float amount) {
-		this.amount = amount;
+	public void setPurchase_count(String purchase_count) {
+		this.purchase_count = purchase_count;
 	}
 	@Override
 	public boolean equals(Object o) {
 		PurchaseGoodsEntity oEntity = (PurchaseGoodsEntity)o;
-		return this.getQr().equals(oEntity.getQr());
+		return this.getProduct_qr().equals(oEntity.getProduct_qr());
 	}
 	public String getBatch_id() {
 		return batch_id;
@@ -105,5 +103,17 @@ public class PurchaseGoodsEntity {
 	}
 	public void setProduct_unit(String product_unit) {
 		this.product_unit = product_unit;
+	}
+	public SupplierEntity getSupplier() {
+		return supplier;
+	}
+	public void setSupplier(SupplierEntity supplier) {
+		this.supplier = supplier;
+	}
+	public int getSupplier_id() {
+		return supplier_id;
+	}
+	public void setSupplier_id(int supplier_id) {
+		this.supplier_id = supplier_id;
 	}
 }

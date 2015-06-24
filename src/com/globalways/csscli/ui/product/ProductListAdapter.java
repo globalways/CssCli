@@ -111,7 +111,7 @@ public class ProductListAdapter extends BaseAdapter {
 		mItemView.productTag.setText(list.get(position).getProduct_tag());
 		mItemView.productSales.setText("销量: " + ((int) list.get(position).getSales_cnt()) + " "
 				+ list.get(position).getProduct_unit());
-		mItemView.productPrice.setText("￥ " + list.get(position).getProduct_price() / 100.00 + " / "
+		mItemView.productPrice.setText("￥ " + list.get(position).getProduct_retail_price() / 100.00 + " / "
 				+ list.get(position).getProduct_unit() + "  ");
 		return convertView;
 	}

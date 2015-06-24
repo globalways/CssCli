@@ -112,7 +112,7 @@ public class ProductManager {
 		// params.put("search", search);
 		params.put("size", PAGE_SIZE);
 		params.put("page", page);
-		HttpUtils.getInstance().sendGetRequest(HttpApi.PRODUCT_GET_LIST.replaceFirst(":sid", String.valueOf(storeid)),
+		HttpUtils.getInstance().sendGetRequest(HttpApi.PRODUCT_GET_LIST.replaceFirst(":sid", String.valueOf(storeid))+"?orderby=-created",
 				1, params, new HttpClientUtilCallBack<String>() {
 					@Override
 					public void onSuccess(String url, long flag, String returnContent) {
@@ -170,8 +170,12 @@ public class ProductManager {
 	 *            条形码，选填
 	 * @param product_desc
 	 *            商品描述，可选
-	 * @param product_price
+	 * @param product_retail_price
 	 *            商品价格，单位：分，必填
+	 * @param product_retail_apr
+	 * 			      商品折扣
+	 * @param product_original_price
+	 *            商品原价
 	 * @param product_unit
 	 *            商品单位，必填
 	 * @param stock_cnt
@@ -186,7 +190,7 @@ public class ProductManager {
 	 */
 	public void updateOrAdd(final boolean isAdd, ArrayList<GalleryPicEntity> selectedImageList,
 			final ArrayList<String> productPic, String product_name, String product_brand, final String product_qr,
-			String product_bar, String product_desc, int product_price, String product_unit, double stock_cnt,
+			String product_bar, String product_desc, long product_retail_price,String product_retail_apr,long product_original_price,int product_type, String product_unit, double stock_cnt,
 			boolean is_recommend, boolean status, String product_tag, final ManagerCallBack<String> callBack) {
 		addProductParams = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {
@@ -202,7 +206,10 @@ public class ProductManager {
 		if (product_desc != null && !product_desc.isEmpty()) {
 			addProductParams.put("product_desc", product_desc);
 		}
-		addProductParams.put("product_price", product_price);
+		addProductParams.put("product_retail_price", product_retail_price);
+		addProductParams.put("product_original_price", product_original_price);
+		addProductParams.put("product_retail_apr", product_retail_apr);
+		addProductParams.put("product_type", product_type);
 		if (product_unit == null || product_unit.isEmpty()) {
 			return;
 		}

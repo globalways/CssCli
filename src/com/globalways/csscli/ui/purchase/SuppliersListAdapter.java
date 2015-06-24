@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 public class SuppliersListAdapter extends BaseAdapter {
 
+	private static final int INIT_PAGE = 1;
+	private int next_page = INIT_PAGE;
 	private List<SupplierEntity> list;
 	private LayoutInflater mInflater;
 	private Context context;
@@ -26,9 +28,15 @@ public class SuppliersListAdapter extends BaseAdapter {
 		list = new ArrayList<SupplierEntity>();
 	}
 	
-	public void updateData(List<SupplierEntity> list)
+	public void updateData(boolean isInit, List<SupplierEntity> list)
 	{
-		this.list = list;
+		if(isInit)
+		{
+			this.list = list;
+		}else{
+			this.list.addAll(list);
+		}
+		next_page++;
 		notifyDataSetChanged();
 	}
 	@Override
@@ -37,7 +45,7 @@ public class SuppliersListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public SupplierEntity getItem(int position) {
 		return list.get(position);
 	}
 
@@ -60,6 +68,12 @@ public class SuppliersListAdapter extends BaseAdapter {
 		((TextView) convertView.findViewById(R.id.supplier_address)).setText(se.getAddress());
 			
 		return convertView;
+	}
+
+	public int getNext_page(boolean isReload) {
+		if(isReload)
+			this.next_page = INIT_PAGE;
+		return next_page;
 	}
 
 }

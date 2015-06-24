@@ -50,10 +50,57 @@ public class PurchaseManager {
 	 * @param store_id
 	 * @param callBack
 	 */
-	public void getPurchaseList(long store_id, final ManagerCallBack<List<PurchaseEntity>> callBack )
+	public void getPurchaseList(final ManagerCallBack<List<PurchaseEntity>> callBack )
 	{
-		String url = HttpApi.PURCHASES_ALL.replaceAll(":sid", String.valueOf(store_id));
+		String url = HttpApi.PURCHASES_ALL.replaceAll(":sid", String.valueOf( MyApplication.getStoreid()));
 		HttpUtils.getInstance().sendGetRequest(url, 0, null, new HttpClientUtilCallBack<String>() {
+
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						List<PurchaseEntity> list = new ArrayList<PurchaseEntity>();
+						list = gson.fromJson(jsonObject.getString(Config.BODY), new TypeToken<List<PurchaseEntity>>() {
+						}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(list);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code, jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+			
+		});
+	}
+	/**
+	 * 获取采购清单list
+	 * @param store_id
+	 * @param callBack
+	 */
+	public void getPurchaseList(int page,int pagesize, final ManagerCallBack<List<PurchaseEntity>> callBack )
+	{
+		String url = HttpApi.PURCHASES_GET_LIST.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()));
+		StringBuilder sb = new StringBuilder(url);
+		sb.append("?size=").append(pagesize)
+		.append("&page=").append(page).append("&orderby=-created");
+		HttpUtils.getInstance().sendGetRequest(sb.toString(), 0, null, new HttpClientUtilCallBack<String>() {
 
 			@Override
 			public void onSuccess(String url, long flag, String returnContent) {
@@ -105,10 +152,10 @@ public class PurchaseManager {
 		
 		for(PurchaseGoodsEntity e : goods)
 		{
-			sbQrs.append(e.getQr()).append(",");
-			sbCounts.append(e.getAmount()).append(",");
-			sbPrices.append((long)Float.parseFloat(e.getTotal())*100).append(",");
-			sbSuppliers.append("0").append(",");
+			sbQrs.append(e.getProduct_qr()).append(",");
+			sbCounts.append(e.getPurchase_count()).append(",");
+			sbPrices.append(e.getPurchase_price()).append(",");
+			sbSuppliers.append(e.getSupplier().getId()).append(",");
 		}
 		
 		

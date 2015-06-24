@@ -22,6 +22,10 @@ import com.globalways.csscli.ui.BaseFragmentActivity;
  */
 public class PurchaseActivity extends BaseFragmentActivity implements OnClickListener, OnCheckedChangeListener {
 
+	/**
+	 * default page size
+	 */
+	public static final int DEFAUL_PAGE_SIZE = 12;
 	private TextView textCenter;
 	private ImageButton imgBtnLeft;
 	private View layoutContainer;

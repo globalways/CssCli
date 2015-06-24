@@ -44,6 +44,11 @@
         <item name="android:windowNoTitle">true</item>
     </style>
     
+    <!-- 二级Dialog动画 -->
+    <style name="AnimationSecondLevelDialog">
+        <item name="android:windowEnterAnimation">@anim/push_left_in</item>
+        <item name="android:windowExitAnimation">@anim/push_right_out</item>
+    </style>
     
     <!-- 通用Dialog by wyp -->
     <style name="CommonDialogTheme" parent="Theme.AlertDialogPro.Material.Light">

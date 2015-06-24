@@ -83,6 +83,44 @@
                             android:layout_weight="1"
                             android:maxLength="5" />
                     </TableRow>
+                    
+                    <!-- add by wyp -->
+	                <TableRow
+	                    android:layout_width="match_parent"
+	                    android:layout_height="wrap_content" >
+	
+	                    <TextView
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginRight="20dp"
+	                        android:text="原价*"
+	                        android:textColor="@color/base_black_333333" />
+	
+	                    <com.globalways.csscli.view.ClearableEditText
+	                        android:id="@+id/editOriginalPrice"
+	                        style="@style/EditNumStye"
+	                        android:layout_width="0dp"
+	                        android:layout_height="wrap_content"
+	                        android:layout_weight="1"
+	                        android:maxLength="20" />
+	
+	                    <TextView
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginLeft="20dp"
+	                        android:text="折扣"
+	                        android:textColor="@color/base_black_333333" />
+	
+	                    <com.globalways.csscli.view.ClearableEditText
+	                        android:id="@+id/editRetailApr"
+	                        style="@style/EditNumStye"
+	                        android:layout_width="0dp"
+	                        android:layout_height="wrap_content"
+	                        android:layout_weight="1"
+	                        android:digits=".0123456789"
+	                        android:maxLength="5" />
+	                </TableRow>
+	                <!-- end -->
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -102,13 +140,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:maxLength="20"
+                            android:digits=".1234567890"
                             android:text="0" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:text=" 分/ "
+                            android:text="计量单位"
                             android:textColor="@color/base_black_333333" />
 
                         <com.globalways.csscli.view.ClearableEditText
@@ -164,7 +203,9 @@
 
                     <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -201,6 +242,45 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:maxLength="20" />
+                    </TableRow>
+                    
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="*类型"
+                            android:textColor="@color/base_black_333333" />
+
+                        <TextView
+		                    style="@style/EditTextStye"
+		                    android:id="@+id/editProductType"
+		                    android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+		                    android:textSize="18sp"
+		                    android:textColor="@color/base_black_333333"
+		                    />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:visibility="invisible"
+                            android:text="类型"
+                            android:textColor="@color/base_black_333333" />
+
+                        <com.globalways.csscli.view.ClearableEditText
+                            style="@style/EditNumStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:visibility="invisible"
+                            android:focusable="true"
                             android:maxLength="20" />
                     </TableRow>
 
@@ -255,7 +335,8 @@
                             android:layout_weight="1"
                             android:gravity="top|left"
                             android:maxLength="240"
-                            android:singleLine="false" />
+                            android:inputType="textMultiLine"
+                            />
                     </TableRow>
 
                     <TableRow

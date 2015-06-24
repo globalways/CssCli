@@ -181,7 +181,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 			new PicassoImageLoader(getActivity()).showImage(productEntity.getProduct_avatar(), R.drawable.logo,
 					R.drawable.logo, imageProductAva);
 			textProductName.setText(productEntity.getProduct_name());
-			textProductPrice.setText("￥ " + productEntity.getProduct_price() / 100.00 + " / "
+			textProductPrice.setText("￥ " + productEntity.getProduct_retail_price() / 100.00 + " / "
 					+ productEntity.getProduct_unit() + "  ");
 		}
 	}

@@ -9,16 +9,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
-        android:padding="10dp"
         android:orientation="vertical" >
-        <Button
-            style="@style/BtnBlue"
-            android:id="@+id/btnToNewPurchaseRecord"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="添加" />
-
+        
         <!-- 采购清单表 表头 -->
 
         <include layout="@layout/purchase_fragment_list_item"
@@ -26,13 +18,65 @@
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_vertical"
+            android:visibility="gone"
              />
+        
+        <LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="@dimen/table_title_height"
+		    android:paddingTop="5dp"
+		    android:paddingBottom="5dp"
+		    android:background="@color/base_gray"
+		    android:orientation="horizontal" >
+		    
+		    <!-- 采购批次号 -->
+		    <TextView
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_weight="1.5"
+		        android:textColor="@color/base_black_333333"
+		        android:gravity="center"
+		        android:text="采购批次号"
+		        />
+		    <!-- 采购时间 -->
+		    <TextView
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1.2"
+		        android:layout_gravity="center_vertical"
+		        android:textColor="@color/base_black_333333"
+		        android:gravity="center"
+		        android:text="采购时间"
+		        />
+		    <!-- 采购数量 -->
+		    <TextView
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:layout_gravity="center_vertical"
+		        android:gravity="center"
+		        android:textColor="@color/base_black_333333"
+		        android:text="采购数量"
+		        />
+		    <!-- 采购总额 -->
+		    <TextView
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:layout_gravity="center_vertical"
+		        android:gravity="center"
+		        android:textColor="@color/base_black_333333"
+		        android:text="采购总额"
+		        />
+		</LinearLayout>
 
         <com.handmark.pulltorefresh.library.PullToRefreshListView
                     xmlns:ptr="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/refreshListView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:clickable="false"
                     android:divider="@color/base_gray"
                     android:dividerHeight="1px"
@@ -40,6 +84,46 @@
                     android:headerDividersEnabled="false"
                     android:listSelector="@color/base_gray"
                     ptr:ptrAnimationStyle="flip" />
+         <LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="@dimen/table_subtitle_height"
+		    android:background="@color/base_gray"
+		    android:orientation="horizontal" >
+		    
+		    <TextView
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_vertical"
+		        android:layout_weight="1.5"
+		        android:textColor="@color/base_black_333333"
+		        android:gravity="right"
+		        android:text="总数："
+		        />
+		    <TextView
+		        android:id="@+id/tvPurchaseCounts"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1.2"
+		        android:gravity="start"
+		        android:textColor="@color/base_btn_orange"
+		        android:text="0"
+		        />
+		    <TextView
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:visibility="invisible"
+		        />
+		    <TextView android:id="@+id/btnToNewPurchaseRecord"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="1"
+		        android:gravity="center"
+		        android:background="@color/base_btn_blue"
+                android:textColor="@android:color/white"
+                android:text="新增"
+		        />
+		</LinearLayout>
         
     </LinearLayout>
 
@@ -99,7 +183,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
             </TableRow>
-
 
             <TableRow
                 android:layout_width="match_parent"
@@ -183,7 +266,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="添加货物" />
+                    android:text="扫描货物" />
             </RelativeLayout>
 
             <include

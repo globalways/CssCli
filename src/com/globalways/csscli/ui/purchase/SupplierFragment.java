@@ -25,12 +25,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SupplierFragment extends Fragment implements OnClickListener,OnItemClickListener,OnRefreshListener<ListView> {
 
 	private View fragmentView;
-	private Button btnToNewSupplier, btnSaveSupplier, btnToDeleteSupplier;
+	private Button btnSaveSupplier, btnToDeleteSupplier;
+	private TextView btnToNewSupplier, tvSupplierCounts;
 	/**
 	 * suppliers list
 	 */
@@ -38,7 +40,7 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 	private AlertDialog mCommonProccesDialog;
 	private PullToRefreshListView refreshListView;
 	private SuppliersListAdapter mSuppliersListAdapter;
-	private EditText etSupplierName, etContactName, etContactPhone, etSupplierAddress, etComment;
+	private EditText etSupplierName, etContactName, etContactPhone, etSupplierAddress, etZipCode, etBank, etBankUser, etBankCard, etHomePage, etComment;
 	/**
 	 * current suppliers list
 	 */
@@ -50,14 +52,15 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 			Bundle savedInstanceState) {
 		fragmentView = inflater.inflate(R.layout.purchase_supplier_fragment, container, false);
 		initView();
-		initData();
+		refreshListView.setRefreshing();
+		loadSuppliers(true);
 		return fragmentView;
 	}
 	
 	private void initView()
 	{
 		//Buttons
-		btnToNewSupplier = (Button) fragmentView.findViewById(R.id.btnToNewSupplier);
+		btnToNewSupplier = (TextView) fragmentView.findViewById(R.id.btnToNewSupplier);
 		btnToNewSupplier.setOnClickListener(this);
 		btnSaveSupplier = (Button) fragmentView.findViewById(R.id.btnSaveSupplier);
 		btnSaveSupplier.setOnClickListener(this);
@@ -69,7 +72,13 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 		etContactName = (EditText) fragmentView.findViewById(R.id.etContactsName);
 		etContactPhone	= (EditText) fragmentView.findViewById(R.id.etContactsPhone);
 		etSupplierAddress = (EditText) fragmentView.findViewById(R.id.etSupplierAddress);
-		
+		etZipCode = (EditText) fragmentView.findViewById(R.id.etZipCode);
+		etBank = (EditText) fragmentView.findViewById(R.id.etBank);
+		etBankUser = (EditText) fragmentView.findViewById(R.id.etBankUser);
+		etBankCard = (EditText) fragmentView.findViewById(R.id.etBankCard);
+		etHomePage = (EditText) fragmentView.findViewById(R.id.etHomePage);
+		//TextView
+		tvSupplierCounts = (TextView) fragmentView.findViewById(R.id.tvSupplierCounts);
 		
 		//ListView
 		refreshListView = (PullToRefreshListView) fragmentView.findViewById(R.id.refreshListView);
@@ -85,15 +94,17 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 		mCommonProccesDialog = CommonDialogManager.createProgressDialog(getActivity());
 	}
 	
-	private void initData()
+	private void loadSuppliers(final boolean isRefresh)
 	{
-		SupplierManager.getInstance().loadSuppliers(new ManagerCallBack<List<SupplierEntity>>() {
+		SupplierManager.getInstance().loadSuppliers(mSuppliersListAdapter.getNext_page(isRefresh),PurchaseActivity.DEFAUL_PAGE_SIZE,
+				new ManagerCallBack<List<SupplierEntity>>() {
 
 			@Override
 			public void onSuccess(List<SupplierEntity> returnContent) {
 				super.onSuccess(returnContent);
 				currentList = returnContent;
-				mSuppliersListAdapter.updateData(returnContent);
+				mSuppliersListAdapter.updateData(isRefresh,returnContent);
+				tvSupplierCounts.setText(String.valueOf(mSuppliersListAdapter.getCount()));
 				refreshListView.onRefreshComplete();
 			}
 
@@ -126,6 +137,11 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 		entity.setAddress(etSupplierAddress.getText().toString());
 		entity.setContact(etContactName.getText().toString());
 		entity.setTel(etContactPhone.getText().toString());
+		entity.setZip_code(Long.parseLong(etZipCode.getText().toString().isEmpty()?"0":etZipCode.getText().toString()));
+		entity.setBank(etBank.getText().toString());
+		entity.setBank_user(etBankUser.getText().toString());
+		entity.setBank_card(etBankCard.getText().toString());
+		entity.setHome_page(etHomePage.getText().toString());
 		entity.setComment(etComment.getText().toString());
 		mCommonProccesDialog.show();
 		SupplierManager.getInstance().saveSupplier(entity, new ManagerCallBack<String>() {
@@ -177,6 +193,11 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 		etContactPhone.setText(entity.getTel());
 		etSupplierAddress.setText(entity.getAddress());
 		etSupplierName.setText(entity.getName());
+		etZipCode.setText(String.valueOf(entity.getZip_code() == 0?"":entity.getZip_code()));
+		etBank.setText(entity.getBank());
+		etBankUser.setText(entity.getBank_user());
+		etBankCard.setText(entity.getBank_card());
+		etHomePage.setText(entity.getHome_page());
 		currentEntity = entity;
 		
 		btnToDeleteSupplier.setVisibility(View.VISIBLE);
@@ -189,6 +210,11 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 		etContactPhone.setText("");
 		etSupplierAddress.setText("");
 		etSupplierName.setText("");
+		etZipCode.setText("");
+		etBank.setText("");
+		etBankUser.setText("");
+		etBankCard.setText("");
+		etHomePage.setText("");
 		btnToDeleteSupplier.setVisibility(View.GONE);
 		currentEntity = null;
 	}
@@ -217,12 +243,12 @@ public class SupplierFragment extends Fragment implements OnClickListener,OnItem
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		if(null != currentList && currentList.size() != 0)
-			detailEntity(currentList.get(position-1));
+			detailEntity(mSuppliersListAdapter.getItem(position-1));
 	}
 
 	@Override
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		initData();
+		loadSuppliers(refreshListView.isHeaderShown());
 	}
 
 }

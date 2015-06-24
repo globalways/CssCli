@@ -1,13 +1,24 @@
 package com.globalways.csscli.tools;
 
 import android.annotation.SuppressLint;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Tool {
 
+	/**
+	 * 人民币元分进制
+	 */
+	public final static int FENYUAN = 100;
+	/**
+	 * 零售折扣小数点位数
+	 */
+	public final static int RETAIL_APR_SCALE = 2;
 	/** 是否已出现异常 **/
 	public static boolean IS_ERROR = false;
 
@@ -75,6 +86,9 @@ public class Tool {
 		}
 	}
 	
+	////////////////////////////////  date time ///////////////////////////////////////////////////////
+	
+	
 	/**
 	 * 产生进货单批次号
 	 * @author wyp
@@ -93,5 +107,139 @@ public class Tool {
 		StringBuilder sb = new StringBuilder(new SimpleDateFormat("yyyyMMdd").format(todayStart.getTime()));
 		sb.append(now.getTimeInMillis() - todayStart.getTimeInMillis());
 		return sb.toString();
+	}
+	
+	/**
+	 * 格式化输出日期
+	 * @param datetime long型时间
+	 * @return
+	 *      格式化后的字符串
+	 */
+	@SuppressLint("SimpleDateFormat")
+	public static String formatDate(long datetime)
+	{
+		return new SimpleDateFormat("yyyy-MM-dd").format(datetime);
+	}
+	
+	/**
+	 * 格式化 人民币元
+	 * @param 
+	 * 		yuan 人民币元
+	 * @return
+	 * 		返回两位小数的{@link String}<br />example: formatYuan("124.315") == "124.32"
+	 */
+	public static String formatYuan(String yuan)
+	{
+		return new BigDecimal(yuan).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+	}
+	
+	/**
+	 * 分转元,保留小数点后两位,四舍五入
+	 * @author wyp
+	 */
+	public static String fenToYuan(long fen)
+	{
+		return Tool.div(String.valueOf(fen), String.valueOf(FENYUAN), 2);
+	}
+	/**
+	 * 分转元
+	 * @author wyp
+	 */
+	public static float fenToYuanFloat(long fen)
+	{
+		return Float.parseFloat(fenToYuan(fen));
+	}
+	/**
+	 * 元转分
+	 * @param yuan
+	 * @return long型的分
+	 */
+	public static long yuanToFen(String yuan)
+	{
+		return Tool.mulAsLong(yuan, String.valueOf(100));
+	}
+	
+	/**
+	 * 精确浮点乘法计算
+	 * @param v1 参数1
+	 * @param v2 参数2
+	 * @return String类型的结果
+	 */
+	public static String mul(String v1, String v2)
+	{ 
+		BigDecimal b1 = new BigDecimal(v1); 
+		BigDecimal b2 = new BigDecimal(v2); 
+		return String.valueOf(b1.multiply(b2)); 
+	}
+	/**
+	 * 精确浮点乘法计算
+	 * @param v1 参数1
+	 * @param v2 参数2
+	 * @return String类型的结果
+	 */
+	public static long mulAsLong(String v1, String v2)
+	{ 
+		BigDecimal b1 = new BigDecimal(v1); 
+		BigDecimal b2 = new BigDecimal(v2); 
+		return b1.multiply(b2).longValue(); 
+	}
+	
+	/** 
+	* 提供（相对）精确的除法运算。当发生除不尽的情况时，由scale参数指 定精度，以后的数字四舍五入。 
+	* 
+	* @param v1 
+	*            被除数 
+	* @param v2 
+	*            除数 
+	* @param scale 
+	*            表示表示需要精确到小数点以后几位。 
+	* @return 两个参数的商 
+	*/ 
+	public static String div(String v1, String v2, int scale) { 
+		if (scale < 0) { 
+		throw new IllegalArgumentException( 
+		"The scale must be a positive integer or zero"); 
+		} 
+		BigDecimal divider = new BigDecimal(v1); 
+		BigDecimal divided = new BigDecimal(v2); 
+		return String.valueOf(divider.divide(divided, scale, BigDecimal.ROUND_HALF_UP)); 
+	}
+	
+	/** 
+	   * 提供精确的减法运算 
+	   * @param v1 
+	   * @param v2 
+	   * @return 两个参数数学差，以字符串格式返回 
+	   */  
+	  public static String subtract(String v1, String v2)  
+	  {  
+	      BigDecimal b1 = new BigDecimal(v1);  
+	      BigDecimal b2 = new BigDecimal(v2);  
+	      return b1.subtract(b2).toString();  
+	  }  
+	  
+	  /** 
+	   * 提供精确的加法运算 
+	   * @param v1   
+	   * @param v2 
+	   * @return 两个参数数学加和，以字符串格式返回 
+	   */  
+	  public static String add(String v1, String v2)  
+	  {  
+	      BigDecimal b1 = new BigDecimal(v1);  
+	      BigDecimal b2 = new BigDecimal(v2);  
+	      return b1.add(b2).toString();  
+	  }  
+	
+	/**
+	 * 比较两个数大小
+	 * @param first 第一个参数
+	 * @param second 第二个参数
+	 * @return 1 if first > second, -1 if first < second, 0 if first == second.
+
+	 */
+	public static int compare(String first, String second)
+	{
+		return new BigDecimal(first).compareTo(new BigDecimal(second));
 	}
 }

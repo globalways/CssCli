@@ -72,6 +72,92 @@ public class SupplierManager {
 			}
 		});
 	}
+	public void loadSuppliers(int page, int pagesize, final ManagerCallBack<List<SupplierEntity>> callBack)
+	{
+		String url  = HttpApi.SUPPLIERS_GET_LIST.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()));
+		StringBuilder sb = new StringBuilder(url)
+		.append("?page=").append(page)
+		.append("&size=").append(pagesize);
+		HttpUtils.getInstance().sendGetRequest(sb.toString(), 0, null, new HttpClientUtilCallBack<String>() {
+
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						List<SupplierEntity> list = new ArrayList<SupplierEntity>();
+						list = gson.fromJson(jsonObject.getString(Config.BODY), new TypeToken<List<SupplierEntity>>() {
+						}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(list);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code, jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+		});
+	}
+	
+	/**
+	 * get single supplier info by given supplier id
+	 * @param supplierid
+	 * @param callback
+	 */
+	public void getSupplier(int supplierid,final ManagerCallBack<SupplierEntity>  callBack)
+	{
+		String url  = HttpApi.SUPPLIER_SINGLE.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()))
+		.replaceFirst(":supplierid", String.valueOf(supplierid));
+		HttpUtils.getInstance().sendGetRequest(url, 0, null, new HttpClientUtilCallBack<String>() {
+
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						SupplierEntity supplier = new SupplierEntity();
+						supplier = gson.fromJson(jsonObject.getString(Config.BODY), new TypeToken<SupplierEntity>() {
+						}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(supplier);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code, jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+		});
+	}
 	
 	/**
 	 * save or update supplier

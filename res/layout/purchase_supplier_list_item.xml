@@ -9,7 +9,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center_vertical"
+        android:gravity="center|center_vertical"
+        android:textColor="@color/base_black_333333"
         android:text="供应商"
         />
     
@@ -18,7 +19,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center_vertical"
+        android:gravity="center|center_vertical"
+        android:textColor="@color/base_black_333333"
         android:text="联系人"
         />
     
@@ -27,7 +29,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center_vertical"
+        android:gravity="center|center_vertical"
+        android:textColor="@color/base_black_333333"
         android:text="联系电话"
         />
     
@@ -36,7 +39,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center_vertical"
+        android:gravity="center|center_vertical"
+        android:textColor="@color/base_black_333333"
         android:text="供应商地址"
         />
 

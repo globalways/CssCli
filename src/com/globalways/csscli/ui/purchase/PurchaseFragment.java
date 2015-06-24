@@ -9,9 +9,12 @@ import com.globalways.csscli.R;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.entity.PurchaseEntity;
 import com.globalways.csscli.entity.PurchaseGoodsEntity;
+import com.globalways.csscli.entity.SupplierEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.ProductManager;
 import com.globalways.csscli.http.manager.PurchaseManager;
+import com.globalways.csscli.http.manager.SupplierManager;
+import com.globalways.csscli.tools.InputVali;
 import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.Tool;
 import com.globalways.csscli.ui.UITools;
@@ -44,11 +47,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AutoCompleteTextView.Validator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PurchaseFragment extends Fragment implements OnClickListener, OnItemClickListener,OnRefreshListener<ListView> {
@@ -57,9 +62,9 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	private static final int CODE_SELECT_IMAGE = 11;
 	private static final int CODE_SCAN_BAR_REQUEST = 12;
 	private View contentView;
-	private Button btnToNewPurchaseRecord, btnSaveNewPurchaseRecord, btnAddGoods;
+	private Button btnSaveNewPurchaseRecord, btnAddGoods;
 	private EditText etBatchId, etOutId, etTotal;
-	
+	private TextView tvSelectSupplier, btnToNewPurchaseRecord, tvPurchaseCounts, tvPurchaseGoodsDetailUnit;
 	private LinearLayout llNewPurchaseView;
 	private ListView lvPurchaseList, lvPurhcaseGoodsList, lvPurchaseGoodsListFromWeb;
 	private PullToRefreshListView refreshListView;
@@ -75,16 +80,17 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	private String mCurrentBatchId;
 	
 	/**
-	 * 总价
+	 * 当前进货单货品总价 单位分
 	 */
-	private float mTotal = 0f;
+	private long mTotal = 0;
+	private SupplierEntity supplier;
 	
 	// goods display entity
 	private List<PurchaseGoodsEntity> mPurchaseGoodsEntities = new ArrayList<PurchaseGoodsEntity>();
 	
 	// goods detail dialog
-	private AlertDialogPro mGoodsEditDialog;
-	private EditText etGoodsCount, etGoodsTotal;
+	private AlertDialogPro mPurchaseGoodsDialog, mSupplierListDialog;
+	private EditText etGoodsCount, etGoodsPrice;
 	
 	// common process dialog
 	private AlertDialog mCommonProccessDialog;
@@ -111,9 +117,11 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		// new purchase pic&goods area
 		llNewPurchaseView = (LinearLayout) contentView.findViewById(R.id.llNewPurchaseView);
 		
-		// Buttons
-		btnToNewPurchaseRecord = (Button) contentView.findViewById(R.id.btnToNewPurchaseRecord);
+		//TextView
+		tvPurchaseCounts = (TextView) contentView.findViewById(R.id.tvPurchaseCounts);
+		btnToNewPurchaseRecord = (TextView) contentView.findViewById(R.id.btnToNewPurchaseRecord);
 		btnToNewPurchaseRecord.setOnClickListener(this);
+		// Buttons
 		btnSaveNewPurchaseRecord = (Button) contentView.findViewById(R.id.btnSaveNewPurchaseRecord);
 		btnSaveNewPurchaseRecord.setOnClickListener(this);
 		btnAddGoods = (Button) contentView.findViewById(R.id.btn_title_new_goods);
@@ -122,6 +130,7 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		etBatchId = (EditText) contentView.findViewById(R.id.et_batch_id);
 		etOutId = (EditText) contentView.findViewById(R.id.et_out_id);
 		etTotal = (EditText) contentView.findViewById(R.id.et_total);
+		
 		
 		// purchases list view
 		refreshListView = (PullToRefreshListView) contentView.findViewById(R.id.refreshListView);
@@ -165,7 +174,9 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		selectedImageList.add(new GalleryPicEntity());
 		setGridView(selectedImageList.size());
 		mSelectPicAdapter.setData(selectedImageList);
-		loadPurchaseList();
+		
+		refreshListView.setRefreshing();
+		loadPurchaseList(true);
 	}
 	
 	
@@ -220,15 +231,17 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	/**
 	 * 加载采购清单
 	 */
-	private void loadPurchaseList()
+	private void loadPurchaseList(final boolean isRefresh)
 	{
-		PurchaseManager.getInstance().getPurchaseList(MyApplication.getStoreid(), new ManagerCallBack<List<PurchaseEntity>>() {
+		PurchaseManager.getInstance().getPurchaseList(mPurchaseListAdapter.getNext_page(isRefresh),PurchaseActivity.DEFAUL_PAGE_SIZE,
+				new ManagerCallBack<List<PurchaseEntity>>() {
 			
 			@Override
 			public void onSuccess(List<PurchaseEntity> returnContent) {
 				super.onSuccess(returnContent);
-				mPurchaseListAdapter.setList(returnContent);
+				mPurchaseListAdapter.setData(isRefresh, returnContent);;
 				mPurchaseListAdapter.notifyDataSetChanged();
+				tvPurchaseCounts.setText(String.valueOf(mPurchaseListAdapter.getList().size()));
 				refreshListView.onRefreshComplete();
 			}
 			
@@ -277,9 +290,15 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		//views 
 		final View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.purchase_fragment_goods_detail_dialog, null);
 		etGoodsCount = (EditText) dialogView.findViewById(R.id.etGoodsCount);
-		etGoodsTotal = (EditText) dialogView.findViewById(R.id.etGoodsTotal);
-		 Builder builder = CommonDialogManager.createDialogBuilder(getActivity());
-		mGoodsEditDialog = builder.setTitle(entity.getProduct_name())
+		etGoodsPrice = (EditText) dialogView.findViewById(R.id.etGoodsPrice);
+		tvSelectSupplier = (TextView) dialogView.findViewById(R.id.tvSelectSupplier);
+		tvSelectSupplier.setOnClickListener(this);
+		tvPurchaseGoodsDetailUnit = (TextView) dialogView.findViewById(R.id.tvUnit);
+		String str_count = tvPurchaseGoodsDetailUnit.getText().toString()+entity.getProduct_unit();
+		tvPurchaseGoodsDetailUnit.setText(str_count);
+		
+		Builder builder = CommonDialogManager.createDialogBuilder(getActivity());
+		mPurchaseGoodsDialog = builder.setTitle(entity.getProduct_name())
 		.setView(dialogView)
 		.setPositiveButton("确定", positiveListener)
 		.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -289,7 +308,7 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 				dialog.dismiss();
 			}
 		}).create();
-		return mGoodsEditDialog;
+		return mPurchaseGoodsDialog;
 	}
 	
 	/**
@@ -297,10 +316,10 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	 */
 	private void generateGoodsTotal()
 	{
-		mTotal = 0f;
+		mTotal = 0;
 		for(PurchaseGoodsEntity e : mPurchaseGoodsEntities)
 		{
-			mTotal = e.getAmount()*Float.parseFloat(e.getTotal()) + mTotal;
+			mTotal = Long.parseLong(Tool.mul(String.valueOf(e.getPurchase_count()), String.valueOf(e.getPurchase_price()))) + mTotal;
 		}
 	}
 	
@@ -325,7 +344,8 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 						
 						PurchaseGoodsEntity entity = new PurchaseGoodsEntity();
 						entity.setProduct_name(returnContent.getProduct_name());
-						entity.setQr(returnContent.getProduct_qr());
+						entity.setProduct_qr(returnContent.getProduct_qr());
+						entity.setProduct_unit(returnContent.getProduct_unit());
 						final int index = mPurchaseGoodsEntities.indexOf(entity);
 						
 						// if goods list contains scanned product
@@ -341,19 +361,24 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 									
 									
 									PurchaseGoodsEntity entity = mPurchaseGoodsEntities.get(index);
-									entity.setAmount(Float.parseFloat(etGoodsCount.getText().toString()));
-									entity.setTotal(etGoodsTotal.getText().toString());
+									entity.setPurchase_count(etGoodsCount.getText().toString());
+									entity.setPurchase_price(Tool.yuanToFen(etGoodsPrice.getText().toString()));
+									entity.setSupplier(supplier);
+									
 									//update list
 									mPurchaseGoodsListAdapter.updateData(mPurchaseGoodsEntities);
 									
 									//update total price
 									generateGoodsTotal();
-									etTotal.setText(String.valueOf(mTotal));
-									mGoodsEditDialog.dismiss();
+									etTotal.setText(Tool.fenToYuan(mTotal));
+									mPurchaseGoodsDialog.dismiss();
 								}
 							}  );
-							etGoodsCount.setText(String.valueOf(entity.getAmount()));
-							etGoodsTotal.setText(entity.getTotal());
+							//change current supplier
+							supplier = entity.getSupplier();
+							tvSelectSupplier.setText(supplier.getName());
+							etGoodsCount.setText(entity.getPurchase_count());
+							etGoodsPrice.setText(Tool.fenToYuan(entity.getPurchase_price()));
 							
 						}else{
 							getGoodEditDialog(entity, new DialogInterface.OnClickListener() {
@@ -364,11 +389,28 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 									
 									
 									PurchaseGoodsEntity entity = new PurchaseGoodsEntity();
-									entity.setQr(returnContent.getProduct_qr());
+									entity.setProduct_qr(returnContent.getProduct_qr());
 									entity.setProduct_name(returnContent.getProduct_name());
-									entity.setAmount(Float.parseFloat(etGoodsCount.getText().toString()));
-									entity.setTotal(etGoodsTotal.getText().toString());
+									entity.setProduct_unit(returnContent.getProduct_unit());
 									
+									//货品数量
+									String count = etGoodsCount.getText().toString();
+									if(!InputVali.isFloatValue(count))
+									{
+										UITools.ToastMsg(getActivity(), "货品数量有误");
+										return;
+									}
+									entity.setPurchase_count(count);
+									
+									//进货价
+									String price = etGoodsPrice.getText().toString();
+									if(!InputVali.isFloatAsFen(price))
+									{
+										UITools.ToastMsg(getActivity(), "进货价有误");
+										return;
+									}
+									entity.setPurchase_price(Tool.yuanToFen(price));
+									entity.setSupplier(supplier);
 									
 									//add to list
 									mPurchaseGoodsEntities.add(entity);
@@ -376,13 +418,13 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 									
 									//update total price
 									generateGoodsTotal();
-									etTotal.setText(String.valueOf(mTotal));
+									etTotal.setText(String.valueOf(Tool.fenToYuan(mTotal)));
 									
-									mGoodsEditDialog.dismiss();
+									mPurchaseGoodsDialog.dismiss();
 								}
 							} );
 						}
-						mGoodsEditDialog.show();
+						mPurchaseGoodsDialog.show();
 					}
 
 					@Override
@@ -417,8 +459,20 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	 */
 	private void savePurchase()
 	{
+		if(mCurrentBatchId == null || mCurrentBatchId.isEmpty())
+		{
+			UITools.ToastMsg(getActivity(), "请先点击【新增】按钮生成批次号");
+			return;
+		}
+		
+		if(mPurchaseGoodsEntities.size() == 0)
+		{
+			UITools.ToastMsg(getActivity(), "请先扫货物，添加到货物列表");
+			return;
+		}
+		
 		mCommonProccessDialog = CommonDialogManager.createProgressDialog(getActivity());
-		mCommonProccessDialog.setMessage("正在保存");
+		mCommonProccessDialog.setMessage(getString(R.string.purchase_saving));
 		mCommonProccessDialog.show();
 		String out_id = etOutId.getText().toString();
 		
@@ -428,14 +482,15 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 			public void onSuccess(String returnContent) {
 				super.onSuccess(returnContent);
 				mCommonProccessDialog.dismiss();
-				Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+				UITools.ToastMsg(getActivity(), getString(R.string.purchase_save_success));
+				btnSaveNewPurchaseRecord.setVisibility(View.INVISIBLE);
 			}
 
 			@Override
 			public void onFailure(int code, String msg) {
 				super.onFailure(code, msg);
 				mCommonProccessDialog.dismiss();
-				Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+				UITools.ToastMsg(getActivity(), msg);
 			}
 		});
 	}
@@ -445,10 +500,10 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	 */
 	private void toNewPurchase()
 	{
-		mTotal = 0f;
+		mTotal = 0;
 		mCurrentBatchId = Tool.generateBatchId();
 		etBatchId.setText(mCurrentBatchId);
-		etTotal.setText(String.valueOf(mTotal));
+		etTotal.setText(Tool.fenToYuan(mTotal));
 		etOutId.setText(mCurrentBatchId);
 		
 		//reset datas
@@ -463,6 +518,71 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		mGridViewPurchaseDetail.setVisibility(View.GONE);
 		lvPurchaseGoodsListFromWeb.setVisibility(View.GONE);
 		llNewPurchaseView.setVisibility(View.VISIBLE);
+		btnSaveNewPurchaseRecord.setVisibility(View.VISIBLE);
+	}
+	
+	/**
+	 * 查看某一采购信息
+	 * @param entity
+	 */
+	private void showPurchase(PurchaseEntity entity){
+		//switch view
+		mGridViewPurchaseDetail.setVisibility(View.VISIBLE);
+		lvPurchaseGoodsListFromWeb.setVisibility(View.VISIBLE);
+		llNewPurchaseView.setVisibility(View.GONE);
+		
+		//set data
+		mPurchasePicAdapter.setData(entity.getPurchase_avatar());
+		etTotal.setText(Tool.fenToYuan(entity.getPurchase_amount()));
+		etBatchId.setText(entity.getBatch_id());
+		etOutId.setText(entity.getOut_id());
+		//加载货物清单
+		loadPurchaseProducts(entity.getBatch_id());
+	}
+	
+	/**
+	 * show suppliers
+	 */
+	private void showSupplierList() {
+		
+		SupplierManager.getInstance().loadSuppliers(new ManagerCallBack<List<SupplierEntity>>() {
+
+			@Override
+			public void onSuccess(final List<SupplierEntity> returnContent) {
+				super.onSuccess(returnContent);
+				final String[] supplierArray = new String[returnContent.size()];
+				for(int i=0;i<returnContent.size();i++)
+				{
+					supplierArray[i] = returnContent.get(i).getName();
+				}
+				
+				Builder builder = CommonDialogManager.createDialogBuilder(getActivity());
+				mSupplierListDialog = builder.setTitle("选择供应商")
+				.setItems(supplierArray,new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						tvSelectSupplier.setText(supplierArray[which]);
+						mSupplierListDialog.hide();
+						mPurchaseGoodsDialog.show();
+						supplier = returnContent.get(which);
+					}
+				}).create();
+				
+				mPurchaseGoodsDialog.hide();
+				
+				mSupplierListDialog.getWindow().getAttributes().windowAnimations = R.style.AnimationSecondLevelDialog;
+				
+				mSupplierListDialog.show();
+			}
+
+			@Override
+			public void onFailure(int code, String msg) {
+				super.onFailure(code, msg);
+				Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+			}
+			
+		});
 	}
 	
 	@Override
@@ -480,6 +600,9 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 			intent.putExtra(ProductScanCodeActivity.KEY_OPERATION_TYPE, ProductScanCodeActivity.OperationType.GET_CODE);
 			startActivityForResult(intent, CODE_SCAN_BAR_REQUEST);
 			break;
+		case R.id.tvSelectSupplier:
+			showSupplierList();
+			break;
 		default:
 			break;
 		}
@@ -488,6 +611,7 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 
 
 	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -520,18 +644,8 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		if(parent instanceof ListView)
 		{
 			PurchaseEntity entity = mPurchaseListAdapter.getList().get(position - 1);
-			//switch view
-			mGridViewPurchaseDetail.setVisibility(View.VISIBLE);
-			lvPurchaseGoodsListFromWeb.setVisibility(View.VISIBLE);
-			llNewPurchaseView.setVisibility(View.GONE);
+			showPurchase(entity);
 			
-			//set data
-			mPurchasePicAdapter.setData(entity.getPurchase_avatar());
-			etTotal.setText(String.valueOf(entity.getPurchase_amount()));
-			etBatchId.setText(entity.getBatch_id());
-			etOutId.setText(entity.getOut_id());
-			//加载货物清单
-			loadPurchaseProducts(entity.getBatch_id());
 		}
 		// 点击了 新增purchase的GridView item
 		else if(parent instanceof GridView)
@@ -573,6 +687,6 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 
 	@Override
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		loadPurchaseList();
+		loadPurchaseList(refreshListView.isHeaderShown());
 	}
 }

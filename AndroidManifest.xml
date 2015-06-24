@@ -103,6 +103,7 @@
         <!-- 收银台 -->
         <activity
             android:name=".ui.cashier.CashierActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="landscape" >
         </activity>
         <!-- 进货渠道管理 -->

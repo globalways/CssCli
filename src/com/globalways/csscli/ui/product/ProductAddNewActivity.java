@@ -1,5 +1,6 @@
 package com.globalways.csscli.ui.product;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,11 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -24,8 +30,10 @@ import com.globalways.csscli.R;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.ProductManager;
+import com.globalways.csscli.tools.InputVali;
 import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.QRCodeTools;
+import com.globalways.csscli.tools.Tool;
 import com.globalways.csscli.ui.BaseActivity;
 import com.globalways.csscli.ui.UITools;
 import com.globalways.csscli.ui.gallery.GalleryActivity;
@@ -33,6 +41,7 @@ import com.globalways.csscli.ui.gallery.GalleryPicEntity;
 import com.globalways.csscli.ui.gallery.GalleryPicPreviewActivity;
 import com.globalways.csscli.view.BottomMenuDialog;
 import com.globalways.csscli.view.ClearableEditText;
+import com.globalways.csscli.view.CommonDialogManager;
 import com.globalways.csscli.view.MenuItemEntity;
 import com.globalways.csscli.view.SimpleProgressDialog;
 
@@ -42,7 +51,7 @@ import com.globalways.csscli.view.SimpleProgressDialog;
  * @author James
  *
  */
-public class ProductAddNewActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
+public class ProductAddNewActivity extends BaseActivity implements OnClickListener, OnItemClickListener{
 
 	/** 跳转相册选择照片的requestCode */
 	private static final int CODE_SELECT_IMAGE = 11;
@@ -50,6 +59,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	public static final String KEY_FIRST_STEP = "firstStep";
 	public static final String KEY_PRODUCT_CODE = "productCode";
 	public static final String KEY_PRODUCT_EXIST = "productExist";
+	private ProductType productType = ProductType.DANTI;
 	private int productIsExist = ScanProductExist.EXIST;
 
 	public class ScanProductExist {
@@ -68,9 +78,9 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		public static final int INFO_FIRST = 2;
 	}
 
-	private TextView textCenter;
+	private TextView textCenter,editProductType;
 	private ImageButton imgBtnLeft, imgBtnRight;
-	private ClearableEditText editName, editBrand, editPrice, editUnit, editApr, editTag, editCode, editStock,
+	private ClearableEditText editName, editBrand, editPrice, editOriginalPrice, editRetailApr, editUnit, editApr, editTag, editCode, editStock,
 			editStockLimit, editDesc;
 	private CheckBox checkBoxRecommend, checkBoxLock;
 	private ImageView imageScanBarCode;
@@ -79,10 +89,19 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	private ProductSelectPicAdapter picAdapter;
 	private ProductPicAdapter picWebAdapter;
 	private ArrayList<GalleryPicEntity> selectedImageList;
+	
+	private TextWatcher retailAprWatcher, priceWatcher;
 
 	/** 菜单dialog */
 	private BottomMenuDialog<Integer> mBottomMenuDialog;
 	private List<MenuItemEntity> menuList;
+	
+	//价格处更新view
+	private Handler handler;
+	public static final int PRICE_INPUT_OK = 1;
+	public static final int APR_INPUT_OK = 2;
+	public static final String MSG_DATA = "msg_data";
+	public static final long INPUT_DELAY = 600;
 
 	// private Spinner spinnerPurchase;
 	/** 进度条 **/
@@ -114,6 +133,96 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		} else {
 			findViewById(R.id.viewWebPic).setVisibility(View.GONE);
 		}
+		
+		handler = new Handler(){
+			public void handleMessage(android.os.Message msg) {
+				switch (msg.what) {
+				case PRICE_INPUT_OK:
+					priceChangedAction(msg.getData().getCharSequence(MSG_DATA).toString());
+					break;
+				case APR_INPUT_OK:
+					aprChangedAction(msg.getData().getCharSequence(MSG_DATA).toString());
+					break;
+
+				default:
+					break;
+				}
+			};
+		};
+		
+		priceWatcher = new TextWatcher() {
+			private String input_data;
+			private long after_input;
+			private Thread t;
+			private Runnable input_action = new Runnable() {
+				public void run() {
+					Looper.prepare();
+					while(true){
+						if((System.currentTimeMillis() - after_input) > INPUT_DELAY){
+							Message msg = new Message();
+							Bundle data = new Bundle();
+							data.putCharSequence(MSG_DATA, input_data);
+							msg.setData(data);
+							msg.what = PRICE_INPUT_OK;
+							handler.sendMessage(msg);
+							t = null;
+							Looper.myLooper().quit();
+							break;
+						}
+					}
+					Looper.loop();
+				}
+			};
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {input_data = s.toString();}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			@Override
+			public void afterTextChanged(Editable s) {
+				after_input = System.currentTimeMillis();
+				if(t == null){
+					t = new Thread(input_action);
+					t.start();
+				}
+			}
+		};
+		
+		retailAprWatcher = new TextWatcher() {
+			private String input_data;
+			private long after_input;
+			private Thread t;
+			private Runnable input_action = new Runnable() {
+				public void run() {
+					Looper.prepare();
+					while(true){
+						if((System.currentTimeMillis() - after_input) > INPUT_DELAY){
+							Message msg = new Message();
+							Bundle data = new Bundle();
+							data.putCharSequence(MSG_DATA, input_data);
+							msg.setData(data);
+							msg.what = APR_INPUT_OK;
+							handler.sendMessage(msg);
+							t = null;
+							Looper.myLooper().quit();
+							break;
+						}
+					}
+					Looper.loop();
+				}
+			};
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {input_data = s.toString();}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			@Override
+			public void afterTextChanged(Editable s) {
+				after_input = System.currentTimeMillis();
+				if(t == null){
+					t = new Thread(input_action);
+					t.start();
+				}
+			}
+		};
 	}
 
 	@SuppressWarnings("unchecked")
@@ -176,7 +285,9 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	private void refreshView(ProductEntity entity) {
 		editName.setText(entity.getProduct_name());
 		editBrand.setText(entity.getProduct_brand());
-		editPrice.setText(entity.getProduct_price() + "");
+		editPrice.setText(Tool.fenToYuan(entity.getProduct_retail_price()));
+		editRetailApr.setText(String.valueOf(entity.getProduct_retail_apr()));
+		editOriginalPrice.setText(Tool.fenToYuan(entity.getProduct_original_price()));
 		editUnit.setText(entity.getProduct_unit());
 		editApr.setText(entity.getProduct_apr() + "");
 		editTag.setText(entity.getProduct_tag());
@@ -262,13 +373,29 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		String product_desc = editDesc.getText().toString().trim();
 
 		// 价格
-		String price = editPrice.getText().toString().trim();
-		if (price == null || price.isEmpty()) {
+		String str_price = editPrice.getText().toString().trim();
+		if (str_price == null || str_price.isEmpty()) {
 			UITools.ToastMsg(this, "请输入商品价格");
 			return;
 		}
-		int product_price = Integer.valueOf(price);
-
+		long product_retail_price = Tool.yuanToFen(str_price);
+		// add by wyp
+		// 原价
+		String str_original_price = editOriginalPrice.getText().toString().trim();
+		if (str_original_price == null || str_original_price.isEmpty()) {
+			UITools.ToastMsg(this, "请输入商品原价");
+			return;
+		}
+		long product_original_price = Tool.yuanToFen(str_original_price);
+		
+		// 折扣
+		String str_retail_apr = editRetailApr.getText().toString().trim();
+		if (str_retail_apr == null || str_retail_apr.isEmpty()) {
+			UITools.ToastMsg(this, "请输入折扣率");
+			return;
+		}
+		// end
+		
 		// 单位
 		String product_unit = editUnit.getText().toString().trim();
 		if (product_unit == null || product_unit.isEmpty()) {
@@ -287,7 +414,8 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		mSimpleProgressDialog.setText("正在上传，请稍后...");
 		mSimpleProgressDialog.showDialog();
 		ProductManager.getInstance().updateOrAdd(isAdd, selectedImageList, isAdd ? null : picWebAdapter.getPicList(),
-				product_name, product_brand, isAdd ? null : productQr, product_bar, product_desc, product_price,
+				product_name, product_brand, isAdd ? null : productQr, product_bar, product_desc, product_retail_price,
+						str_retail_apr, product_original_price,productType.getCode(),
 				product_unit, stock_cnt, checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), product_tag,
 				new ManagerCallBack<String>() {
 					@Override
@@ -346,6 +474,64 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		});
 	}
 
+	/**
+	 * 价格变化处理
+	 * @param new_price 
+	 *    		新的价格
+	 */
+	private void priceChangedAction(String new_price)
+	{
+		if(!InputVali.isFloatAsFen(new_price))
+		{
+			editRetailApr.setText("");
+		}
+		else{
+			String str_original_price;
+			String str_price;
+			String str_retail_apr;
+			str_original_price = editOriginalPrice.getText().toString();
+			if(!InputVali.isFloatAsFen(str_original_price))
+			{
+				UITools.ToastMsg(ProductAddNewActivity.this, "请正确输入原价");
+				return;
+			}
+			str_price = new_price;
+			//商品价格大于或者等于原价
+			if(Tool.compare(str_price, str_original_price) >= 0)
+			{
+				editPrice.setText(String.valueOf(str_original_price));
+				editPrice.setSelection(String.valueOf(str_original_price).length());
+				str_price = str_original_price;
+			}
+			str_retail_apr  = Tool.div(str_price, str_original_price, Tool.RETAIL_APR_SCALE);
+			editRetailApr.setText(Tool.mul(str_retail_apr, String.valueOf(100)).replace(".00", ""));
+		}
+		
+	}
+	/**
+	 *  折扣变化
+	 * @param new_apr
+	 */
+	private void aprChangedAction(String new_apr)
+	{
+		String str_retail_apr;
+		String str_original_price;
+		str_original_price = editOriginalPrice.getText().toString();
+		if(!InputVali.isFloatAsFen(str_original_price)){
+			UITools.ToastMsg(ProductAddNewActivity.this, "请正确输入原价_apr");
+			return;
+		}
+		if(new_apr.isEmpty())
+		{
+			editRetailApr.setText("");
+			editPrice.setText("");
+		}else{
+			str_retail_apr = Tool.div(new_apr, String.valueOf(100), Tool.RETAIL_APR_SCALE);
+			String str_price  = Tool.mul(str_retail_apr, str_original_price);
+			editPrice.setText(Tool.formatYuan(str_price));
+		}
+	}
+	
 	private void initView() {
 		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
 		imgBtnLeft.setVisibility(View.VISIBLE);
@@ -360,8 +546,80 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 
 		editName = (ClearableEditText) findViewById(R.id.editName);
 		editBrand = (ClearableEditText) findViewById(R.id.editBrand);
+		editProductType = (TextView) findViewById(R.id.editProductType);
+		editProductType.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Builder builder = CommonDialogManager.createDialogBuilder(ProductAddNewActivity.this);
+				builder.setItems(new String[]{"单体型","称重型"},new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							productType = ProductType.DANTI;
+							editProductType.setText(productType.toString());
+							break;
+						case 1:
+							productType = ProductType.CHENGZHONG;
+							editProductType.setText(productType.toString());
+							break;
+						default:
+							break;
+						}
+					}
+				}).setTitle("选择商品类型").create().show();
+				
+				
+			}
+		});
+		
+		
 		editPrice = (ClearableEditText) findViewById(R.id.editPrice);
-		UITools.editNumLimit(editPrice);
+		editPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					editPrice.addTextChangedListener(priceWatcher);
+					editRetailApr.removeTextChangedListener(retailAprWatcher);
+				}
+			}
+		});
+		
+		
+//		UITools.editNumLimit(editPrice);
+		
+		
+		editOriginalPrice = (ClearableEditText) findViewById(R.id.editOriginalPrice);
+		editOriginalPrice.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+			@Override
+			public void afterTextChanged(Editable s) {
+				editPrice.clearFocus();
+				editRetailApr.clearFocus();
+				editPrice.setText("");
+				editRetailApr.setText("");
+			}
+		});
+		
+		editRetailApr = (ClearableEditText) findViewById(R.id.editRetailApr);
+		editRetailApr.setSubfix("%");
+		editRetailApr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					editRetailApr.addTextChangedListener(retailAprWatcher);
+					editPrice.removeTextChangedListener(priceWatcher);
+				}else{
+				}
+			}
+		});
+		
+		
 		editUnit = (ClearableEditText) findViewById(R.id.editUnit);
 		editApr = (ClearableEditText) findViewById(R.id.editApr);
 		editTag = (ClearableEditText) findViewById(R.id.editTag);

@@ -75,6 +75,45 @@
                         android:maxLength="5" />
                 </TableRow>
 
+                
+                <!-- add by wyp -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:text="吊牌价*"
+                        android:textColor="@color/base_black_333333" />
+
+                    <com.globalways.csscli.view.ClearableEditText
+                        android:id="@+id/editOriginalPrice"
+                        style="@style/EditNumStye"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:digits=".0123456789"
+                        android:maxLength="20" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="折扣"
+                        android:textColor="@color/base_black_333333" />
+
+                    <com.globalways.csscli.view.ClearableEditText
+                        android:id="@+id/editRetailApr"
+                        style="@style/EditNumStye"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:digits=".0123456789"
+                        android:maxLength="5" />
+                </TableRow>
+                <!-- end -->
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
@@ -92,23 +131,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:digits=".0123456789"
                         android:maxLength="20" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:text=" 分/ "
+                        android:text=" 元"
                         android:textColor="@color/base_black_333333" />
 
                     <com.globalways.csscli.view.ClearableEditText
                         android:id="@+id/editUnit"
-                        style="@style/EditTextStye"
+                        style="@style/EditNumStye"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:digits=".0123456789"
                         android:maxLength="5" />
                 </TableRow>
+                
+                
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -154,7 +197,9 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -193,6 +238,43 @@
                         android:layout_weight="1"
                         android:maxLength="20" />
                 </TableRow>
+                
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="类型"
+                            android:textColor="@color/base_black_333333" />
+
+                        <TextView
+                            android:id="@+id/editProductType"
+                            style="@style/EditTextStye"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="18sp"
+		                    android:textColor="@color/base_black_333333"
+                            android:maxLength="20" />
+                        
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:visibility="invisible"
+                            android:maxLength="20" />
+                        
+                    </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -244,8 +326,9 @@
                         android:layout_height="80dp"
                         android:layout_weight="1"
                         android:gravity="top|left"
+                        android:inputType="textMultiLine"
                         android:maxLength="240"
-                        android:singleLine="false" />
+                        />
                 </TableRow>
 
                 <TableRow

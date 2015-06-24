@@ -135,7 +135,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		imgBtnLeft.setOnClickListener(this);
 
 		textCenter = (TextView) findViewById(R.id.textCenter);
-		textCenter.setText("商铺商品管理");
+		textCenter.setText("商品管理");
 
 		imgBtnRight = (ImageButton) findViewById(R.id.imgBtnRight);
 		imgBtnRight.setImageDrawable(getResources().getDrawable(R.drawable.icon_add));

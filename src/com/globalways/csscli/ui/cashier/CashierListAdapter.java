@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.globalways.csscli.R;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.tools.PicassoImageLoader;
+import com.globalways.csscli.ui.product.ProductType;
 
 /**
  * 收银台购物车列表adapter
@@ -69,6 +71,7 @@ public class CashierListAdapter extends BaseAdapter {
 		}
 		refreshTotalPrice();
 		notifyDataSetChanged();
+		Log.i("yangping.wang", "add item,current size:"+list.size());
 	}
 
 	/** 清空收银台列表 */
@@ -98,7 +101,7 @@ public class CashierListAdapter extends BaseAdapter {
 	public long getTotalPrice() {
 		int totalPrice = 0;
 		for (int i = 0; i < list.size(); i++) {
-			totalPrice += (list.get(i).getShoppingNumber() * list.get(i).getProduct_price());
+			totalPrice += (list.get(i).getShoppingNumber() * list.get(i).getProduct_retail_price());
 		}
 		return totalPrice;
 	}
@@ -141,14 +144,55 @@ public class CashierListAdapter extends BaseAdapter {
 			mItemView = new ItemView();
 			findView(mItemView, convertView);
 			convertView.setTag(mItemView);
+			setViewData(position,mItemView);
 		} else {
 			mItemView = (ItemView) convertView.getTag();
+			setViewData(position,mItemView);
 		}
+		return convertView;
+	}
+
+	private class ItemView {
+		ImageView productAva;
+		TextView productName, productPrice, textNumber, textDelete,tvStockWarning;
+		Button btnLess, btnAdd;
+	}
+
+	public void findView(ItemView itemView, View convertView) {
+		itemView.productAva = (ImageView) convertView.findViewById(R.id.productAva);
+		itemView.productName = (TextView) convertView.findViewById(R.id.productName);
+		itemView.productPrice = (TextView) convertView.findViewById(R.id.productPrice);
+		itemView.textNumber = (TextView) convertView.findViewById(R.id.textNumber);
+		itemView.textDelete = (TextView) convertView.findViewById(R.id.textDelete);
+		itemView.tvStockWarning = (TextView) convertView.findViewById(R.id.tvStockWarning);
+		itemView.btnLess = (Button) convertView.findViewById(R.id.btnLess);
+		itemView.btnAdd = (Button) convertView.findViewById(R.id.btnAdd);
+	}
+	
+	private void setViewData(final int position,final ItemView mItemView)
+	{
 		final ProductEntity entity = list.get(position);
+		//库存不足提醒
+		if(entity.getStock_cnt() <= entity.getStock_limit())
+		{
+			String warning = "";
+			//单体型商品显示为整数
+			if( ProductType.codeOf(entity.getProduct_type()) == ProductType.DANTI ){
+				warning = context.getString(R.string.cashier_shoplistitem_stockwarning)+" "+(int)entity.getStock_cnt();
+			}else{
+				warning = context.getString(R.string.cashier_shoplistitem_stockwarning)+" "+entity.getStock_cnt();
+			}
+			mItemView.tvStockWarning.setText(warning);
+			mItemView.tvStockWarning.setVisibility(View.VISIBLE);
+		}else{
+			mItemView.tvStockWarning.setText("");
+			mItemView.tvStockWarning.setVisibility(View.INVISIBLE);
+		}
+		
 		imageLoader.showListRoundImage(entity.getProduct_avatar(), R.drawable.logo, R.drawable.logo,
 				mItemView.productAva);
 		mItemView.productName.setText(entity.getProduct_name());
-		mItemView.productPrice.setText("￥ " + entity.getProduct_price() / 100.00 + " / " + entity.getProduct_unit()
+		mItemView.productPrice.setText("￥ " + entity.getProduct_retail_price() / 100.00 + " / " + entity.getProduct_unit()
 				+ "  ");
 		mItemView.textNumber.setText(entity.getShoppingNumber() + "");
 		mItemView.textNumber.setOnClickListener(new OnClickListener() {
@@ -264,23 +308,11 @@ public class CashierListAdapter extends BaseAdapter {
 				builder.create().show();
 			}
 		});
-		return convertView;
-	}
-
-	private class ItemView {
-		ImageView productAva;
-		TextView productName, productPrice, textNumber, textDelete;
-		Button btnLess, btnAdd;
-	}
-
-	public void findView(ItemView itemView, View convertView) {
-		itemView.productAva = (ImageView) convertView.findViewById(R.id.productAva);
-		itemView.productName = (TextView) convertView.findViewById(R.id.productName);
-		itemView.productPrice = (TextView) convertView.findViewById(R.id.productPrice);
-		itemView.textNumber = (TextView) convertView.findViewById(R.id.textNumber);
-		itemView.textDelete = (TextView) convertView.findViewById(R.id.textDelete);
-		itemView.btnLess = (Button) convertView.findViewById(R.id.btnLess);
-		itemView.btnAdd = (Button) convertView.findViewById(R.id.btnAdd);
+		
+		Log.i("yangping.wang", entity.getProduct_name()+":"+entity.getStock_cnt()+"-"
+				+entity.getStock_limit()+" position:"+position+" avatar:"+entity.getProduct_avatar()
+				+" itemView-name:"+mItemView.productName.getText()
+						);
 	}
 
 }

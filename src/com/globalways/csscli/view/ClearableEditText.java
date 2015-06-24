@@ -2,6 +2,9 @@ package com.globalways.csscli.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,10 +20,17 @@ import com.globalways.csscli.R;
  * 
  * @author James
  * 
+ * @since 6.16  增加前缀 by wyp
  */
 public class ClearableEditText extends EditText implements TextWatcher, android.view.View.OnTouchListener {
 
 	final String tag = "ViewClearableSerchEditText";
+	
+	private String mPrefixContent = "";
+	private String mSubfixContent = "";
+	private int mPrefixColor = -1;
+	private Rect mPrefixRect = new Rect();
+	private Rect mSubfixRect = new Rect();
 	// 清空按钮
 	final Drawable clearButton = getResources().getDrawable(R.drawable.ic_clear_text);
 
@@ -88,4 +98,53 @@ public class ClearableEditText extends EditText implements TextWatcher, android.
 		}
 		return false;
 	}
+	
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		if(!mPrefixContent.equals(""))
+		{
+			getPaint().getTextBounds(mPrefixContent, 0, mPrefixContent.length(), mPrefixRect);
+			mPrefixRect.right += getPaint().measureText(" ");
+		}
+		if(!mSubfixContent.isEmpty())
+		{
+			getPaint().getTextBounds(mSubfixContent, 0, mSubfixContent.length(), mSubfixRect);
+		}
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		if(!mPrefixContent.equals(""))
+		{
+			if(mPrefixColor != -1)
+				getPaint().setColor(mPrefixColor);
+			canvas.drawText(mPrefixContent, super.getCompoundPaddingLeft(), getBaseline(), getPaint());
+		}
+		if(!mSubfixContent.isEmpty()){
+			float xSubfix = getPaddingLeft() + getPaint().measureText(getText().toString() + mPrefixContent +" ");
+			canvas.drawText(mSubfixContent, xSubfix, getBaseline(), getPaint());
+		}
+	}
+	
+	@Override
+	public int getCompoundPaddingLeft() {
+		return super.getCompoundPaddingLeft() + mPrefixRect.width();
+	}
+	
+	public void setPrefix(String prefix)
+	{
+		this.mPrefixContent = prefix;
+	}
+	public void setPrefixColor(int color)
+	{
+		this.mPrefixColor = color;
+	}
+	
+	public void setSubfix(String subfix)
+	{
+		this.mSubfixContent = subfix;
+	}
+	
 }

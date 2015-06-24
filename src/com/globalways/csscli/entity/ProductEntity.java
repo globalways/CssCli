@@ -12,6 +12,12 @@ public class ProductEntity {
 	private String product_brand;
 	@Expose
 	private String product_name;
+	 /**
+	 * 商品类型
+	 * 1: 单体型<br/>2：称重型。默认1
+	 */
+	@Expose
+	private int product_type;
 	@Expose
 	private String product_desc;
 	@Expose
@@ -21,7 +27,11 @@ public class ProductEntity {
 	@Expose
 	private String product_avatar;
 	@Expose
-	private long product_price;
+	private long product_retail_price;
+	@Expose
+	private long product_original_price;
+	@Expose 
+	private long product_retail_apr; 
 	@Expose
 	private String product_unit;
 	@Expose
@@ -67,7 +77,7 @@ public class ProductEntity {
 		this.product_qr = product_qr;
 		this.product_bar = product_bar;
 		this.product_avatar = product_avatar;
-		this.product_price = product_price;
+		this.product_retail_price = product_price;
 		this.product_unit = product_unit;
 		this.product_apr = product_apr;
 		this.sales_cnt = sales_cnt;
@@ -87,7 +97,7 @@ public class ProductEntity {
 		return "ProductEntity [id=" + id + ", store_id=" + store_id + ", product_brand=" + product_brand
 				+ ", product_name=" + product_name + ", product_desc=" + product_desc + ", product_qr=" + product_qr
 				+ ", product_bar=" + product_bar + ", product_avatar=" + product_avatar + ", product_price="
-				+ product_price + ", product_unit=" + product_unit + ", product_apr=" + product_apr + ", sales_cnt="
+				+ product_retail_price + ", product_unit=" + product_unit + ", product_apr=" + product_apr + ", sales_cnt="
 				+ sales_cnt + ", stock_cnt=" + stock_cnt + ", hits=" + hits + ", is_recommend=" + is_recommend
 				+ ", stock_limit=" + stock_limit + ", product_tag=" + product_tag + ", purchase_channel="
 				+ purchase_channel + ", status=" + status + ", created=" + created + ", updated=" + updated
@@ -164,14 +174,6 @@ public class ProductEntity {
 
 	public void setProduct_avatar(String product_avatar) {
 		this.product_avatar = product_avatar;
-	}
-
-	public long getProduct_price() {
-		return product_price;
-	}
-
-	public void setProduct_price(long product_price) {
-		this.product_price = product_price;
 	}
 
 	public String getProduct_unit() {
@@ -268,6 +270,38 @@ public class ProductEntity {
 
 	public void setUpdated(String updated) {
 		this.updated = updated;
+	}
+
+	public long getProduct_retail_price() {
+		return product_retail_price;
+	}
+
+	public void setProduct_retail_price(long product_retail_price) {
+		this.product_retail_price = product_retail_price;
+	}
+
+	public long getProduct_original_price() {
+		return product_original_price;
+	}
+
+	public void setProduct_original_price(long product_original_price) {
+		this.product_original_price = product_original_price;
+	}
+
+	public long getProduct_retail_apr() {
+		return product_retail_apr;
+	}
+
+	public void setProduct_retail_apr(long product_retail_apr) {
+		this.product_retail_apr = product_retail_apr;
+	}
+
+	public int getProduct_type() {
+		return product_type;
+	}
+
+	public void setProduct_type(int product_type) {
+		this.product_type = product_type;
 	}
 
 }

@@ -23,7 +23,7 @@
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
                 android:checked="true"
-                android:drawableTop="@drawable/icon_sell"
+                android:drawableTop="@drawable/icon_statistics_sell"
                 android:padding="20dp"
                 android:text="销售统计"
                 android:textColor="#333333" />
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
-                android:drawableTop="@drawable/icon_buy"
+                android:drawableTop="@drawable/icon_statistics_buy"
                 android:padding="20dp"
                 android:text="采购统计"
                 android:textColor="#333333" />
