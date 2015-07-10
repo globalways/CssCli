@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+    >
+    <group android:checkableBehavior="none">
+        <item android:id="@+id/menuAddProduct"
+            android:title="@string/product_title_menu_item_add_product"
+            android:showAsAction="ifRoom"
+            android:icon="@drawable/icon_add"
+            />
+        <item android:id="@+id/menuCategoryManager"
+            android:title="@string/product_title_menu_item_category_manager"
+            android:showAsAction="ifRoom"
+            android:icon="@drawable/icon_add"
+            />
+    </group>
+</menu>

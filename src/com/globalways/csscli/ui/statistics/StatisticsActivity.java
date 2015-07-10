@@ -3,7 +3,6 @@ package com.globalways.csscli.ui.statistics;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -26,6 +25,7 @@ import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.StatisticsManager;
 import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.ui.BaseFragmentActivity;
+import com.globalways.csscli.ui.UITools;
 import com.globalways.csscli.view.CommonDialogManager;
 
 /**
@@ -38,14 +38,18 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 
 	private static final int CODE_SALL = 0;
 	private static final int CODE_BUY = 1;
+	private static final int CODE_PRODUCT_RANK = 2;
+	private static final int CODE_PRODUCT_COMPARE = 3;
 	private int currentItem = CODE_SALL;
 
 	private Context context;
 	private TextView textCenter;
 	private ImageButton imgBtnLeft;
 	private Button btnRight;
-	private RadioButton radioSallStatistics, radioBuyStatistics;
+	private RadioButton radioSallStatistics, radioBuyStatistics, radioProductRank, radioProductCompare;
 	private StatisticsFragment buyFragment, sellFragment;
+	private ProductRankFragment productRankFragment;
+	private ProductFilterFragment productFilterFragment;
 	private Fragment[] fragmentArray;
 	
 	public static ArrayList<Long> toStatStoreIds = new ArrayList<Long>();
@@ -95,12 +99,25 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 		btnRight.setVisibility(View.VISIBLE);
 		btnRight.setPadding(0, 0, 20, 0);
 		btnRight.setText("统计多个店铺");
+		btnRight.setTextSize(14);
 		// end
 
 		radioSallStatistics = (RadioButton) findViewById(R.id.radioSallStatistics);
 		radioSallStatistics.setOnCheckedChangeListener(this);
 		radioBuyStatistics = (RadioButton) findViewById(R.id.radioBuyStatistics);
 		radioBuyStatistics.setOnCheckedChangeListener(this);
+		radioProductRank = (RadioButton) findViewById(R.id.radioProductSaleRank);
+		radioProductRank.setOnCheckedChangeListener(this);
+		radioProductCompare = (RadioButton) findViewById(R.id.radioProductCompare);
+		radioProductCompare.setOnCheckedChangeListener(this);
+	}
+	
+	public void hideMultiStoresBtn() {
+		btnRight.setVisibility(View.INVISIBLE);
+	}
+	
+	public void showMultiStoresBtn(){
+		btnRight.setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -117,7 +134,10 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 		argsBuy.putInt(StatisticsFragment.KEY_STAT_TYPE, StatisticsFragment.StatType.TYPE_BUY);
 		buyFragment.setArguments(argsBuy);
 
-		fragmentArray = new Fragment[] { sellFragment, buyFragment };
+		productRankFragment = new ProductRankFragment();
+		productFilterFragment = new ProductFilterFragment();
+		
+		fragmentArray = new Fragment[] { sellFragment, buyFragment, productRankFragment, productFilterFragment};
 		radioSallStatistics.setChecked(true);
 		getSupportFragmentManager().beginTransaction().add(R.id.viewContainer, sellFragment).show(sellFragment)
 				.commit();
@@ -125,7 +145,7 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 		textCenter.setText("销售统计");
 	}
 
-	private void switchFragment(int targetFragment) {
+	public void switchFragment(int targetFragment) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.hide(fragmentArray[currentItem]);
 		if (!fragmentArray[targetFragment].isAdded()) {
@@ -133,6 +153,11 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 		}
 		transaction.show(fragmentArray[targetFragment]);
 		transaction.commit();
+		if(targetFragment == CODE_PRODUCT_COMPARE){
+			hideMultiStoresBtn();
+		}else{
+			showMultiStoresBtn();
+		}
 		currentItem = targetFragment;
 	}
 	
@@ -194,11 +219,14 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						if(toStatStoreIds.size() == 0)
-						{
-							Toast.makeText(context, "请至少选择一个店铺", Toast.LENGTH_SHORT).show();
+						if(toStatStoreIds.size() == 0){
+							UITools.ToastMsg(context, "请至少选择一个店铺");
 						}else{
-							((StatisticsFragment)fragmentArray[currentItem]).onStoreIDChanged();
+							if(fragmentArray[currentItem] instanceof ProductRankFragment){
+								((ProductRankFragment)fragmentArray[currentItem]).onStoreIDChanged();
+							}else if(fragmentArray[currentItem] instanceof StatisticsFragment){
+								((StatisticsFragment)fragmentArray[currentItem]).onStoreIDChanged();
+							}
 							dialog.dismiss();
 						}
 					}
@@ -224,6 +252,8 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		//去掉filter fragment中启动的compare fragment
+		productFilterFragment.clearCompareFragment();
 		switch (buttonView.getId()) {
 		case R.id.radioSallStatistics:
 			if (isChecked && currentItem != CODE_SALL) {
@@ -235,6 +265,18 @@ public class StatisticsActivity extends BaseFragmentActivity implements OnClickL
 			if (isChecked && currentItem != CODE_BUY) {
 				switchFragment(CODE_BUY);
 				textCenter.setText("采购统计");
+			}
+			break;
+		case R.id.radioProductSaleRank:
+			if(isChecked && currentItem != CODE_PRODUCT_RANK){
+				switchFragment(CODE_PRODUCT_RANK);
+				textCenter.setText("商品排行");
+			}
+			break;
+		case R.id.radioProductCompare:
+			if(isChecked && currentItem != CODE_PRODUCT_COMPARE){
+				switchFragment(CODE_PRODUCT_COMPARE);
+				textCenter.setText(radioProductCompare.getText());
 			}
 			break;
 		}

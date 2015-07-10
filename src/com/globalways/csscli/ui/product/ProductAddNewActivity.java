@@ -1,11 +1,12 @@
 package com.globalways.csscli.ui.product;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,19 +15,25 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alertdialogpro.AlertDialogPro;
 import com.globalways.csscli.R;
+import com.globalways.csscli.entity.ProductCategoryEntity;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.manager.ManagerCallBack;
 import com.globalways.csscli.http.manager.ProductManager;
@@ -78,7 +85,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		public static final int INFO_FIRST = 2;
 	}
 
-	private TextView textCenter,editProductType;
+	private TextView textCenter, editProductType, tvProductCategory;
 	private ImageButton imgBtnLeft, imgBtnRight;
 	private ClearableEditText editName, editBrand, editPrice, editOriginalPrice, editRetailApr, editUnit, editApr, editTag, editCode, editStock,
 			editStockLimit, editDesc;
@@ -92,7 +99,17 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	
 	private TextWatcher retailAprWatcher, priceWatcher;
 
-	/** 菜单dialog */
+	// 分类dialog
+	private ProductCategorySelectionAdapter mProductCategorySelectionAdapter;
+	private ProductCategoryEntity currentParent = new ProductCategoryEntity(-1);
+	private TextView tvCurrentCategory, tvCurrentLevel;
+	private Button btnLevelUp;
+	private int currentLevel = 1;
+	private ListView categoryList;
+	private AdapterView.OnItemClickListener categoryClick;
+	private AlertDialogPro categoriesDialog;
+	
+	//菜单dialog
 	private BottomMenuDialog<Integer> mBottomMenuDialog;
 	private List<MenuItemEntity> menuList;
 	
@@ -318,6 +335,9 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 			UITools.jumpProductScanCodeActivity(this, CODE_SCAN_BAR_REQUEST,
 					ProductScanCodeActivity.OperationType.GET_CODE);
 			break;
+		case R.id.tvProductCategory:
+			showCategoriesDialog();
+			break;
 		}
 	}
 
@@ -394,6 +414,9 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 			UITools.ToastMsg(this, "请输入折扣率");
 			return;
 		}
+		
+		//分类
+		String product_category = tvProductCategory.getText().toString();
 		// end
 		
 		// 单位
@@ -415,7 +438,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		mSimpleProgressDialog.showDialog();
 		ProductManager.getInstance().updateOrAdd(isAdd, selectedImageList, isAdd ? null : picWebAdapter.getPicList(),
 				product_name, product_brand, isAdd ? null : productQr, product_bar, product_desc, product_retail_price,
-						str_retail_apr, product_original_price,productType.getCode(),
+						str_retail_apr,product_category, product_original_price,productType.getCode(),
 				product_unit, stock_cnt, checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), product_tag,
 				new ManagerCallBack<String>() {
 					@Override
@@ -532,6 +555,121 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		}
 	}
 	
+	@SuppressLint("NewApi")
+	private void showCategoriesDialog(){
+		final AlertDialogPro.Builder builer = CommonDialogManager.createDialogBuilder(this);
+		View dialogView = LayoutInflater.from(this).inflate(R.layout.product_category_selection_dialog, null);
+		btnLevelUp = (Button) dialogView.findViewById(R.id.btnLevelUp);
+		tvCurrentCategory = (TextView) dialogView.findViewById(R.id.tvCurrentCategory);
+		tvCurrentLevel = (TextView) dialogView.findViewById(R.id.tvCurrentLevel);
+		categoryList = (ListView) dialogView.findViewById(R.id.lvCategoryList);
+		mProductCategorySelectionAdapter = new ProductCategorySelectionAdapter(this);
+		categoryList.setAdapter(mProductCategorySelectionAdapter);
+		
+		categoryClick = new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				
+				currentParent = (ProductCategoryEntity) mProductCategorySelectionAdapter.getItem(position);
+				loadCategoryChildren(currentParent.getId());
+				currentLevel++;
+				tvCurrentCategory.setText(currentParent.getName());
+				tvCurrentLevel.setText(currentLevel+" 级分类");
+				if(currentLevel == 3){
+					categoryList.setOnItemClickListener(null);
+				}
+				if(currentLevel > 1){
+					btnLevelUp.setVisibility(View.VISIBLE);
+				}
+				
+			}
+		};
+		categoryList.setOnItemClickListener(categoryClick);
+		
+		btnLevelUp.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//当前显示为一级分类,不能返回到上一级
+				if(currentParent.getId() == -1){
+					return;
+				}
+				currentParent = mProductCategorySelectionAdapter.getEntityById(currentParent.getParent_id());
+				currentLevel--;
+				loadCategoryChildren(currentParent.getId());
+				tvCurrentCategory.setText(currentParent.getName());
+				builer.setTitle(currentParent.getName());
+				tvCurrentLevel.setText(currentLevel+" 级分类");
+				if(currentLevel == 1){
+					btnLevelUp.setVisibility(View.INVISIBLE);
+				}
+				if(currentLevel < 3){
+					categoryList.setOnItemClickListener(categoryClick);
+				}
+			}
+		});
+		tvCurrentCategory.setText(currentParent.getName());
+		tvCurrentLevel.setText(currentLevel+" 级分类");
+		categoriesDialog = builer.setTitle(currentParent.getName()).
+		setView(dialogView).
+		setNegativeButton("取消", null).
+		create();
+		categoriesDialog.show();
+		loadCategoryChildren(-1);
+	}
+	
+	/**
+	 * 加载指定分类的子分类
+	 * @param whose
+	 */
+	private void loadCategoryChildren(int whose){
+		ProductManager.getInstance().loadCategoryChildren(whose, new ManagerCallBack<List<ProductCategoryEntity>>() {
+
+			@Override
+			public void onSuccess(List<ProductCategoryEntity> returnContent) {
+				super.onSuccess(returnContent);
+				mProductCategorySelectionAdapter.setList(returnContent);
+			}
+
+			@Override
+			public void onFailure(int code, String msg) {
+				super.onFailure(code, msg);
+				mProductCategorySelectionAdapter.setList(null);
+				UITools.ToastMsg(ProductAddNewActivity.this, msg);
+			}
+			
+		});
+	}
+	
+	
+	public class ProductCategorySelectionAdapter extends ProductCategoryAdapter {
+
+		public ProductCategorySelectionAdapter(Context context) {
+			super(context);
+		}
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			if(convertView == null){
+				convertView = LayoutInflater.from(context).inflate(R.layout.product_category_selection_list_item, parent,false);
+			}
+			((TextView)convertView.findViewById(R.id.tvCategoryName)).setText(list.get(position).getName());
+			((Button)convertView.findViewById(R.id.btnSelect)).setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					tvProductCategory.setText(list.get(position).getName());
+					categoriesDialog.dismiss();
+					currentLevel = 1;
+				}
+			});
+			return convertView;
+		}
+	}
+	
+	
 	private void initView() {
 		imgBtnLeft = (ImageButton) findViewById(R.id.imgBtnLeft);
 		imgBtnLeft.setVisibility(View.VISIBLE);
@@ -546,6 +684,10 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 
 		editName = (ClearableEditText) findViewById(R.id.editName);
 		editBrand = (ClearableEditText) findViewById(R.id.editBrand);
+		
+		tvProductCategory = (TextView) findViewById(R.id.tvProductCategory);
+		tvProductCategory.setOnClickListener(this);
+		
 		editProductType = (TextView) findViewById(R.id.editProductType);
 		editProductType.setOnClickListener(new OnClickListener() {
 			

@@ -2,7 +2,6 @@ package com.globalways.csscli.tools;
 
 import java.math.BigDecimal;
 
-import com.globalways.csscli.ui.UITools;
 
 /**
  * 用户输入验证验证

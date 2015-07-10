@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>采购统计</title>
+</head>
+<body>
+<div id="main"></div>
+<script src="./echarts-all.js"></script>
+<script type="text/javascript">
+
+     // element
+     var element = document.getElementById('main');
+     setCanvasHeight(400);
+     //setCanvasWidth(800);
+
+     // 基于dom，初始化echarts图表
+     var myCharts = echarts.init(element, 'macarons');
+     var option = {
+    		    tooltip : {
+    		        trigger: 'axis',
+    		        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+    		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    		        }
+    		    },
+    		    title:{
+    		    	text:'销售额(2015-02-28 ~ 2015-04-12)'
+    		    },
+    		    legend: {
+    		        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎','百度','谷歌','必应','其他'],
+    		        show: false
+    		    },
+    		    toolbox: {
+    		        show : false,
+    		        orient: 'vertical',
+    		        x: 'right',
+    		        y: 'center',
+    		        feature : {
+    		            mark : {show: true},
+    		            dataView : {show: true, readOnly: false},
+    		            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+    		            restore : {show: true},
+    		        }
+    		    },
+    		    calculable : true,
+    		    xAxis : [
+    		        {
+    		            type : 'category',
+    		            data : ['商品1','商品2','商品3','商品4','商品5','商品6','商品7','商品7','商品7','商品7','商品7']
+    		        }
+    		    ],
+    		    yAxis : [
+    		        {
+    		            type : 'value'
+    		        }
+    		    ],
+    		    series : [
+    		        {
+    		            name:'销售额',
+    		            type:'bar',
+    		            data:[320, 332, 301, 334, 390, 330, 320]
+    		        }
+    		    ]
+    		};
+
+    // 为echarts加载数据
+    //myCharts.setOption(option);
+
+    function setCanvasHeight(h) {
+        element.style.height = "" + h + "px";
+    }
+    function setCanvasWidth(w) {
+        element.style.width = "" + w + "px";
+    }
+
+    // 填充series数据
+    function setSeriesData(data) {
+        // 商品
+        var productData = [];
+        var type_name;
+        var type;
+        // 对比数据
+        var compareData = [];
+
+        var datas = JSON.parse(data.series);
+        type_name = data.type_name;
+        type =  data.type;
+        var len = datas.length;
+        
+        //商品销量 sales_count
+        //商品毛利 maori
+        //商品毛利率 maori_apr
+        switch(type){
+        	case 1:
+        		for (var i = 0; i < len; i++) {
+                	productData.push(datas[i].product_name);
+                	compareData.push(datas[i].sales_count);
+                }
+        		break;
+        	case 2:
+        		for (var i = 0; i < len; i++) {
+                	productData.push(datas[i].product_name);
+                	compareData.push(datas[i].maori);
+                }
+        		break;
+        	case 3:
+        		for (var i = 0; i < len; i++) {
+                	productData.push(datas[i].product_name);
+                	compareData.push(datas[i].sales_count);
+                }
+        		break;
+        	default:break;
+        }
+        myCharts.setOption(
+        		{
+        		    tooltip : {
+        		        trigger: 'axis',
+        		        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+        		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        		        }
+        		    },
+        		    title:{
+        		    	text:type_name
+        		    },
+        		    toolbox: {
+        		        show : false,
+        		        orient: 'vertical',
+        		        x: 'right',
+        		        y: 'center',
+        		        feature : {
+        		            mark : {show: true},
+        		            dataView : {show: true, readOnly: false},
+        		            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+        		            restore : {show: true},
+        		            saveAsImage : {show: false}
+        		        }
+        		    },
+        		    calculable : true,
+        		    xAxis : [
+        		        {
+        		            type : 'category',
+        		            data : productData
+        		        }
+        		    ],
+        		    yAxis : [
+        		        {
+        		            type : 'value'
+        		        }
+        		    ],
+        		    series : [
+        		        {
+        		            name:type_name,
+        		            type:'bar',
+        		            data:compareData
+        		        }
+        		    ]
+        		}
+        
+        );
+    }
+ 
+</script>
+</body>
+</html>

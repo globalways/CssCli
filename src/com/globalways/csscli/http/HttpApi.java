@@ -16,6 +16,10 @@ public class HttpApi {
 	public static final String PRODUCT_GET_LIST = HOME_URI + "/v2/merchants/stores/:sid/products";
 	public static final String PRODUCT_ADD_PRODUCT = HOME_URI + "/v2/merchants/stores/:sid/products";
 	public static final String PRODUCT_UPDATE_INFO = HOME_URI + "/v2/merchants/stores/:sid/products/qr/:qr";
+	
+	public static final String PRODUCT_CATEGORY_NEW = HOME_URI + "/v2/merchants/stores/:sid/categories";
+	public static final String PRODUCT_CATEGORY_CHILDREN = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid/children";
+	public static final String PRODUCT_CATEGORY_DELETE = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid";
 
 	public static final String PRODUCT_GET_DETAIL_BAR_CODE = HOME_URI + "/v2/merchants/stores/:sid/products/bar/:bar";
 	public static final String PRODUCT_GET_DETAIL_QR_CODE = HOME_URI + "/v2/merchants/stores/:sid/products/qr/:qr";
@@ -34,6 +38,8 @@ public class HttpApi {
 	public static final String STATISTICS_SALL = HOME_URI + "/v2/orders/stat";
 	/** 采购统计 */
 	public static final String STATISTICS_BUY = HOME_URI + "/v2/merchants/stores/purchases/stat";
+	public static final String STATISTICS_PRODUCT_RANK = HOME_URI + "/v2/merchants/stores/stat/productsRank";
+	public static final String STATISTICS_PRODUCT_COMPARE = HOME_URI + "/v2/merchants/stores/stat/productsCompare";
 	
 	public static final String PURCHASES_ALL = HOME_URI + "/v2/merchants/stores/:sid/purchases/all";
 	public static final String PURCHASES_GET_LIST = HOME_URI + "/v2/merchants/stores/:sid/purchases";
@@ -46,4 +52,8 @@ public class HttpApi {
 	public static final String SUPPLIERS_NEW = HOME_URI + "/v2/merchants/stores/:sid/suppliers";
 	public static final String SUPPLIERS_UPDATE = HOME_URI + "/v2/merchants/stores/:sid/suppliers/:supplierid";
 	public static final String SUPPLIERS_DELETE = HOME_URI + "/v2/merchants/stores/:sid/suppliers/:supplierid";
+	
+	public static final String STOCK_SUMMARY = HOME_URI + "/v2/merchants/stores/:sid/stocks/summary/total";
+	public static final String STOCK_PRODUCT_LIST = HOME_URI + "/v2/merchants/stores/:sid/stocks/summary/products";
+	
 }

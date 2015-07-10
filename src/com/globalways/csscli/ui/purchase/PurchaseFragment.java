@@ -62,7 +62,7 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	private static final int CODE_SELECT_IMAGE = 11;
 	private static final int CODE_SCAN_BAR_REQUEST = 12;
 	private View contentView;
-	private Button btnSaveNewPurchaseRecord, btnAddGoods;
+	private Button btnSaveNewPurchaseRecord, btnScanGoods;
 	private EditText etBatchId, etOutId, etTotal;
 	private TextView tvSelectSupplier, btnToNewPurchaseRecord, tvPurchaseCounts, tvPurchaseGoodsDetailUnit;
 	private LinearLayout llNewPurchaseView;
@@ -124,8 +124,8 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		// Buttons
 		btnSaveNewPurchaseRecord = (Button) contentView.findViewById(R.id.btnSaveNewPurchaseRecord);
 		btnSaveNewPurchaseRecord.setOnClickListener(this);
-		btnAddGoods = (Button) contentView.findViewById(R.id.btn_title_new_goods);
-		btnAddGoods.setOnClickListener(this);
+		btnScanGoods = (Button) contentView.findViewById(R.id.btnScanGoods);
+		btnScanGoods.setOnClickListener(this);
 		//EditText
 		etBatchId = (EditText) contentView.findViewById(R.id.et_batch_id);
 		etOutId = (EditText) contentView.findViewById(R.id.et_out_id);
@@ -594,7 +594,11 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		case R.id.btnSaveNewPurchaseRecord:
 			savePurchase();
 			break;
-		case R.id.btn_title_new_goods:
+		case R.id.btnScanGoods:
+			if(mCurrentBatchId == null || mCurrentBatchId.isEmpty()){
+				UITools.ToastMsg(getActivity(), "请先点击【新增】按钮生成批次号");
+				return;
+			}
 			//scan product
 			Intent intent = new Intent(getActivity(), ProductScanCodeActivity.class);
 			intent.putExtra(ProductScanCodeActivity.KEY_OPERATION_TYPE, ProductScanCodeActivity.OperationType.GET_CODE);

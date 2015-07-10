@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp" >
+
+        <TextView
+            android:id="@+id/tvCurrentLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:gravity="bottom"
+            android:textColor="@color/base_black_333333"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvCurrentCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/base_btn_orange"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btnLevelUp"
+            style="@style/BtnBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="返回"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3px"
+        android:background="@color/base_gray" />
+
+    <ListView
+        android:id="@+id/lvCategoryList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:divider="@color/base_gray"
+        android:dividerHeight="1px"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp" >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/product_category_notice_sub"
+                android:textColor="@color/base_orange" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/product_category_notice_delete"
+                android:textColor="@color/base_orange" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" >
+
+            <com.globalways.csscli.view.ClearableEditText
+                android:id="@+id/etNewCategoryName"
+                style="@style/EditTextStye"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnNewCategory"
+                style="@style/BtnOrange"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:text="保存" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

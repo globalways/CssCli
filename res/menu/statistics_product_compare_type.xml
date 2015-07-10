@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuSalesCount"
+        android:title="@string/statistics_product_compare_type_salescount"/>
+    <item
+        android:id="@+id/menuMaori"
+        android:title="@string/statistics_product_compare_type_maori"/>
+    <item
+        android:id="@+id/menuMaoriApr"
+        android:title="@string/statistics_product_compare_type_maoriapr"/>
+
+</menu>

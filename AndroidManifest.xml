@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.globalways.csscli"
     android:versionCode="2"
@@ -39,7 +40,8 @@
     <!-- This excludes Google TV, which is unfortunately included by virtue of not requiring a camera -->
     <uses-feature android:name="android.hardware.touchscreen" />
     <!-- TODO make this not required again after android.hardware.camera.any is available -->
-    
+
+
     <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- 往SDCard写入数据权限 -->
@@ -60,8 +62,8 @@
         android:theme="@android:style/Theme.NoTitleBar" >
         <activity
             android:name=".ui.main.WelcomeActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -85,6 +87,8 @@
         <!-- 商铺商品管理 -->
         <activity
             android:name=".ui.product.ProductActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/PopupMenuStyle"
             android:screenOrientation="landscape" >
         </activity>
         <activity
@@ -103,8 +107,8 @@
         <!-- 收银台 -->
         <activity
             android:name=".ui.cashier.CashierActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
         <!-- 进货渠道管理 -->
         <activity
@@ -119,7 +123,8 @@
         <!-- 统计 -->
         <activity
             android:name=".ui.statistics.StatisticsActivity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.WithPopupMenu">
         </activity>
         <!-- 系统设置 -->
         <activity
@@ -130,7 +135,6 @@
             android:name=".ui.settings.AppUpdateActivity"
             android:screenOrientation="landscape" >
         </activity>
-        
         <activity
             android:name=".ui.gallery.GalleryAlbumMultiPicActivity"
             android:screenOrientation="landscape" >
@@ -146,6 +150,13 @@
         <activity
             android:name=".ui.gallery.GalleryPicPreviewActivity"
             android:screenOrientation="landscape" >
+        </activity>
+
+        <!-- 库存管理 -->
+        <activity
+            android:name=".ui.stock.StockActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 

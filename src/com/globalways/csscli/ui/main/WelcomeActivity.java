@@ -103,7 +103,9 @@ public class WelcomeActivity extends Activity {
 			@Override
 			public void onFailure(int code, String msg) {
 				super.onFailure(code, msg);
-				UITools.jumpLoginActivity(WelcomeActivity.this);
+				//开发方便，暂禁登录
+				//UITools.jumpLoginActivity(WelcomeActivity.this);
+				UITools.jumpMainActivity(WelcomeActivity.this);
 				WelcomeActivity.this.finish();
 			}
 		});

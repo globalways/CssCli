@@ -65,6 +65,28 @@
     <style name="CommonDialogNeutralButton" parent="Widget.AlertDialogPro.Material.Light.Button">
         <item name="android:textColor">@color/base_orange</item>
     </style>
+    <!-- end -->
+    
+    <!-- popup menu -->
+    
+    <style name="Theme.WithPopupMenu" 
+       parent="@android:style/Theme.Holo.Light.NoActionBar">
+        <item name="android:popupMenuStyle">@style/Theme.PopupMenu</item>
+        <item name="android:textColor">@color/base_black_333333</item>
+	</style>
+    
+    <style name="Theme.PopupMenu" parent="@style/Widget.AppCompat.Light.PopupMenu">
+    </style>
+    
+    
+    <style name="PopupMenuStyle" parent="Theme.AppCompat.Light">
+        <item name="android:radioButtonStyle">@style/MenuRadioButtonStyle</item>
+    </style>
+ 
+    <style name="MenuRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+    </style>
+    
+    
 	<!-- end -->
 
     <style name="EditNumStye">

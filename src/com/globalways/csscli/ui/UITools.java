@@ -16,6 +16,7 @@ import com.globalways.csscli.ui.product.ProductScanCodeActivity;
 import com.globalways.csscli.ui.purchase.PurchaseActivity;
 import com.globalways.csscli.ui.settings.AppUpdateActivity;
 import com.globalways.csscli.ui.statistics.StatisticsActivity;
+import com.globalways.csscli.ui.stock.StockActivity;
 import com.globalways.csscli.view.ClearableEditText;
 
 /**
@@ -79,6 +80,14 @@ public class UITools {
 		context.startActivity(new Intent(context,PurchaseActivity.class));
 	}
 	
+	/**
+	 * 库存管理
+	 * @param context
+	 */
+	public static void jumpStockActivity(Context context){
+		context.startActivity(new Intent(context,StockActivity.class));
+	}
+	
 	
 	/**
 	 * 跳转扫码界面，扫描二维码或条形码
@@ -132,12 +141,16 @@ public class UITools {
 
 	/**
 	 * Toast消息提示
-	 * 
+	 * <br>
+	 * 超过8个字符则显示时间增加 by wyp
 	 * @param context
 	 * @param msg
 	 */
 	public static void ToastMsg(Context context, String msg) {
-		Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+		int showingTime = Toast.LENGTH_SHORT;
+		if(msg.length()>8)
+			showingTime = Toast.LENGTH_LONG;
+		Toast.makeText(context, msg, showingTime).show();
 	}
 
 	/**

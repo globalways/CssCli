@@ -97,7 +97,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_stock"
-                android:enabled="false"
+                android:enabled="true"
                 android:text="库存管理" />
 
             <Button

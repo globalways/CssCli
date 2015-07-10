@@ -269,19 +269,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="20dp"
-                            android:visibility="invisible"
-                            android:text="类型"
+                            android:layout_marginStart="20dp"
+                            android:text="分类"
                             android:textColor="@color/base_black_333333" />
 
-                        <com.globalways.csscli.view.ClearableEditText
-                            style="@style/EditNumStye"
+                        <TextView
+                            style="@style/EditTextStye"
+                            android:id="@+id/tvProductCategory"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:visibility="invisible"
-                            android:focusable="true"
-                            android:maxLength="20" />
+                            android:textSize="18sp"
+		                    android:textColor="@color/base_black_333333"
+                            />
                     </TableRow>
 
                     <TableRow

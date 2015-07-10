@@ -192,7 +192,7 @@ public class ProductDetailFragment extends BaseFragment implements OnClickListen
 
 		mSimpleProgressDialog.showDialog();
 		ProductManager.getInstance().updateOrAdd(false, null, null, product_name, product_brand,
-				entity.getProduct_qr(), entity.getProduct_bar(), product_desc, product_retail_price,str_retail_apr, product_original_price,ProductType.nameOf(str_product_type).getCode(), product_unit, stock_cnt,
+				entity.getProduct_qr(), entity.getProduct_bar(), product_desc, product_retail_price,str_retail_apr,"", product_original_price,ProductType.nameOf(str_product_type).getCode(), product_unit, stock_cnt,
 				checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), product_tag, new ManagerCallBack<String>() {
 					@Override
 					public void onSuccess(String returnContent) {

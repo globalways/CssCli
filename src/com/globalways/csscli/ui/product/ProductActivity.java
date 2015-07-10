@@ -1,9 +1,16 @@
 package com.globalways.csscli.ui.product;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.internal.view.menu.MenuPopupHelper;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -45,7 +52,9 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 	private ListView listView;
 	private ProductListAdapter productListAdapter;
 	private ProductDetailFragment productDetailFragment;
+	private ProductCategoryManagerFragment productCategoryManagerFragment;
 	private View layoutContainer;
+	
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -54,7 +63,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		// 布局内容会从view以下开始
 		findViewById(R.id.view).setFitsSystemWindows(true);
 		initView();
-
+		
 		// 初始化完成后加载StoreList数据
 		reloadData();
 	}
@@ -66,8 +75,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 			finish();
 			break;
 		case R.id.imgBtnRight:
-			UITools.jumpProductAddNewActivity(this, ProductAddNewActivity.ScanStep.INFO_FIRST,
-					ProductAddNewActivity.ScanProductExist.NOT_EXIST, null);
+			showTitileMenu();
 			break;
 		case R.id.imgBtnRight1:
 			UITools.jumpProductScanCodeActivity(this, CODE_SCAN_REQUEST,
@@ -104,6 +112,7 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		MyLog.d(TAG, "ProductList click position: " + position);
 		productDetailFragment.setEntity(productListAdapter.getItemByPosition(position - 1));
 		productListAdapter.setChooseItem(position - 1);
+		showDetailFragment();
 	}
 
 	/** 加载ProductList数据，isRefresh为true时，刷新；isRefresh为false时，加载更多 */
@@ -114,6 +123,8 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 					public void onSuccess(List<ProductEntity> returnContent) {
 						super.onSuccess(returnContent);
 						productListAdapter.setData(isRefresh, returnContent);
+						if(isRefresh)
+							productListAdapter.setChooseItem(0);
 						layoutContainer.setVisibility(View.VISIBLE);
 						productDetailFragment.setEntity(productListAdapter.getItemByPosition(0));
 						refreshListView.onRefreshComplete();
@@ -156,9 +167,72 @@ public class ProductActivity extends BaseFragmentActivity implements OnClickList
 		layoutContainer = findViewById(R.id.layoutContainer);
 		layoutContainer.setVisibility(View.INVISIBLE);
 
-		productDetailFragment = new ProductDetailFragment();
-		getSupportFragmentManager().beginTransaction().add(R.id.layoutContainer, productDetailFragment)
-				.show(productDetailFragment).commit();
+		showDetailFragment();
+//		productDetailFragment = new ProductDetailFragment();
+//		getSupportFragmentManager().beginTransaction().add(R.id.layoutContainer, productDetailFragment)
+//				.show(productDetailFragment).commit();
+	}
+	
+	
+	private void showDetailFragment(){
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if(productDetailFragment == null){
+			productDetailFragment = new ProductDetailFragment();
+			ft.add(R.id.layoutContainer, productDetailFragment);
+		}
+		if(productCategoryManagerFragment != null){
+			ft.hide(productCategoryManagerFragment);
+		}
+		ft.show(productDetailFragment).commit();
+	}
+	
+	private void showCategoryFragment(){
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		if(null == productCategoryManagerFragment){
+			productCategoryManagerFragment = new ProductCategoryManagerFragment();
+			ft.add(R.id.layoutContainer, productCategoryManagerFragment);
+		}
+		ft.hide(productDetailFragment);
+		ft.show(productCategoryManagerFragment).commit();
+		//不选择任何商品
+		productListAdapter.setChooseItem(-1);
+		
+	}
+	
+	
+	@SuppressLint("NewApi")
+	private void showTitileMenu(){
+		PopupMenu popupMenu = new PopupMenu(this, imgBtnRight);
+		popupMenu.inflate(R.menu.product_title_menu);
+		popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				switch (arg0.getItemId()) {
+				case R.id.menuAddProduct:
+					UITools.jumpProductAddNewActivity(ProductActivity.this, ProductAddNewActivity.ScanStep.INFO_FIRST,
+							ProductAddNewActivity.ScanProductExist.NOT_EXIST, null);
+					break;
+				case R.id.menuCategoryManager:
+					showCategoryFragment();
+					break;
+				default:
+					return false;
+				}
+				return true;
+			}
+		});
+		
+		//使用反射，强制显示菜单图标
+        try {
+            Field field = popupMenu.getClass().getDeclaredField("mPopup");
+            field.setAccessible(true);
+            MenuPopupHelper mHelper = (MenuPopupHelper) field.get(popupMenu);
+            mHelper.setForceShowIcon(true);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+		popupMenu.show();
 	}
 
 }

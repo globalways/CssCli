@@ -35,7 +35,7 @@ public class ProductListAdapter extends BaseAdapter {
 		if (isRefresh) {
 			this.list = list;
 			page = NEXT_PAGE;
-			chooseProduct = list.get(0);
+			//chooseProduct = list.get(0);
 		} else {
 			this.list.addAll(list);
 		}
@@ -50,8 +50,16 @@ public class ProductListAdapter extends BaseAdapter {
 		return page;
 	}
 
+	/**
+	 * 当前选择的商品
+	 * @param position -1 表示不选择任何商品
+	 */
 	public void setChooseItem(int position) {
-		chooseProduct = list.get(position);
+		if(position == -1){
+			chooseProduct = null;
+		}else{
+			chooseProduct = list.get(position);
+		}
 		notifyDataSetChanged();
 	}
 
@@ -95,7 +103,7 @@ public class ProductListAdapter extends BaseAdapter {
 		} else {
 			mItemView = (ItemView) convertView.getTag();
 		}
-		if (chooseProduct.getId() == list.get(position).getId()) {
+		if (chooseProduct != null && chooseProduct.getId() == list.get(position).getId()) {
 			mItemView.viewItem.setBackgroundColor(context.getResources().getColor(R.color.base_gray_60));
 		} else {
 			mItemView.viewItem.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));

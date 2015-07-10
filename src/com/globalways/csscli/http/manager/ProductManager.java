@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.globalways.csscli.Config;
+import com.globalways.csscli.entity.ProductCategoryEntity;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.HttpApi;
 import com.globalways.csscli.http.HttpClientDao.ErrorCode;
@@ -190,7 +191,7 @@ public class ProductManager {
 	 */
 	public void updateOrAdd(final boolean isAdd, ArrayList<GalleryPicEntity> selectedImageList,
 			final ArrayList<String> productPic, String product_name, String product_brand, final String product_qr,
-			String product_bar, String product_desc, long product_retail_price,String product_retail_apr,long product_original_price,int product_type, String product_unit, double stock_cnt,
+			String product_bar, String product_desc, long product_retail_price,String product_retail_apr,String product_category, long product_original_price,int product_type, String product_unit, double stock_cnt,
 			boolean is_recommend, boolean status, String product_tag, final ManagerCallBack<String> callBack) {
 		addProductParams = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {
@@ -206,6 +207,7 @@ public class ProductManager {
 		if (product_desc != null && !product_desc.isEmpty()) {
 			addProductParams.put("product_desc", product_desc);
 		}
+		addProductParams.put("product_category", product_category);
 		addProductParams.put("product_retail_price", product_retail_price);
 		addProductParams.put("product_original_price", product_original_price);
 		addProductParams.put("product_retail_apr", product_retail_apr);
@@ -322,6 +324,108 @@ public class ProductManager {
 				if (null != callBack) {
 					callBack.onFailure(errorCode.code(), errorCode.msg());
 				}
+			}
+		});
+	}
+	
+	//------------------- category -------------------------------------//
+	
+	/**
+	 * 新增商品分类 根分类id -1
+	 * <br/>
+	 * @param parent_id 为-1时表示新建一级分类
+	 * @param name
+	 * @param callBack
+	 */
+	public void newCategory(int parent_id, String name, final ManagerCallBack<String> callBack){
+		
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("parent_id", parent_id);
+		params.put("store_id", MyApplication.getStoreid());
+		params.put("name", name);
+		String url = HttpApi.PRODUCT_CATEGORY_NEW.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()));
+		HttpUtils.getInstance().sendPostRequest(url, 0, params, new HttpClientUtilCallBack<String>() {
+
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				callBack.onSuccess(returnContent);
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+			
+		});
+	}
+	
+	/**
+	 * 加载指定分类的子分类
+	 * @param parent_id 为-1时表示查询一级分类
+	 * @param callBack
+	 */
+	public void loadCategoryChildren(int parent_id, final ManagerCallBack<List<ProductCategoryEntity>> callBack){
+		String url = HttpApi.PRODUCT_CATEGORY_CHILDREN.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()))
+				.replaceFirst(":cid", String.valueOf(parent_id));
+		HttpUtils.getInstance().sendGetRequest(url, 0, null, new HttpClientUtilCallBack<String>() {
+
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						List<ProductCategoryEntity> list = new ArrayList<ProductCategoryEntity>();
+						list = gson.fromJson(jsonObject.getString(Config.BODY),
+								new TypeToken<List<ProductCategoryEntity>>() {
+								}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(list);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code,
+									jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+			
+		});
+	}
+	
+	/**
+	 * 删除指定分类
+	 * @param cid
+	 * @param callBack
+	 */
+	public void deleteCategory(int cid, final ManagerCallBack<String> callBack){
+		String url = HttpApi.PRODUCT_CATEGORY_DELETE.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()))
+				.replaceFirst(":cid", String.valueOf(cid));
+		HttpUtils.getInstance().sendDeleteRequest(url, 0, null, new HttpClientUtilCallBack<String>() {
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				callBack.onSuccess(returnContent);
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
 			}
 		});
 	}

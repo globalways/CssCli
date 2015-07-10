@@ -262,7 +262,7 @@
 
                 <Button
                     style="@style/BtnBlue"
-                    android:id="@+id/btn_title_new_goods"
+                    android:id="@+id/btnScanGoods"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

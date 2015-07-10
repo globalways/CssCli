@@ -83,8 +83,7 @@ public class StatisticsFragment extends Fragment implements OnClickListener, OnD
 	}
 
 	private void loadData() {
-		if(StatisticsActivity.toStatStoreIds.size() == 0)
-		{
+		if(StatisticsActivity.toStatStoreIds.size() == 0){
 			StatisticsActivity.toStatStoreIds.add(MyApplication.getStoreid());
 		}
 		StatisticsManager.getInstance().getStat(statType == StatType.TYPE_SELL, startDate, endDate, StatisticsActivity.toStatStoreIds ,

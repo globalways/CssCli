@@ -30,13 +30,16 @@ import com.globalways.csscli.ui.product.ProductType;
  * 收银台购物车列表adapter
  * 
  * @author James
+ * 
+ * changed by wyp 2015.6.24
  *
  */
 public class CashierListAdapter extends BaseAdapter {
 
-	private List<ProductEntity> list = null;
+	private List<ProductEntity> list = new ArrayList<ProductEntity>();
 	private PicassoImageLoader imageLoader;
 	private Context context;
+	private int last_position = -1;
 
 	public CashierListAdapter(Context context) {
 		super();
@@ -51,9 +54,9 @@ public class CashierListAdapter extends BaseAdapter {
 
 	/** 向收银台添加商品 */
 	public void addItem(ProductEntity entity) {
-		if (list == null) {
-			list = new ArrayList<ProductEntity>();
-		}
+//		if (list == null) {
+//			list = new ArrayList<ProductEntity>();
+//		}
 		if (list.size() > 0) {
 			boolean isAdd = false;
 			for (int i = 0; i < list.size(); i++) {
@@ -116,10 +119,7 @@ public class CashierListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		if (null != list) {
-			return list.size();
-		}
-		return 0;
+		return list.size();
 	}
 
 	@Override
@@ -135,20 +135,18 @@ public class CashierListAdapter extends BaseAdapter {
 		return position;
 	}
 
-	@SuppressLint("InflateParams")
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 		final ItemView mItemView;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(context).inflate(R.layout.cashier_list_item, null);
 			mItemView = new ItemView();
+			convertView = LayoutInflater.from(context).inflate(R.layout.cashier_list_item,parent, false);
 			findView(mItemView, convertView);
 			convertView.setTag(mItemView);
-			setViewData(position,mItemView);
 		} else {
 			mItemView = (ItemView) convertView.getTag();
-			setViewData(position,mItemView);
 		}
+		setViewData(position,mItemView);
 		return convertView;
 	}
 
@@ -173,7 +171,7 @@ public class CashierListAdapter extends BaseAdapter {
 	{
 		final ProductEntity entity = list.get(position);
 		//库存不足提醒
-		if(entity.getStock_cnt() <= entity.getStock_limit())
+		if(entity.getStock_cnt() <= entity.getStock_limit() || entity.getShoppingNumber() >= entity.getStock_cnt())
 		{
 			String warning = "";
 			//单体型商品显示为整数
@@ -188,13 +186,23 @@ public class CashierListAdapter extends BaseAdapter {
 			mItemView.tvStockWarning.setText("");
 			mItemView.tvStockWarning.setVisibility(View.INVISIBLE);
 		}
+		//购物车数量超过库存数目
+		if(entity.getShoppingNumber() >= entity.getStock_cnt())
+		{
+			entity.setShoppingNumber((int)entity.getStock_cnt());
+		}
 		
-		imageLoader.showListRoundImage(entity.getProduct_avatar(), R.drawable.logo, R.drawable.logo,
-				mItemView.productAva);
+		if(!entity.getProduct_avatar().isEmpty())
+		{
+			imageLoader.showListRoundImage(entity.getProduct_avatar(), R.drawable.logo, R.drawable.logo,
+					mItemView.productAva);
+		}else{
+			mItemView.productAva.setImageResource(R.drawable.logo);
+		}
 		mItemView.productName.setText(entity.getProduct_name());
 		mItemView.productPrice.setText("￥ " + entity.getProduct_retail_price() / 100.00 + " / " + entity.getProduct_unit()
 				+ "  ");
-		mItemView.textNumber.setText(entity.getShoppingNumber() + "");
+		mItemView.textNumber.setText(String.valueOf(entity.getShoppingNumber()));
 		mItemView.textNumber.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -258,7 +266,7 @@ public class CashierListAdapter extends BaseAdapter {
 					public void onClick(DialogInterface dialog, int which) {
 						list.get(position).setShoppingNumber(
 								Integer.valueOf(editText.getText().toString().toString().trim()));
-						mItemView.textNumber.setText(editText.getText().toString());
+						notifyDataSetChanged();
 					}
 				});
 				builder.create().show();
@@ -266,6 +274,8 @@ public class CashierListAdapter extends BaseAdapter {
 		});
 		if (mItemView.textNumber.getText().toString().trim().equals("1")) {
 			mItemView.btnLess.setEnabled(false);
+		}else{
+			mItemView.btnLess.setEnabled(true);
 		}
 		mItemView.btnLess.setOnClickListener(new OnClickListener() {
 			@Override
@@ -274,7 +284,7 @@ public class CashierListAdapter extends BaseAdapter {
 				if (!text.equals("1")) {
 					list.get(position).setShoppingNumber(entity.getShoppingNumber() - 1);
 					refreshTotalPrice();
-					mItemView.textNumber.setText(list.get(position).getShoppingNumber() + "");
+					notifyDataSetChanged();
 				}
 			}
 		});
@@ -283,7 +293,7 @@ public class CashierListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				list.get(position).setShoppingNumber(entity.getShoppingNumber() + 1);
 				refreshTotalPrice();
-				mItemView.textNumber.setText(list.get(position).getShoppingNumber() + "");
+				notifyDataSetChanged();
 			}
 		});
 		mItemView.textDelete.setOnClickListener(new OnClickListener() {
@@ -291,7 +301,7 @@ public class CashierListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				AlertDialog.Builder builder = new Builder(context);
 				builder.setTitle("提示!");
-				builder.setMessage("您正在删除改商品");
+				builder.setMessage("您正在删除商品");
 				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
