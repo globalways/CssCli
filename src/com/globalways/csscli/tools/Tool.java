@@ -110,7 +110,7 @@ public class Tool {
 	
 	/**
 	 * 格式化输出日期
-	 * @param datetime long型时间
+	 * @param datetime long型时间,单位毫秒
 	 * @return
 	 *      格式化后的字符串
 	 */
@@ -240,5 +240,20 @@ public class Tool {
 	public static int compare(String first, String second)
 	{
 		return new BigDecimal(first).compareTo(new BigDecimal(second));
+	}
+	
+	/**
+	 * 简化字符串，以防止过长影响美观<br>
+	 * before: xxxxxxxxxx
+	 * after: xxxx...
+	 * @param toHide 要缩短的字符串
+	 * @param could 控件能够正常显示的字符个数
+	 * @return 替换后的字符串
+	 */
+	public static String simpifyStr(String toHide, int could){
+		if(toHide.length() > could){
+			return toHide.substring(0, could-3)+"...";
+		}
+		return toHide;
 	}
 }

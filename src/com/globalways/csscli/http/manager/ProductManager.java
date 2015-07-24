@@ -191,7 +191,7 @@ public class ProductManager {
 	 */
 	public void updateOrAdd(final boolean isAdd, ArrayList<GalleryPicEntity> selectedImageList,
 			final ArrayList<String> productPic, String product_name, String product_brand, final String product_qr,
-			String product_bar, String product_desc, long product_retail_price,String product_retail_apr,String product_category, long product_original_price,int product_type, String product_unit, double stock_cnt,
+			String product_bar, String product_desc, long product_retail_price,String product_retail_apr,int product_category_id, long product_original_price,int product_type, String product_unit, double stock_cnt,
 			boolean is_recommend, boolean status, String product_tag, final ManagerCallBack<String> callBack) {
 		addProductParams = new HashMap<String, Object>();
 		if (product_name == null || product_name.isEmpty()) {
@@ -207,7 +207,7 @@ public class ProductManager {
 		if (product_desc != null && !product_desc.isEmpty()) {
 			addProductParams.put("product_desc", product_desc);
 		}
-		addProductParams.put("product_category", product_category);
+		addProductParams.put("product_category", product_category_id);
 		addProductParams.put("product_retail_price", product_retail_price);
 		addProductParams.put("product_original_price", product_original_price);
 		addProductParams.put("product_retail_apr", product_retail_apr);
@@ -429,5 +429,50 @@ public class ProductManager {
 			}
 		});
 	}
+	
+	/**
+	 * 根据分类ID获取分类信息
+	 * @param cid 分类id
+	 * @param callBack
+	 */
+	public void getCategory(int cid, final ManagerCallBack<ProductCategoryEntity> callBack){
+		String url = HttpApi.PRODUCT_CATEGORY.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()))
+				.replaceFirst(":cid", String.valueOf(cid));
+		HttpUtils.getInstance().sendGetRequest(url, 0, null, new HttpClientUtilCallBack<String>() {
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						ProductCategoryEntity entity;
+						entity = gson.fromJson(jsonObject.getString(Config.BODY),
+								new TypeToken<ProductCategoryEntity>() {
+								}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(entity);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code,
+									jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+		});
+	}
+	
 
 }

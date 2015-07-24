@@ -68,7 +68,11 @@ public class PurchaseGoodsListAdapter extends BaseAdapter {
 		holder.tvGoodsCounts.setText(String.valueOf(pge.getPurchase_count()));
 		holder.tvGoodsName.setText(pge.getProduct_name());
 		holder.tvGoodsPrice.setText(Tool.fenToYuan(pge.getPurchase_price()));
-		holder.tvGoodsSupplier.setText(pge.getSupplier() == null? "暂无" :pge.getSupplier().getName());
+		String supplier_name =  pge.getSupplier_name();
+		if(supplier_name == null || supplier_name.isEmpty()){
+			supplier_name = pge.getSupplier() == null? "暂无" :pge.getSupplier().getName();
+		}
+		holder.tvGoodsSupplier.setText(supplier_name);
 		return convertView;
 	}
 	

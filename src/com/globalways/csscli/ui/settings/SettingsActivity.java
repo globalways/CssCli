@@ -24,6 +24,7 @@ public class SettingsActivity extends BaseFragmentActivity implements OnClickLis
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.settings_activity);
+		findViewById(R.id.view).setFitsSystemWindows(true);
 		initView();
 	}
 

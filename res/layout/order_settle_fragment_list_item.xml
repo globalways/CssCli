@@ -1,51 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="@dimen/table_title_height"
     android:orientation="horizontal" >
     
     <TextView 
-        android:id="@+id/supplier_name"
+        android:id="@+id/tvSettleNo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/base_black_333333"
-        android:text="供应商"
+        android:text="工单号"
         />
-    
     <TextView 
-        android:id="@+id/supplier_contacts_name"
+        android:id="@+id/tvEndTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/base_black_333333"
-        android:text="联系人"
+        android:text="截止时间"
         />
-    
     <TextView 
-        android:id="@+id/supplier_contacts_phone"
+        android:id="@+id/tvSettleAmount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/base_black_333333"
-        android:text="联系电话"
+        android:text="流水"
         />
-    
     <TextView 
-        android:id="@+id/supplier_address"
+        android:id="@+id/tvSettleStatus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/base_black_333333"
-        android:text="供应商地址"
+        android:text="状态"
         />
 
 </LinearLayout>

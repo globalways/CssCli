@@ -68,7 +68,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 	private View layoutView;
 	private ImageView imageProductAva;
 	private TextView textProductName, textProductPrice, textNumber;
-	private Button btnLess, btnAdd, btnAddCashier, btnOrder;
+	private Button btnLess, btnAdd, btnAddCashier, btnOrder, btnRefreshCamera;
 
 	// scanner variable
 	private InactivityTimer inactivityTimer;
@@ -227,8 +227,13 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 			} else {
 				if (((CashierActivity) getActivity()).getCount() > 0) {
 					((CashierActivity) getActivity()).showSignDialog();
+					stopScaner();
 				}
 			}
+			break;
+		case R.id.btnRefreshCamera:
+			stopScaner();
+			startScaner();
 			break;
 		}
 	}
@@ -256,6 +261,8 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		btnAddCashier.setOnClickListener(this);
 		btnOrder = (Button) layoutView.findViewById(R.id.btnSingle);
 		btnOrder.setOnClickListener(this);
+		btnRefreshCamera = (Button) layoutView.findViewById(R.id.btnRefreshCamera);
+		btnRefreshCamera.setOnClickListener(this);
 	}
 
 	/** 弹出输入数量的对话框 */
@@ -338,6 +345,17 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		// first launch. That led to bugs where the scanning rectangle was the
 		// wrong size and partially
 		// off screen.
+		startScaner();
+	}
+
+	/*
+	 * ****************************************
+	 * scanner function
+	 * 
+	 * ****************************************
+	 */
+	
+	private void startScaner(){
 		cameraManager = new CameraManager(this.getActivity().getApplication());
 
 		viewfinderView = (ViewfinderView) this.getActivity().findViewById(R.id.viewfinder_view);
@@ -362,13 +380,22 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		decodeFormats = null;
 		characterSet = null;
 	}
-
-	/*
-	 * ****************************************
-	 * scanner function
-	 * 
-	 * ****************************************
-	 */
+	
+	private void stopScaner(){
+		if (handler != null) {
+			handler.quitSynchronously();
+			handler = null;
+		}
+		inactivityTimer.onPause();
+		ambientLightManager.stop();
+		cameraManager.closeDriver();
+		if (!hasSurface) {
+			SurfaceView surfaceView = (SurfaceView) this.getActivity().findViewById(R.id.preview_view);
+			SurfaceHolder surfaceHolder = surfaceView.getHolder();
+			surfaceHolder.removeCallback(this);
+		}
+	}
+	
 	/**
 	 * 
 	 * @param surfaceHolder
@@ -531,18 +558,7 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 
 	@Override
 	public void onPause() {
-		if (handler != null) {
-			handler.quitSynchronously();
-			handler = null;
-		}
-		inactivityTimer.onPause();
-		ambientLightManager.stop();
-		cameraManager.closeDriver();
-		if (!hasSurface) {
-			SurfaceView surfaceView = (SurfaceView) this.getActivity().findViewById(R.id.preview_view);
-			SurfaceHolder surfaceHolder = surfaceView.getHolder();
-			surfaceHolder.removeCallback(this);
-		}
+		stopScaner();
 		super.onPause();
 	}
 

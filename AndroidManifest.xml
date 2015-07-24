@@ -110,6 +110,9 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        <service android:name="com.globalways.csscli.ui.cashier.OrderPollingService">
+        </service>
+        
         <!-- 进货渠道管理 -->
         <activity
             android:name=".ui.purchase.PurchaseActivity"

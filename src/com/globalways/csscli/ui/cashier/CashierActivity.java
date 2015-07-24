@@ -1,6 +1,7 @@
 package com.globalways.csscli.ui.cashier;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.globalways.csscli.R;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.ui.BaseFragmentActivity;
+import com.globalways.csscli.ui.UITools;
 
 /**
  * 收银台
@@ -19,6 +21,10 @@ import com.globalways.csscli.ui.BaseFragmentActivity;
  */
 public class CashierActivity extends BaseFragmentActivity implements OnClickListener {
 
+	
+	//禁用返回键
+	public static boolean isBlockBackKey = false;
+	
 	private TextView textCenter;
 	private ImageButton imgBtnLeft;
 	private View dialogContainer;
@@ -43,6 +49,18 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 			finish();
 			break;
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK)
+		{
+			if(isBlockBackKey){
+				UITools.ToastMsg(this, "返回键已经禁用，请通过程序界面操作");
+				return true;
+			}
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	/** 显示下单窗口 */
@@ -110,5 +128,6 @@ public class CashierActivity extends BaseFragmentActivity implements OnClickList
 		cashierListAdapter = new CashierListAdapter(this);
 		listViewShopping.setAdapter(cashierListAdapter);
 	}
-
+	
+	
 }

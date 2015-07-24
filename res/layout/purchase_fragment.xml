@@ -10,121 +10,121 @@
         android:layout_height="match_parent"
         android:layout_weight="0.5"
         android:orientation="vertical" >
-        
+
         <!-- 采购清单表 表头 -->
 
-        <include layout="@layout/purchase_fragment_list_item"
+        <include
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center_vertical"
-            android:visibility="gone"
-             />
-        
+            android:layout_marginTop="10dp"
+            layout="@layout/purchase_fragment_list_item"
+            android:visibility="gone" />
+
         <LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="@dimen/table_title_height"
-		    android:paddingTop="5dp"
-		    android:paddingBottom="5dp"
-		    android:background="@color/base_gray"
-		    android:orientation="horizontal" >
-		    
-		    <!-- 采购批次号 -->
-		    <TextView
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="center_vertical"
-		        android:layout_weight="1.5"
-		        android:textColor="@color/base_black_333333"
-		        android:gravity="center"
-		        android:text="采购批次号"
-		        />
-		    <!-- 采购时间 -->
-		    <TextView
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1.2"
-		        android:layout_gravity="center_vertical"
-		        android:textColor="@color/base_black_333333"
-		        android:gravity="center"
-		        android:text="采购时间"
-		        />
-		    <!-- 采购数量 -->
-		    <TextView
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_gravity="center_vertical"
-		        android:gravity="center"
-		        android:textColor="@color/base_black_333333"
-		        android:text="采购数量"
-		        />
-		    <!-- 采购总额 -->
-		    <TextView
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_gravity="center_vertical"
-		        android:gravity="center"
-		        android:textColor="@color/base_black_333333"
-		        android:text="采购总额"
-		        />
-		</LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/table_title_height"
+            android:background="@color/base_gray"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <!-- 采购批次号 -->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="采购批次号"
+                android:textColor="@color/base_black_333333" />
+            <!-- 采购时间 -->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.2"
+                android:gravity="center"
+                android:text="采购时间"
+                android:textColor="@color/base_black_333333" />
+            <!-- 采购数量 -->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="采购数量"
+                android:textColor="@color/base_black_333333" />
+            <!-- 采购总额 -->
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="采购总额"
+                android:textColor="@color/base_black_333333" />
+        </LinearLayout>
 
         <com.handmark.pulltorefresh.library.PullToRefreshListView
-                    xmlns:ptr="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/refreshListView"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:divider="@color/base_gray"
-                    android:dividerHeight="1px"
-                    android:footerDividersEnabled="false"
-                    android:headerDividersEnabled="false"
-                    android:listSelector="@color/base_gray"
-                    ptr:ptrAnimationStyle="flip" />
-         <LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="@dimen/table_subtitle_height"
-		    android:background="@color/base_gray"
-		    android:orientation="horizontal" >
-		    
-		    <TextView
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="center_vertical"
-		        android:layout_weight="1.5"
-		        android:textColor="@color/base_black_333333"
-		        android:gravity="right"
-		        android:text="总数："
-		        />
-		    <TextView
-		        android:id="@+id/tvPurchaseCounts"
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1.2"
-		        android:gravity="start"
-		        android:textColor="@color/base_btn_orange"
-		        android:text="0"
-		        />
-		    <TextView
-		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:visibility="invisible"
-		        />
-		    <TextView android:id="@+id/btnToNewPurchaseRecord"
-		        android:layout_width="0dp"
-		        android:layout_height="match_parent"
-		        android:layout_weight="1"
-		        android:gravity="center"
-		        android:background="@color/base_btn_blue"
-                android:textColor="@android:color/white"
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/refreshListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:divider="@color/base_gray"
+            android:dividerHeight="1px"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:listSelector="@color/base_gray"
+            ptr:ptrAnimationStyle="flip" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/table_subtitle_height"
+            android:background="@color/base_gray"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.5"
+                android:gravity="right"
+                android:text="总数："
+                android:textColor="@color/base_black_333333" />
+
+            <TextView
+                android:id="@+id/tvPurchaseCounts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:gravity="start"
+                android:text="0"
+                android:textColor="@color/base_btn_orange" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/btnToNewPurchaseRecord"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/base_btn_blue"
+                android:gravity="center"
                 android:text="新增"
-		        />
-		</LinearLayout>
-        
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -136,9 +136,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
-        android:padding="10dp"
         android:focusableInTouchMode="true"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="10dp" >
 
         <TableLayout
             android:layout_width="match_parent"
@@ -152,33 +152,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:textColor="@color/base_black_333333"
-                    android:text="系统批次号" />
+                    android:text="系统批次号"
+                    android:textColor="@color/base_black_333333" />
 
                 <com.globalways.csscli.view.ClearableEditText
-                    style="@style/EditTextStye"
                     android:id="@+id/et_batch_id"
+                    style="@style/EditTextStye"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:enabled="false" />
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:textColor="@color/base_black_333333"
-                    android:text="自定批次号" />
+                    android:text="自定批次号"
+                    android:textColor="@color/base_black_333333" />
 
                 <com.globalways.csscli.view.ClearableEditText
-                    style="@style/EditTextStye"
                     android:id="@+id/et_out_id"
+                    style="@style/EditTextStye"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
@@ -192,12 +191,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
-                    android:textColor="@color/base_black_333333"
-                    android:text="总价" />
+                    android:text="总价"
+                    android:textColor="@color/base_black_333333" />
 
                 <com.globalways.csscli.view.ClearableEditText
-                    style="@style/EditTextStye"
                     android:id="@+id/et_total"
+                    style="@style/EditTextStye"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -206,18 +205,67 @@
             </TableRow>
         </TableLayout>
 
-        <ListView 
-            android:id="@+id/lvPurchaseGoodsFromWeb"
+        <!-- purchase detail -->
+
+        <LinearLayout
+            android:id="@+id/viewPurchaseDetail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            />
-        <GridView
-            android:id="@+id/gvPurchaseWebAvatars"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:numColumns="3"
-            android:visibility="gone" />
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="采购货物列表"
+                android:textColor="@color/base_orange" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/base_gray" />
+            
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                layout="@layout/purchase_fragment_goods_list_item" />
+
+            <ListView
+                android:id="@+id/lvPurchaseGoodsFromWeb"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginBottom="20dp"
+                android:divider="@null"
+                />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="采购图片"
+                android:textColor="@color/base_orange" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/base_gray" />
+
+            <GridView
+                android:id="@+id/gvPurchaseWebAvatars"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:numColumns="3" />
+            <TextView
+                android:id="@+id/tvNoPurchasePic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂无图片"/>
+            
+        </LinearLayout>
+
+        <!-- new purchase -->
 
         <LinearLayout
             android:id="@+id/llNewPurchaseView"
@@ -254,18 +302,18 @@
                     android:id="@+id/tv_title"
                     android:layout_width="300dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:gravity="center_vertical"
+                    android:text="货品列表"
                     android:textColor="@color/base_black_333333"
-                    android:textSize="18sp"
-                    android:text="货品列表" />
+                    android:textSize="18sp" />
 
                 <Button
-                    style="@style/BtnBlue"
                     android:id="@+id/btnScanGoods"
+                    style="@style/BtnBlue"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:text="扫描货物" />
             </RelativeLayout>
 
@@ -279,13 +327,12 @@
                 android:id="@+id/lv_purchase_detail_goods"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginBottom="20dp"
-                />
+                android:layout_weight="1" />
 
             <Button
-                style="@style/BtnOrange"
                 android:id="@+id/btnSaveNewPurchaseRecord"
+                style="@style/BtnOrange"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

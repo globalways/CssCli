@@ -85,7 +85,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		public static final int INFO_FIRST = 2;
 	}
 
-	private TextView textCenter, editProductType, tvProductCategory;
+	private TextView textCenter, editProductType, tvProductCategory, tvProductCategoryID;
 	private ImageButton imgBtnLeft, imgBtnRight;
 	private ClearableEditText editName, editBrand, editPrice, editOriginalPrice, editRetailApr, editUnit, editApr, editTag, editCode, editStock,
 			editStockLimit, editDesc;
@@ -305,6 +305,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		editPrice.setText(Tool.fenToYuan(entity.getProduct_retail_price()));
 		editRetailApr.setText(String.valueOf(entity.getProduct_retail_apr()));
 		editOriginalPrice.setText(Tool.fenToYuan(entity.getProduct_original_price()));
+		getCategory(entity.getProduct_category());
 		editUnit.setText(entity.getProduct_unit());
 		editApr.setText(entity.getProduct_apr() + "");
 		editTag.setText(entity.getProduct_tag());
@@ -320,6 +321,27 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		checkBoxRecommend.setChecked(entity.getStatus() == 1);
 		checkBoxLock.setChecked(entity.getIs_recommend() == 1);
 		picWebAdapter.setData(entity.getProduct_avatar());
+	}
+	
+	/**
+	 * 根据分类ID获取商品分类信息
+	 * @param cid
+	 */
+	private void getCategory(final int cid){
+		ProductManager.getInstance().getCategory(cid, new ManagerCallBack<ProductCategoryEntity>() {
+
+			@Override
+			public void onSuccess(ProductCategoryEntity returnContent) {
+				super.onSuccess(returnContent);
+				tvProductCategory.setText(String.valueOf(returnContent.getName()));
+				tvProductCategoryID.setText(String.valueOf(cid));
+			}
+
+			@Override
+			public void onFailure(int code, String msg) {
+				super.onFailure(code, msg);
+			}
+		});
 	}
 
 	@Override
@@ -416,7 +438,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		}
 		
 		//分类
-		String product_category = tvProductCategory.getText().toString();
+		int product_category_id = Integer.parseInt(tvProductCategoryID.getText().toString());
 		// end
 		
 		// 单位
@@ -438,7 +460,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		mSimpleProgressDialog.showDialog();
 		ProductManager.getInstance().updateOrAdd(isAdd, selectedImageList, isAdd ? null : picWebAdapter.getPicList(),
 				product_name, product_brand, isAdd ? null : productQr, product_bar, product_desc, product_retail_price,
-						str_retail_apr,product_category, product_original_price,productType.getCode(),
+						str_retail_apr,product_category_id, product_original_price,productType.getCode(),
 				product_unit, stock_cnt, checkBoxRecommend.isChecked(), checkBoxLock.isChecked(), product_tag,
 				new ManagerCallBack<String>() {
 					@Override
@@ -504,8 +526,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 	 */
 	private void priceChangedAction(String new_price)
 	{
-		if(!InputVali.isFloatAsFen(new_price))
-		{
+		if(!InputVali.isFloatAsFen(new_price)){
 			editRetailApr.setText("");
 		}
 		else{
@@ -544,8 +565,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 			UITools.ToastMsg(ProductAddNewActivity.this, "请正确输入原价_apr");
 			return;
 		}
-		if(new_apr.isEmpty())
-		{
+		if(new_apr.isEmpty()){
 			editRetailApr.setText("");
 			editPrice.setText("");
 		}else{
@@ -661,6 +681,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 				@Override
 				public void onClick(View v) {
 					tvProductCategory.setText(list.get(position).getName());
+					tvProductCategoryID.setText(String.valueOf(list.get(position).getId()));
 					categoriesDialog.dismiss();
 					currentLevel = 1;
 				}
@@ -687,6 +708,7 @@ public class ProductAddNewActivity extends BaseActivity implements OnClickListen
 		
 		tvProductCategory = (TextView) findViewById(R.id.tvProductCategory);
 		tvProductCategory.setOnClickListener(this);
+		tvProductCategoryID = (TextView) findViewById(R.id.tvProductCategoryID);
 		
 		editProductType = (TextView) findViewById(R.id.editProductType);
 		editProductType.setOnClickListener(new OnClickListener() {

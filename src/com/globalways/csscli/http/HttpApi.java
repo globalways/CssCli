@@ -20,16 +20,30 @@ public class HttpApi {
 	public static final String PRODUCT_CATEGORY_NEW = HOME_URI + "/v2/merchants/stores/:sid/categories";
 	public static final String PRODUCT_CATEGORY_CHILDREN = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid/children";
 	public static final String PRODUCT_CATEGORY_DELETE = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid";
+	public static final String PRODUCT_CATEGORY = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid";
 
 	public static final String PRODUCT_GET_DETAIL_BAR_CODE = HOME_URI + "/v2/merchants/stores/:sid/products/bar/:bar";
 	public static final String PRODUCT_GET_DETAIL_QR_CODE = HOME_URI + "/v2/merchants/stores/:sid/products/qr/:qr";
 
 	public static final String QINIU_GET_UPLOAD_TOKEN = HOME_URI + "/v2/public/qiniu/uptoken";
 
+	//订单
 	public static final String ORDER_SIGN = HOME_URI + "/v2/orders";
 	public static final String ORDER_CASH_DONE = HOME_URI + "/v2/orders/:oid/cashDone";
+	public static final String ORDER_MAKING_DELIVERY = HOME_URI + "/v2/orders/:oid/makingDelivery";
 	public static final String ORDER_CANCEL = HOME_URI + "/v2/orders/:oid/storeCancel";
+	public static final String ORDER_GET = HOME_URI + "/v2/orders/:oid";
 
+	public static final String SETTLE_NEW = HOME_URI + "/v2/merchants/stores/:sid/settle";
+	public static final String SETTLE_LIST = HOME_URI + "/v2/merchants/stores/:sid/settle";
+	public static final String SETTLE_ORDER_LIST = HOME_URI + "/v2/orders/settles/:sno/orders";
+	public static final String SETTLE_AUDIT_AUTO = HOME_URI + "/v2/orders/settles/:sno/auditByComputer";
+	public static final String SETTLE_DETAIL = HOME_URI + "/v2/orders/settles/:sno";
+	public static final String SETTLE_PAY = HOME_URI + "/v2/orders/settles/:sno/payed";
+	public static final String SETTLE_RECEIVE = HOME_URI + "/v2/orders/settles/:sno/received";
+	public static final String SETTLE_CLOSE = HOME_URI + "/v2/orders/settles/:sno/close";
+	
+	
 	// add by wyp
 	public static final String STORE_CHILDERN_ALL = HOME_URI + "/v2/merchants/stores/:sid/children/all";
 	// end

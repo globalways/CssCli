@@ -61,10 +61,10 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	
 	private static final int CODE_SELECT_IMAGE = 11;
 	private static final int CODE_SCAN_BAR_REQUEST = 12;
-	private View contentView;
+	private View contentView, viewPurchaseDetail;
 	private Button btnSaveNewPurchaseRecord, btnScanGoods;
 	private EditText etBatchId, etOutId, etTotal;
-	private TextView tvSelectSupplier, btnToNewPurchaseRecord, tvPurchaseCounts, tvPurchaseGoodsDetailUnit;
+	private TextView tvSelectSupplier, btnToNewPurchaseRecord, tvPurchaseCounts, tvPurchaseGoodsDetailUnit, tvNoPurchasePic;
 	private LinearLayout llNewPurchaseView;
 	private ListView lvPurchaseList, lvPurhcaseGoodsList, lvPurchaseGoodsListFromWeb;
 	private PullToRefreshListView refreshListView;
@@ -116,10 +116,13 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	{
 		// new purchase pic&goods area
 		llNewPurchaseView = (LinearLayout) contentView.findViewById(R.id.llNewPurchaseView);
+		//purchase detail
+		viewPurchaseDetail = contentView.findViewById(R.id.viewPurchaseDetail);
 		
 		//TextView
 		tvPurchaseCounts = (TextView) contentView.findViewById(R.id.tvPurchaseCounts);
 		btnToNewPurchaseRecord = (TextView) contentView.findViewById(R.id.btnToNewPurchaseRecord);
+		tvNoPurchasePic = (TextView) contentView.findViewById(R.id.tvNoPurchasePic);
 		btnToNewPurchaseRecord.setOnClickListener(this);
 		// Buttons
 		btnSaveNewPurchaseRecord = (Button) contentView.findViewById(R.id.btnSaveNewPurchaseRecord);
@@ -515,8 +518,7 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		mSelectPicAdapter.setData(selectedImageList);
 		
 		//switch view
-		mGridViewPurchaseDetail.setVisibility(View.GONE);
-		lvPurchaseGoodsListFromWeb.setVisibility(View.GONE);
+		viewPurchaseDetail.setVisibility(View.GONE);
 		llNewPurchaseView.setVisibility(View.VISIBLE);
 		btnSaveNewPurchaseRecord.setVisibility(View.VISIBLE);
 	}
@@ -527,12 +529,19 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	 */
 	private void showPurchase(PurchaseEntity entity){
 		//switch view
-		mGridViewPurchaseDetail.setVisibility(View.VISIBLE);
-		lvPurchaseGoodsListFromWeb.setVisibility(View.VISIBLE);
+		viewPurchaseDetail.setVisibility(View.VISIBLE);
 		llNewPurchaseView.setVisibility(View.GONE);
 		
 		//set data
-		mPurchasePicAdapter.setData(entity.getPurchase_avatar());
+		if(entity.getPurchase_avatar() != null && !entity.getPurchase_avatar().isEmpty()){
+			tvNoPurchasePic.setVisibility(View.GONE);
+			mGridViewPurchaseDetail.setVisibility(View.VISIBLE);
+			mPurchasePicAdapter.setData(entity.getPurchase_avatar());
+		}else{
+			//提示没有图片
+			mGridViewPurchaseDetail.setVisibility(View.GONE);
+			tvNoPurchasePic.setVisibility(View.VISIBLE);
+		}
 		etTotal.setText(Tool.fenToYuan(entity.getPurchase_amount()));
 		etBatchId.setText(entity.getBatch_id());
 		etOutId.setText(entity.getOut_id());

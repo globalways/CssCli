@@ -19,6 +19,8 @@ public class ProductEntity {
 	@Expose
 	private int product_type;
 	@Expose
+	private int product_category;
+	@Expose
 	private String product_desc;
 	@Expose
 	private String product_qr;
@@ -302,6 +304,14 @@ public class ProductEntity {
 
 	public void setProduct_type(int product_type) {
 		this.product_type = product_type;
+	}
+
+	public int getProduct_category() {
+		return product_category;
+	}
+
+	public void setProduct_category(int product_category) {
+		this.product_category = product_category;
 	}
 
 }

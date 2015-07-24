@@ -48,7 +48,7 @@ public class MainActivity extends BaseNoTitleActivity implements OnClickListener
 			UITools.jumpPerchaseActivity(this);
 			break;
 		case R.id.btnOrderManager:
-			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			UITools.jumpOrderActivity(this);
 			break;
 		case R.id.btnStockManager:
 			UITools.jumpStockActivity(this);
@@ -57,7 +57,7 @@ public class MainActivity extends BaseNoTitleActivity implements OnClickListener
 			UITools.jumpStatisticsActivity(this);
 			break;
 		case R.id.btnSettings:
-			UITools.ToastMsg(this, "正在开发，敬请期待……");
+			UITools.jumpSettingsActivity(this);
 			break;
 		}
 	}

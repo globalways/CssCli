@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.entity.SupplierEntity;
+import com.globalways.csscli.tools.Tool;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -65,7 +66,7 @@ public class SuppliersListAdapter extends BaseAdapter {
 		((TextView) convertView.findViewById(R.id.supplier_name)).setText(se.getName());
 		((TextView) convertView.findViewById(R.id.supplier_contacts_name)).setText(se.getContact());
 		((TextView) convertView.findViewById(R.id.supplier_contacts_phone)).setText(se.getTel());
-		((TextView) convertView.findViewById(R.id.supplier_address)).setText(se.getAddress());
+		((TextView) convertView.findViewById(R.id.supplier_address)).setText(Tool.simpifyStr(se.getAddress(), 8));
 			
 		return convertView;
 	}

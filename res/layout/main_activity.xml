@@ -81,7 +81,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_order"
-                android:enabled="false"
+                android:enabled="true"
                 android:text="订单管理" />
         </TableRow>
 
@@ -116,7 +116,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:drawableTop="@drawable/icon_settings"
-                android:enabled="false"
+                android:enabled="true"
                 android:text="系统设置" />
         </TableRow>
     </TableLayout>

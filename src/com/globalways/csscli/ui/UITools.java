@@ -10,11 +10,13 @@ import android.widget.Toast;
 import com.globalways.csscli.ui.account.LoginActivity;
 import com.globalways.csscli.ui.cashier.CashierActivity;
 import com.globalways.csscli.ui.main.MainActivity;
+import com.globalways.csscli.ui.order.OrderActivity;
 import com.globalways.csscli.ui.product.ProductActivity;
 import com.globalways.csscli.ui.product.ProductAddNewActivity;
 import com.globalways.csscli.ui.product.ProductScanCodeActivity;
 import com.globalways.csscli.ui.purchase.PurchaseActivity;
 import com.globalways.csscli.ui.settings.AppUpdateActivity;
+import com.globalways.csscli.ui.settings.SettingsActivity;
 import com.globalways.csscli.ui.statistics.StatisticsActivity;
 import com.globalways.csscli.ui.stock.StockActivity;
 import com.globalways.csscli.view.ClearableEditText;
@@ -81,6 +83,14 @@ public class UITools {
 	}
 	
 	/**
+	 * 订单管理
+	 * @param context
+	 */
+	public static void jumpOrderActivity(Context context){
+		context.startActivity(new Intent(context,OrderActivity.class));
+	}
+	
+	/**
 	 * 库存管理
 	 * @param context
 	 */
@@ -88,6 +98,13 @@ public class UITools {
 		context.startActivity(new Intent(context,StockActivity.class));
 	}
 	
+	/**
+	 * 系统设置
+	 * @param context
+	 */
+	public static void jumpSettingsActivity(Context context){
+		context.startActivity(new Intent(context,SettingsActivity.class));
+	}
 	
 	/**
 	 * 跳转扫码界面，扫描二维码或条形码

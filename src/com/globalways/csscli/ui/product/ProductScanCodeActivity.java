@@ -116,7 +116,7 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 			loadProductDetail(result.getText());
 			break;
 		}
-		// restartPreviewAfterDelay(1000L);
+		restartPreviewAfterDelay(1000L);
 	}
 
 	/**

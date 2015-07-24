@@ -2,41 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:paddingTop="5dp"
+    android:orientation="horizontal"
     android:paddingBottom="5dp"
-    android:orientation="horizontal" >
-    
+    android:paddingTop="5dp" >
+
     <!-- 采购批次号 -->
-    <TextView android:id="@+id/tv_purchaseBatchNumber"
+
+    <TextView
+        android:id="@+id/tv_purchaseBatchNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1.5"
+        android:gravity="center"
         android:text="采购批次号"
-        />
+        android:textColor="@color/base_black_333333" />
     <!-- 采购时间 -->
-    <TextView android:id="@+id/tv_purchaseDate"
+
+    <TextView
+        android:id="@+id/tv_purchaseDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1.2"
         android:gravity="center"
         android:text="采购时间"
-        />
+        android:textColor="@color/base_black_333333" />
     <!-- 采购数量 -->
-    <TextView android:id="@+id/tv_purchaseAmount"
+
+    <TextView
+        android:id="@+id/tv_purchaseAmount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center"
         android:text="采购数量"
-        />
+        android:textColor="@color/base_black_333333" />
     <!-- 采购总额 -->
-    <TextView android:id="@+id/tv_purchaseTotal"
+
+    <TextView
+        android:id="@+id/tv_purchaseTotal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:gravity="center"
         android:text="采购总额"
-        />
+        android:textColor="@color/base_black_333333" />
 
 </LinearLayout>

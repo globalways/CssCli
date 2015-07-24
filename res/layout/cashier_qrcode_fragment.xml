@@ -3,127 +3,161 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    
+    <FrameLayout
+        android:id="@+id/camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7" >
+        
+        <SurfaceView
+            android:id="@+id/preview_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
+        <com.globalways.csscli.android.ViewfinderView
+            android:id="@+id/viewfinder_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-            <FrameLayout
-                android:id="@+id/camera_view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.7" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
 
-                <SurfaceView
-                    android:id="@+id/preview_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
+            <Button
+                android:id="@+id/btnRefreshCamera"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/selector_login_btn_bg"
+                android:text="刷新"
+                android:textColor="@color/base_white" />
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/base_white"
+                android:text="这里可以手动选择商品"/>
+            
+            <Button
+                style="@style/BtnBlue"
+                android:id="@+id/btnSwitch"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="手动选择"
+               />
+        </RelativeLayout>
+    </FrameLayout>
 
-                <com.globalways.csscli.android.ViewfinderView
-                    android:id="@+id/viewfinder_view"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-            </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/imageProductAva"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@null"
+            android:padding="20dp"
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textProductName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/base_black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textProductPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/base_black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical" >
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:baselineAligned="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
-                <ImageView
-                    android:id="@+id/imageProductAva"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:padding="20dp"
-                    android:src="@drawable/logo" />
+                <Button
+                    android:id="@+id/btnLess"
+                    android:layout_width="@dimen/cashier_btn_hw"
+                    android:layout_height="@dimen/cashier_btn_hw"
+                    android:background="@color/selector_cashier_btn_number"
+                    android:text="-"
+                    android:textSize="20sp" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/textProductName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/base_black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textProductPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:textColor="@color/base_black"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textNumber"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="40dp"
-                    android:orientation="vertical" >
+                    android:layout_height="@dimen/cashier_btn_hw"
+                    android:layout_marginLeft="-1dp"
+                    android:layout_marginRight="-1dp"
+                    android:background="@color/selector_cashier_edittext_number"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/base_black"
+                    android:textSize="18sp" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:baselineAligned="true"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal" >
-
-                        <Button
-                            android:id="@+id/btnLess"
-                            android:layout_width="@dimen/cashier_btn_hw"
-                            android:layout_height="@dimen/cashier_btn_hw"
-                            android:background="@color/selector_cashier_btn_number"
-                            android:text="-"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/textNumber"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/cashier_btn_hw"
-                            android:layout_marginLeft="-1dp"
-                            android:layout_marginRight="-1dp"
-                            android:background="@color/selector_cashier_edittext_number"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textColor="@color/base_black"
-                            android:textSize="18sp" />
-
-                        <Button
-                            android:id="@+id/btnAdd"
-                            android:layout_width="@dimen/cashier_btn_hw"
-                            android:layout_height="@dimen/cashier_btn_hw"
-                            android:background="@color/selector_cashier_btn_number"
-                            android:text="+"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/btnAddCashier"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:background="@color/selector_btn_blue"
-                        android:text="添加"
-                        android:textColor="@android:color/white" />
-                </LinearLayout>
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="@dimen/cashier_btn_hw"
+                    android:layout_height="@dimen/cashier_btn_hw"
+                    android:background="@color/selector_cashier_btn_number"
+                    android:text="+"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnSingle"
-                style="@style/BtnOrange"
+                android:id="@+id/btnAddCashier"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="20dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:text="去结算" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/selector_btn_blue"
+                android:text="添加"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSingle"
+        style="@style/BtnOrange"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="去结算" />
 
 </LinearLayout>

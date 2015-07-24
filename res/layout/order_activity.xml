@@ -18,7 +18,7 @@
             android:orientation="vertical" >
 
             <RadioButton
-                android:id="@+id/radioAppUpdate"
+                android:id="@+id/rbOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_stat_radio_bg"
@@ -26,10 +26,11 @@
                 android:checked="true"
                 android:drawableTop="@drawable/icon_statistics_sell"
                 android:padding="20dp"
-                android:text="系统更新"
+                android:text="订单管理"
                 android:textColor="#333333" />
+            
             <RadioButton
-                android:id="@+id/radioDevices"
+                android:id="@+id/rbSettle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/selector_stat_radio_bg"
@@ -37,29 +38,7 @@
                 android:checked="false"
                 android:drawableTop="@drawable/icon_statistics_sell"
                 android:padding="20dp"
-                android:text="外接设备"
-                android:textColor="#333333" />
-            <RadioButton
-                android:id="@+id/radioAbout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_stat_radio_bg"
-                android:button="@null"
-                android:checked="false"
-                android:drawableTop="@drawable/icon_statistics_sell"
-                android:padding="20dp"
-                android:text="关于我们"
-                android:textColor="#333333" />
-            <RadioButton
-                android:id="@+id/radioFeedback"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_stat_radio_bg"
-                android:button="@null"
-                android:checked="false"
-                android:drawableTop="@drawable/icon_statistics_sell"
-                android:padding="20dp"
-                android:text="反馈建议"
+                android:text="工单管理"
                 android:textColor="#333333" />
 
         </RadioGroup>

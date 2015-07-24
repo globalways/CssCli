@@ -119,7 +119,10 @@ public class CashierListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return list.size();
+		if(list != null){
+			return list.size();
+		}
+		return 0;
 	}
 
 	@Override

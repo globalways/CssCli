@@ -13,4 +13,5 @@ public class Config {
 
 	public static final String BUCKET = "globalways";
 	public static final String QINIU_KEY = "key";
+	
 }
