@@ -191,13 +191,33 @@
                             android:text="扫码支付" />
                     </RelativeLayout>
 					
+                    
                     <!-- 扫码支付二维码 -->
-                    <ImageView
-                        android:id="@+id/ivOrderQR"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/viewQRCodeArea"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone" />
-					<!-- 支付成功提示 -->
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        >
+                        <Button android:id="@+id/btnHuanTuQR"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/selector_qr_btn_bg"
+                            android:text="环途客户端"
+                            />
+                        
+                        <Button android:id="@+id/btnAlipayQR"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/selector_qr_btn_bg"
+                            android:text="支付宝"
+                            />
+                        
+                    </LinearLayout>
+
+                    <!-- 支付成功提示 -->
+
                     <RelativeLayout
                         android:id="@+id/rlOnlinePaySucces"
                         android:layout_width="match_parent"

@@ -9,7 +9,7 @@ import java.util.List;
  * @version Time: 2015年7月24日 下午4:00:19
  * @param <E>
  */
-public interface PageList<E> {
+public interface PagedList<E> {
 	public static final int INIT_PAGE = 1;
 	public void setData(boolean isInit, List<E> list);
 	public int getNext_page(boolean isReload);

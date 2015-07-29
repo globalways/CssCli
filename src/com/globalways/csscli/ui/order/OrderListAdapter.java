@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.globalways.csscli.R;
 import com.globalways.csscli.entity.OrderEntity;
+import com.globalways.csscli.tools.PagedList;
+import com.globalways.csscli.tools.Tool;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,8 +14,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class OrderListAdapter extends BaseAdapter {
+public class OrderListAdapter extends BaseAdapter implements PagedList<OrderEntity>{
 
+	private int next_page = INIT_PAGE;
 	private Context context;
 	private List<OrderEntity> list;
 	public OrderListAdapter(Context context) {
@@ -52,14 +55,35 @@ public class OrderListAdapter extends BaseAdapter {
 		}
 		mItemView = (ItemView) convertView.getTag();
 		mItemView.tvOrderID.setText(list.get(position).getOrder_id());
-		mItemView.tvOrderStatus.setText("status");
-		mItemView.tvOrderTime.setText("time");
-		mItemView.tvOrderTotal.setText("total price");
+		mItemView.tvOrderStatus.setText(OrderStatus.valueOf(list.get(position).getLast_status()).name);
+		mItemView.tvOrderTime.setText(Tool.formatDate(list.get(position).getOrder_time()*1000));
+		mItemView.tvOrderTotal.setText(Tool.fenToYuan(list.get(position).getOrder_amount()));
 		return convertView;
 	}
 	
 	private class ItemView{
 		TextView tvOrderID,tvOrderTime,tvOrderTotal,tvOrderStatus;
+	}
+
+	@Override
+	public void setData(boolean isInit, List<OrderEntity> list) {
+		if(isInit)
+		{
+			setList(list);
+		}else{
+			this.list.addAll(list);
+		}
+		next_page ++;
+		notifyDataSetChanged();
+	}
+	@Override
+	public int getNext_page(boolean isReload) {
+		if(isReload)
+			this.next_page = INIT_PAGE;
+		return next_page;
+	}
+	public void setList(List<OrderEntity> list) {
+		this.list = list;
 	}
 
 }

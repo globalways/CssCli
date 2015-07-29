@@ -1,5 +1,10 @@
 package com.globalways.csscli.entity;
 
+/**
+ * 商品分类结构
+ * @author wyp E-mail:onebyte@qq.com
+ * @version Time: 2015年7月27日 下午3:24:07
+ */
 public class ProductCategoryEntity {
 	private int id;
 	private int parent_id;

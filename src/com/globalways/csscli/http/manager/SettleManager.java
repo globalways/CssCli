@@ -18,6 +18,7 @@ import com.globalways.csscli.http.HttpClientDao.ErrorCode;
 import com.globalways.csscli.http.HttpClientDao.HttpClientUtilCallBack;
 import com.globalways.csscli.http.HttpUtils;
 import com.globalways.csscli.tools.MyApplication;
+import com.globalways.csscli.ui.order.SettleStatus;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,22 +33,26 @@ public class SettleManager {
 		return mSettleManager;
 	}
 	
-	public void loadSettles(int page, int size, final ManagerCallBack2<List<SettleEntity>, Integer> callBack){
+	public void loadSettles(SettleStatus s,int page, int size, final ManagerCallBack2<List<SettleEntity>, Integer> callBack){
 		String url = HttpApi.SETTLE_LIST.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()));
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("page", page);
 		params.put("size", size);
+		if(s != null){
+			params.put("status", s.getCode());
+		}
 		
 		HttpUtils.getInstance().sendGetRequest(url, 1, params, new HttpClientUtilCallBack<String>() {
 			@Override
 			public void onSuccess(String url, long flag, String returnContent) {
 				super.onSuccess(url, flag, returnContent);
 				JSONObject jsonObject;
+				int code = 0;
 				try {
 					jsonObject = new JSONObject(returnContent);
-					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
 					//工单总数
-					int total = jsonObject.getInt("total");
+					int total = jsonObject.getInt(Config.TOTAL);
 					if (code == HttpCode.SUCCESS) {
 						Gson gson = new Gson();
 						List<SettleEntity> list = new ArrayList<SettleEntity>();
@@ -63,6 +68,7 @@ public class SettleManager {
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
+					callBack.onFailure(code, "");
 				}
 				
 			}
@@ -75,21 +81,19 @@ public class SettleManager {
 		});
 	}
 	
-	public void loadSettleOrders(int page, int size,String sno, final ManagerCallBack2<List<OrderEntity>, Integer> callBack){
+	public void loadSettleOrders(String sno, final ManagerCallBack2<List<OrderEntity>, Integer> callBack){
 		String url = HttpApi.SETTLE_ORDER_LIST.replaceFirst(":sno", sno);
-		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("page", page);
-		params.put("size", size);
-		HttpUtils.getInstance().sendGetRequest(url, 1, params, new HttpClientUtilCallBack<String>() {
+		HttpUtils.getInstance().sendGetRequest(url, 1, null, new HttpClientUtilCallBack<String>() {
 			@Override
 			public void onSuccess(String url, long flag, String returnContent) {
 				super.onSuccess(url, flag, returnContent);
 				JSONObject jsonObject;
+				int code = 0;
 				try {
 					jsonObject = new JSONObject(returnContent);
-					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
 					//工单总数
-					int total = jsonObject.getInt("total");
+					int total = jsonObject.getInt(Config.TOTAL);
 					if (code == HttpCode.SUCCESS) {
 						Gson gson = new Gson();
 						List<OrderEntity> list = new ArrayList<OrderEntity>();
@@ -105,6 +109,7 @@ public class SettleManager {
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
+					callBack.onFailure(code, null);
 				}
 				
 			}

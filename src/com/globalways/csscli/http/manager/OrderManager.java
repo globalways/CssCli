@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 
 import com.globalways.csscli.Config;
 import com.globalways.csscli.entity.OrderEntity;
+import com.globalways.csscli.entity.OrderProductsEntity;
 import com.globalways.csscli.entity.ProductEntity;
 import com.globalways.csscli.http.HttpApi;
 import com.globalways.csscli.http.HttpClientDao.ErrorCode;
@@ -21,6 +23,7 @@ import com.globalways.csscli.http.HttpClientDao.HttpClientUtilCallBack;
 import com.globalways.csscli.http.HttpCode;
 import com.globalways.csscli.http.HttpUtils;
 import com.globalways.csscli.tools.MyApplication;
+import com.globalways.csscli.ui.order.OrderStatus;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -158,7 +161,7 @@ public class OrderManager {
 		if(isCash){
 			url = HttpApi.ORDER_CASH_DONE;
 		}else{
-			url = HttpApi.ORDER_MAKING_DELIVERY;
+			url = HttpApi.ORDER_ONLINE_DONE;
 		}
 		HttpUtils.getInstance().sendPostRequest(url.replaceFirst(":oid", order_id + ""), 1, null,
 				new HttpClientUtilCallBack<String>() {
@@ -341,5 +344,151 @@ public class OrderManager {
         }
         return entity;
     }
+	
+	/**
+	 * 订单列表
+	 * @param page
+	 * @param size
+	 * @param callBack
+	 * @param str_status 状态ids  example: "2,3,4"
+	 */
+	public void loadOrders(int page, int size,long start, long end,List<OrderStatus> statusArray,  final ManagerCallBack2<List<OrderEntity>, Integer> callBack){
+		
+		StringBuilder status = new StringBuilder();
+		if(statusArray != null && statusArray.size() != 0){
+			for(int i=0;i<statusArray.size();i++){
+				status.append(statusArray.get(i).code).append(",");
+			}
+		}
+		String url = HttpApi.ORDER_LIST.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid()));
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("page", page);
+		params.put("size", size);
+		params.put("start_time", start);
+		params.put("end_time", end);
+		params.put("status", status.length()==0 ? "" : status.toString().substring(0, status.length()-1));
+		
+		HttpUtils.getInstance().sendGetRequest(url, 1, params, new HttpClientUtilCallBack<String>() {
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					//订单总数
+					int total = jsonObject.getInt(Config.TOTAL);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						List<OrderEntity> list = new ArrayList<OrderEntity>();
+						list = gson.fromJson(jsonObject.getString(Config.BODY), new TypeToken<List<OrderEntity>>() {
+						}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(list,total);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code, jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+		});
+	}
+	
+	/**
+	 * 加载订单所含商品列表
+	 * @param oid
+	 * @param callBack
+	 */
+	public void loadOrderProuducts(String oid, final ManagerCallBack2<List<OrderProductsEntity>, Integer> callBack){
+		String url = HttpApi.ORDER_PRODUCTS_LIST.replaceFirst(":oid", oid);
+		
+		HttpUtils.getInstance().sendGetRequest(url, 1, null, new HttpClientUtilCallBack<String>() {
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					//订单商品总数
+					int total = jsonObject.getInt(Config.TOTAL);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						List<OrderProductsEntity> list = new ArrayList<OrderProductsEntity>();
+						list = gson.fromJson(jsonObject.getString(Config.BODY), new TypeToken<List<OrderProductsEntity>>() {
+						}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(list,total);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code, jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+		});
+	}
+	
+	/**
+	 * 获取支付宝支付二维码
+	 * @param oid
+	 * @param callBack
+	 */
+	public void getAlipayQRCode(String oid, final ManagerCallBack<String> callBack){
+		String url = HttpApi.ORDER_ALIPAY_QRCODE.replaceFirst(":oid", oid);
+		HttpUtils.getInstance().sendPostRequest(url, 1, null,
+				new HttpClientUtilCallBack<String>() {
+					@Override
+					public void onSuccess(String url, long flag, String returnContent) {
+						super.onSuccess(url, flag, returnContent);
+						JSONObject jsonObject;
+						try {
+							jsonObject = new JSONObject(returnContent);
+							int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+							if (code == HttpCode.SUCCESS) {
+								if (null != callBack) {
+									callBack.onSuccess(jsonObject.getString(Config.BODY));
+								}
+							} else {
+								if (null != callBack) {
+									callBack.onFailure(code,
+											jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void onFailure(String url, long flag, ErrorCode errorCode) {
+						super.onFailure(url, flag, errorCode);
+						if (null != callBack) {
+							callBack.onFailure(errorCode.code(), errorCode.msg());
+						}
+					}
+				});
+	}
 
 }

@@ -1,9 +1,18 @@
 package com.globalways.csscli.entity;
 
+import java.io.Serializable;
+
+
 import com.google.gson.annotations.Expose;
 
-public class ProductEntity {
+/**
+ * 商品分类结构
+ * @author wyp E-mail:onebyte@qq.com
+ * @version Time: 2015年7月27日 下午3:24:30
+ */
+public class ProductEntity implements Serializable{
 
+	private static final long serialVersionUID = -3669688556457790489L;
 	@Expose
 	private long id;
 	@Expose
@@ -313,5 +322,6 @@ public class ProductEntity {
 	public void setProduct_category(int product_category) {
 		this.product_category = product_category;
 	}
+
 
 }

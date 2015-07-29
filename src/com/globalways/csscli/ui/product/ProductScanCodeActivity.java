@@ -66,7 +66,8 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 
 	public static final String KEY_OPERATION_TYPE = "operationType";
 	private int operationType = OperationType.GET_CODE;
-
+	
+	
 	public class OperationType {
 		/** 扫码商品二维码或条形，扫码完成后查询该商品是否已经入库，已入库就进入修改页面；未入库提示添加 */
 		public static final int SCAN_PRODUCT = 0;
@@ -136,7 +137,6 @@ public class ProductScanCodeActivity extends BaseNoTitleActivity implements Scan
 					public void onSuccess(ProductEntity returnContent) {
 						super.onSuccess(returnContent);
 						mSimpleProgressDialog.cancleDialog();
-						UITools.ToastMsg(ProductScanCodeActivity.this, "onSuccess");
 						UITools.jumpProductAddNewActivity(ProductScanCodeActivity.this,
 								ProductAddNewActivity.ScanStep.SCAN_FIRST,
 								ProductAddNewActivity.ScanProductExist.EXIST, productCode);

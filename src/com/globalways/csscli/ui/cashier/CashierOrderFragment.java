@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -62,13 +63,14 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 	private ClearableEditText editApr, editDesc;
 	private Button btnCancel, btnNext, btnRemoveOdd;
 
-	/** Step one */
+	/** Step two */
 	private TextView textSignNum, textSignTotalPrice2, textKeepChange;
 	private ClearableEditText editCash;
-	private Button btnCancelSign, btnComfirm,btnConfirmQrPay, btnShowQRCode;
-	private ImageView ivOrderQR;
-	private View viewStepTwoForm, viewOnlinePaySucees;
-
+	private Button btnCancelSign, btnComfirm,btnConfirmQrPay, btnShowQRCode, btnAlipayQR, btnHuanTuQR;
+	private View viewStepTwoForm, viewOnlinePaySucees, viewQRCodeArea ;
+	//支付宝支付二维码
+	private Bitmap qrAlipayBitmap;
+	
 	/** 进度条 **/
 	private SimpleProgressDialog mSimpleProgressDialog;
 
@@ -122,17 +124,35 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 		case R.id.btnShowQRCode:
 			//扫码支付或者现金支付
 			if(viewStepTwoForm.isShown()){
+				
 				//qr code
-				Bitmap qrCodeBitmap = null;
+				Bitmap qrAlipay = null;
+				Bitmap qrHuantu = null;
+				//获取支付宝二维码
+				if(qrAlipayBitmap == null){
+					OrderManager.getInstance().getAlipayQRCode(orderEntity.getOrder_id(), new ManagerCallBack<String>() {
+						@Override
+						public void onSuccess(String returnContent) {
+							super.onSuccess(returnContent);
+							try {
+								qrAlipayBitmap = EncodingHandler.createQRCode(returnContent, 350);
+								btnAlipayQR.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(getResources(),qrAlipayBitmap), null, null);
+							} catch (WriterException e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+				
 				try {
-					qrCodeBitmap = EncodingHandler.createQRCode(orderEntity.getOrder_id(), 350);
+					qrHuantu = EncodingHandler.createQRCode(orderEntity.getOrder_id(), 350);
 				} catch (WriterException e) {
 					e.printStackTrace();
 				}
-				ivOrderQR.setImageBitmap(qrCodeBitmap);
-				
+				btnHuanTuQR.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(getResources(),qrHuantu), null, null);
+				btnAlipayQR.setCompoundDrawablesWithIntrinsicBounds(null, new BitmapDrawable(getResources(),qrAlipayBitmap), null, null);
 				viewStepTwoForm.setVisibility(View.GONE);
-				ivOrderQR.setVisibility(View.VISIBLE);
+				viewQRCodeArea.setVisibility(View.VISIBLE);
 				btnShowQRCode.setText("现金支付");
 				//注册receiver
 				mOrderReceiver = new OrderReceiver();
@@ -142,7 +162,7 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 				
 			}else{
 				viewStepTwoForm.setVisibility(View.VISIBLE);
-				ivOrderQR.setVisibility(View.GONE);
+				viewQRCodeArea.setVisibility(View.GONE);
 				btnShowQRCode.setText("扫码支付");
 				getActivity().unregisterReceiver(mOrderReceiver);
 				PollingUtils.stopPollingService(getActivity(), OrderPollingService.class, OrderPollingService.ACTION);
@@ -290,7 +310,12 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 		btnShowQRCode.setOnClickListener(this);
 		btnRemoveOdd = (Button) layoutView.findViewById(R.id.btnRemoveOdd);
 		btnRemoveOdd.setOnClickListener(this);
-		ivOrderQR = (ImageView) layoutView.findViewById(R.id.ivOrderQR);
+		
+		//二维码
+		viewQRCodeArea = layoutView.findViewById(R.id.viewQRCodeArea);
+		btnAlipayQR = (Button) layoutView.findViewById(R.id.btnAlipayQR);
+		btnHuanTuQR = (Button) layoutView.findViewById(R.id.btnHuanTuQR);
+		
 		btnConfirmQrPay = (Button) layoutView.findViewById(R.id.btnComfirmQRPay);
 		btnConfirmQrPay.setOnClickListener(this);
 		textTotalPrice = (TextView) layoutView.findViewById(R.id.textTotalPrice);
@@ -400,10 +425,8 @@ public class CashierOrderFragment extends BaseFragment implements OnClickListene
 			//refresh ui
 			if(OrderStatus.valueOf(intent.getExtras().getInt("status")).equals(OrderStatus.PAY_SUCCESS)){
 				//用户付款成功
-				
-				
 				viewOnlinePaySucees.setVisibility(View.VISIBLE);
-				ivOrderQR.setVisibility(View.GONE);
+				viewQRCodeArea.setVisibility(View.GONE);
 				//不能返回现金支付
 				btnShowQRCode.setVisibility(View.GONE);
 				CashierActivity.isBlockBackKey = true;

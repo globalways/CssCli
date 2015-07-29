@@ -24,7 +24,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="100dp"
-                android:text="status" />
+                android:text="所有状态" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -39,6 +39,49 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/base_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/table_title_height"
+            android:background="@color/base_gray"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="工单号"
+                android:textColor="@color/base_black_333333" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="截止时间"
+                android:textColor="@color/base_black_333333" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="流水"
+                android:textColor="@color/base_black_333333" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="状态"
+                android:textColor="@color/base_black_333333" />
+        </LinearLayout>
 
         <com.handmark.pulltorefresh.library.PullToRefreshListView
             xmlns:ptr="http://schemas.android.com/apk/res-auto"
@@ -97,8 +140,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:visibility="gone"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <!-- settle infos -->
 
@@ -106,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="10dp"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:paddingTop="10dp" >
 
             <TableRow
@@ -117,16 +160,18 @@
 
                 <TextView
                     android:id="@+id/tvSettleNo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Bd23fss2342"
                     android:textColor="@color/base_orange" />
 
                 <TextView
                     android:id="@+id/tvSettleStatus"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
+                    android:layout_weight="1"
                     android:text="status"
                     android:textColor="@color/base_black_333333" />
             </TableRow>
@@ -250,7 +295,8 @@
                     style="@style/BtnGray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="打款" />
+                    android:text="打款"
+                    android:visibility="invisible" />
             </TableRow>
 
             <TableRow
@@ -277,7 +323,8 @@
                     style="@style/BtnGray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="确认收款" />
+                    android:text="确认收款"
+                    android:visibility="invisible" />
             </TableRow>
 
             <TableRow
@@ -296,8 +343,15 @@
                     android:id="@+id/tvCloseTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2015-32-24"
                     android:textColor="@color/base_black_333333" />
+
+                <Button
+                    android:id="@+id/btnCloseSettle"
+                    style="@style/BtnGray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="完成工单"
+                    android:visibility="gone" />
             </TableRow>
 
             <View
@@ -326,20 +380,6 @@
                     android:layout_marginStart="20dp"
                     android:text="电脑审计" />
             </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="9dp"
-                android:paddingTop="9dp" >
-
-                <Button
-                    android:id="@+id/btnClose"
-                    style="@style/BtnBlue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="完成工单" />
-            </TableRow>
         </TableLayout>
 
         <!-- settle options -->
@@ -355,10 +395,10 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingTop="10dp"
         android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
         android:visibility="visible" >
 
         <TableLayout
@@ -372,8 +412,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="截止时间："
                     android:layout_marginEnd="20dp"
+                    android:text="截止时间："
                     android:textColor="@color/base_black_333333" />
 
                 <Button
@@ -385,36 +425,36 @@
             </TableRow>
 
             <TableRow
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:text="备注："
                     android:textColor="@color/base_black_333333" />
-                <com.globalways.csscli.view.ClearableEditText 
+
+                <com.globalways.csscli.view.ClearableEditText
                     android:id="@+id/etComments"
                     android:layout_width="200dp"
                     android:layout_height="80dp"
                     android:gravity="left|top"
-                    android:inputType="textMultiLine"
-                    />
-                
+                    android:inputType="textMultiLine" />
             </TableRow>
-            
+
             <TableRow
-                android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp" >
+
                 <Button
                     android:id="@+id/btnNewSettle"
                     style="@style/BtnOrange"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="提交" />
-                
             </TableRow>
         </TableLayout>
     </LinearLayout>

@@ -117,6 +117,9 @@ public class Tool {
 	@SuppressLint("SimpleDateFormat")
 	public static String formatDate(long datetime)
 	{
+		if(datetime < 1){
+			return "0000-00-00";
+		}
 		return new SimpleDateFormat("yyyy-MM-dd").format(datetime);
 	}
 	

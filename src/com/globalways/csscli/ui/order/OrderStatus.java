@@ -11,7 +11,8 @@ public enum OrderStatus {
 	WATTING_FOR_PAY(2,"等待付款"),
 	PAY_SUCCESS(3,"付款成功"),
 	SHIPPED_WITHOUT_EXPRESS(4,"用户自提发货"),
-	SHIPPED_WITH_EXPRESS(5,"配送发货");
+	SHIPPED_WITH_EXPRESS(5,"配送发货"),
+	UNKNOWN(-1,"未知状态");
 	public int code;
 	public String name;
 	OrderStatus(int code,String name){
@@ -26,7 +27,7 @@ public enum OrderStatus {
 		case 3 : return PAY_SUCCESS;
 		case 4 : return SHIPPED_WITHOUT_EXPRESS;
 		case 5 : return OrderStatus.SHIPPED_WITH_EXPRESS;
-		default : return null;
+		default : return UNKNOWN;
 		}
 	}
 }

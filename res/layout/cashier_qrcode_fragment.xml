@@ -35,16 +35,10 @@
                 android:background="@color/selector_login_btn_bg"
                 android:text="刷新"
                 android:textColor="@color/base_white" />
-            <TextView 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/base_white"
-                android:text="这里可以手动选择商品"/>
             
             <Button
                 style="@style/BtnBlue"
-                android:id="@+id/btnSwitch"
+                android:id="@+id/btnManualSelect"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

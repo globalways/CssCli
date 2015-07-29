@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -51,6 +53,7 @@ import com.globalways.csscli.tools.MyApplication;
 import com.globalways.csscli.tools.MyLog;
 import com.globalways.csscli.tools.PicassoImageLoader;
 import com.globalways.csscli.ui.BaseFragment;
+import com.globalways.csscli.ui.product.ProductSelectionActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -62,13 +65,12 @@ import com.google.zxing.Result;
 public class CashierQRCodeFragment extends BaseFragment implements OnClickListener, SurfaceHolder.Callback,
 		ScanCodeInterface {
 	private static final String TAG = CashierQRCodeFragment.class.getSimpleName();
-
 	private ProductEntity productEntity;
 
 	private View layoutView;
 	private ImageView imageProductAva;
 	private TextView textProductName, textProductPrice, textNumber;
-	private Button btnLess, btnAdd, btnAddCashier, btnOrder, btnRefreshCamera;
+	private Button btnLess, btnAdd, btnAddCashier, btnOrder, btnRefreshCamera, btnManualSelect;
 
 	// scanner variable
 	private InactivityTimer inactivityTimer;
@@ -235,6 +237,20 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 			stopScaner();
 			startScaner();
 			break;
+			
+		case R.id.btnManualSelect:
+			startActivityForResult(new Intent(getActivity(),ProductSelectionActivity.class), ProductSelectionActivity.SELECT_RPODUCT_REQUEST);
+			break;
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == ProductSelectionActivity.SELECT_RPODUCT_REQUEST && resultCode == FragmentActivity.RESULT_OK){
+			productEntity = (ProductEntity)data.getExtras().getSerializable(ProductSelectionActivity.DATA);
+			productEntity.setShoppingNumber(1);
+			refreshView();
 		}
 	}
 
@@ -263,6 +279,9 @@ public class CashierQRCodeFragment extends BaseFragment implements OnClickListen
 		btnOrder.setOnClickListener(this);
 		btnRefreshCamera = (Button) layoutView.findViewById(R.id.btnRefreshCamera);
 		btnRefreshCamera.setOnClickListener(this);
+		
+		btnManualSelect = (Button) layoutView.findViewById(R.id.btnManualSelect);
+		btnManualSelect.setOnClickListener(this);
 	}
 
 	/** 弹出输入数量的对话框 */

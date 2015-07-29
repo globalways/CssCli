@@ -13,7 +13,7 @@
          />
     
     <Button 
-        style="@style/BtnBlue"
+        style="@style/BtnGray"
         android:focusable="false"
         android:id="@+id/btnSelect"
         android:layout_width="wrap_content"

@@ -21,7 +21,7 @@ public class OrderEntity {
 	private String store_name;
 	/** 用户ID */
 	@Expose
-	private long buyer;
+	private String buyer;
 	/** 会员卡 */
 	@Expose
 	private String card;
@@ -53,6 +53,16 @@ public class OrderEntity {
 	@Expose
 	private int last_status;
 	/** 最新状态描述 */
+	//and by wyp
+	@Expose
+	private long order_time;
+	@Expose
+	private String products_count;
+	@Expose
+	private String settle_serial_no;
+	@Expose
+	private int settle_status;
+	
 	@Expose
 	private String last_status_desc;
 	@Expose
@@ -65,7 +75,7 @@ public class OrderEntity {
 	}
 
 	public OrderEntity(long id, String order_id, String ping_charge_id, int order_type, long store_id,
-			String store_name, long buyer, String card, long address_id, int payment_type, int delivery_type,
+			String store_name, String buyer, String card, long address_id, int payment_type, int delivery_type,
 			long order_amount, long discount_amount, long delivery_price, long canvass_price, String comment,
 			int last_status, String last_status_desc, String created, String updated) {
 		super();
@@ -150,11 +160,11 @@ public class OrderEntity {
 		this.store_name = store_name;
 	}
 
-	public long getBuyer() {
+	public String getBuyer() {
 		return buyer;
 	}
 
-	public void setBuyer(long buyer) {
+	public void setBuyer(String buyer) {
 		this.buyer = buyer;
 	}
 
@@ -262,4 +272,58 @@ public class OrderEntity {
 		this.updated = updated;
 	}
 
+	/**
+	 * 付款方式
+	 * @author wyp E-mail:onebyte@qq.com
+	 * @version Time: 2015年7月27日 下午4:54:17
+	 */
+	public enum PayType{
+		CASH(1,"现金支付"),ONLINE(2,"在线支付"),UNKNOWN(-1,"未知");
+		private int code;
+		public String name;
+		private PayType(int code, String name) {
+			this.code = code;
+			this.name = name;
+		}
+		public static PayType valueOf(int code){
+			switch (code) {
+			case 1 : return CASH;
+			case 2 : return ONLINE;
+			default: return UNKNOWN;
+			}
+		}
+	}
+
+	public long getOrder_time() {
+		return order_time;
+	}
+
+	public void setOrder_time(long order_time) {
+		this.order_time = order_time;
+	}
+
+	public String getProducts_count() {
+		return products_count;
+	}
+
+	public void setProducts_count(String products_count) {
+		this.products_count = products_count;
+	}
+
+	public String getSettle_serial_no() {
+		return settle_serial_no;
+	}
+
+	public void setSettle_serial_no(String settle_serial_no) {
+		this.settle_serial_no = settle_serial_no;
+	}
+
+	public int getSettle_status() {
+		return settle_status;
+	}
+
+	public void setSettle_status(int settle_status) {
+		this.settle_status = settle_status;
+	}
+	
 }

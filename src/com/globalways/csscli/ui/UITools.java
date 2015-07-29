@@ -164,6 +164,8 @@ public class UITools {
 	 * @param msg
 	 */
 	public static void ToastMsg(Context context, String msg) {
+		if(msg == null || msg.isEmpty())
+			return;
 		int showingTime = Toast.LENGTH_SHORT;
 		if(msg.length()>8)
 			showingTime = Toast.LENGTH_LONG;

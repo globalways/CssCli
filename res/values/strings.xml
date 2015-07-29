@@ -20,6 +20,17 @@
     <string name="statistics_product_compare_type_salescount">销量</string>
     <string name="statistics_product_compare_type_maori">毛利</string>
     <string name="statistics_product_compare_type_maoriapr">毛利率</string>
+    
+    
+    <string name="order_settle_status_all">所有状态</string>
+    <string name="order_settle_status_watting">等待结算</string>
+    <string name="order_settle_status_created">工单提交</string>
+    <string name="order_settle_status_audit">平台审计</string>
+    <string name="order_settle_status_payed">已经打款</string>
+    <string name="order_settle_status_received">确认收款</string>
+    <string name="order_settle_status_closed">工单关闭</string>
+    
+    
     <string name="title_activity_stock">StockActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

@@ -23,6 +23,7 @@ import com.globalways.csscli.ui.gallery.GalleryPicEntity;
 import com.globalways.csscli.ui.gallery.GalleryPicPreviewActivity;
 import com.globalways.csscli.ui.product.ProductAddNewActivity;
 import com.globalways.csscli.ui.product.ProductScanCodeActivity;
+import com.globalways.csscli.ui.product.ProductSelectionActivity;
 import com.globalways.csscli.view.BottomMenuDialog;
 import com.globalways.csscli.view.CommonDialogManager;
 import com.globalways.csscli.view.MenuItemEntity;
@@ -62,7 +63,7 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 	private static final int CODE_SELECT_IMAGE = 11;
 	private static final int CODE_SCAN_BAR_REQUEST = 12;
 	private View contentView, viewPurchaseDetail;
-	private Button btnSaveNewPurchaseRecord, btnScanGoods;
+	private Button btnSaveNewPurchaseRecord, btnScanGoods, btnManualSelect;
 	private EditText etBatchId, etOutId, etTotal;
 	private TextView tvSelectSupplier, btnToNewPurchaseRecord, tvPurchaseCounts, tvPurchaseGoodsDetailUnit, tvNoPurchasePic;
 	private LinearLayout llNewPurchaseView;
@@ -129,6 +130,8 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 		btnSaveNewPurchaseRecord.setOnClickListener(this);
 		btnScanGoods = (Button) contentView.findViewById(R.id.btnScanGoods);
 		btnScanGoods.setOnClickListener(this);
+		btnManualSelect = (Button) contentView.findViewById(R.id.btnManualSelect);
+		btnManualSelect.setOnClickListener(this);
 		//EditText
 		etBatchId = (EditText) contentView.findViewById(R.id.et_batch_id);
 		etOutId = (EditText) contentView.findViewById(R.id.et_out_id);
@@ -613,6 +616,14 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 			intent.putExtra(ProductScanCodeActivity.KEY_OPERATION_TYPE, ProductScanCodeActivity.OperationType.GET_CODE);
 			startActivityForResult(intent, CODE_SCAN_BAR_REQUEST);
 			break;
+		case R.id.btnManualSelect:
+			if(mCurrentBatchId == null || mCurrentBatchId.isEmpty()){
+				UITools.ToastMsg(getActivity(), "请先点击【新增】按钮生成批次号");
+				return;
+			}
+			//手动选择商品
+			startActivityForResult(new Intent(getActivity(),ProductSelectionActivity.class), ProductSelectionActivity.SELECT_RPODUCT_REQUEST);
+			break;
 		case R.id.tvSelectSupplier:
 			showSupplierList();
 			break;
@@ -641,6 +652,10 @@ public class PurchaseFragment extends Fragment implements OnClickListener, OnIte
 				break;
 			case CODE_SCAN_BAR_REQUEST:
 				addProductToGoodsList(data.getExtras().getString(ProductScanCodeActivity.KEY_SCAN_RESULT));
+				break;
+			case ProductSelectionActivity.SELECT_RPODUCT_REQUEST:
+				ProductEntity e = (ProductEntity)data.getExtras().getSerializable(ProductSelectionActivity.DATA);
+				addProductToGoodsList(e.getProduct_qr());
 				break;
 			}
 		}

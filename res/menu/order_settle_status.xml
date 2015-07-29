@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuSettleAll"
+        android:title="@string/order_settle_status_all"/>
+    
+    <item
+        android:id="@+id/menuSettleWatting"
+        android:title="@string/order_settle_status_watting"/>
+    <item
+        android:id="@+id/menuSettleSubmit"
+        android:title="@string/order_settle_status_created"/>
+    <item
+        android:id="@+id/menuSettleAudit"
+        android:title="@string/order_settle_status_audit"/>
+    <item
+        android:id="@+id/menuSettlePayed"
+        android:title="@string/order_settle_status_payed"/>
+    <item
+        android:id="@+id/menuSettleReceived"
+        android:title="@string/order_settle_status_received"/>
+    <item
+        android:id="@+id/menuSettleClosed"
+        android:title="@string/order_settle_status_closed"/>
+    
+
+</menu>

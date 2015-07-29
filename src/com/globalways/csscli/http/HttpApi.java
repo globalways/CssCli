@@ -21,6 +21,7 @@ public class HttpApi {
 	public static final String PRODUCT_CATEGORY_CHILDREN = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid/children";
 	public static final String PRODUCT_CATEGORY_DELETE = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid";
 	public static final String PRODUCT_CATEGORY = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid";
+	public static final String CATEGORY_PRODUCT_ALL = HOME_URI + "/v2/merchants/stores/:sid/categories/:cid/products";
 
 	public static final String PRODUCT_GET_DETAIL_BAR_CODE = HOME_URI + "/v2/merchants/stores/:sid/products/bar/:bar";
 	public static final String PRODUCT_GET_DETAIL_QR_CODE = HOME_URI + "/v2/merchants/stores/:sid/products/qr/:qr";
@@ -30,9 +31,14 @@ public class HttpApi {
 	//订单
 	public static final String ORDER_SIGN = HOME_URI + "/v2/orders";
 	public static final String ORDER_CASH_DONE = HOME_URI + "/v2/orders/:oid/cashDone";
-	public static final String ORDER_MAKING_DELIVERY = HOME_URI + "/v2/orders/:oid/makingDelivery";
+	public static final String ORDER_ONLINE_DONE = HOME_URI + "/v2/orders/:oid/onlinePayDone";
+	//删去 public static final String ORDER_MAKING_DELIVERY = HOME_URI + "/v2/orders/:oid/makingDelivery";
 	public static final String ORDER_CANCEL = HOME_URI + "/v2/orders/:oid/storeCancel";
 	public static final String ORDER_GET = HOME_URI + "/v2/orders/:oid";
+	public static final String ORDER_LIST = HOME_URI + "/v2/orders/stores/:sid";
+	public static final String ORDER_PRODUCTS_LIST = HOME_URI + "/v2/orders/:oid/details";
+	//支付宝支付二维码
+	public static final String ORDER_ALIPAY_QRCODE = HOME_URI + "/v2/orders/:oid/alipay";
 
 	public static final String SETTLE_NEW = HOME_URI + "/v2/merchants/stores/:sid/settle";
 	public static final String SETTLE_LIST = HOME_URI + "/v2/merchants/stores/:sid/settle";

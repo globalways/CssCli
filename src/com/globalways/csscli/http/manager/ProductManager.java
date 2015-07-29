@@ -474,5 +474,49 @@ public class ProductManager {
 		});
 	}
 	
+	/**
+	 * 加载指定分类下商品列表
+	 * @param cid
+	 * @param callBack
+	 */
+	public void loadCategoryProducts(int cid, final ManagerCallBack<List<ProductEntity>> callBack){
+		String url  = HttpApi.CATEGORY_PRODUCT_ALL.replaceFirst(":sid", String.valueOf(MyApplication.getStoreid())).replaceFirst(":cid", String.valueOf(cid));
+		HttpUtils.getInstance().sendGetRequest(url, 0, null, new HttpClientUtilCallBack<String>() {
+
+			@Override
+			public void onSuccess(String url, long flag, String returnContent) {
+				super.onSuccess(url, flag, returnContent);
+				JSONObject jsonObject;
+				try {
+					jsonObject = new JSONObject(returnContent);
+					int code = jsonObject.getJSONObject(Config.STATUS).getInt(Config.CODE);
+					if (code == HttpCode.SUCCESS) {
+						Gson gson = new Gson();
+						List<ProductEntity> list = new ArrayList<ProductEntity>();
+						list = gson.fromJson(jsonObject.getString(Config.BODY),
+								new TypeToken<List<ProductEntity>>() {
+								}.getType());
+						if (null != callBack) {
+							callBack.onSuccess(list);
+						}
+					} else {
+						if (null != callBack) {
+							callBack.onFailure(code,
+									jsonObject.getJSONObject(Config.STATUS).getString(Config.MSG));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onFailure(String url, long flag, ErrorCode errorCode) {
+				super.onFailure(url, flag, errorCode);
+				callBack.onFailure(errorCode.code(), errorCode.msg());
+			}
+			
+		});
+	}
 
 }
