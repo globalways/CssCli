@@ -28,7 +28,9 @@
         android:background="@color/selector_cashier_edittext_number"
         android:gravity="center"
         android:maxLength="9"
+        android:digits=".0123456789"
         android:text="0"
+        android:inputType="number"
         android:textColor="@color/base_black"
         android:textSize="18sp" />
 

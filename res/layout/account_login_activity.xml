@@ -22,7 +22,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/icon_login_ava" />
 
-        <com.globalways.csscli.view.ClearableEditText
+        <com.globalways.cvsb.view.ClearableEditText
             android:id="@+id/editAccount"
             android:layout_width="400dp"
             android:layout_height="match_parent"
@@ -40,7 +40,7 @@
             android:layout_gravity="center_horizontal"
             android:background="#b3ffffff" />
 
-        <com.globalways.csscli.view.ClearableEditText
+        <com.globalways.cvsb.view.ClearableEditText
             android:id="@+id/editPsd"
             android:layout_width="400dp"
             android:layout_height="match_parent"

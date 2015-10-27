@@ -7,37 +7,38 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" >
-
+        android:layout_weight="2"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
 
         <EditText
-            android:id="@+id/etBarCode"
+            android:id="@+id/etSearchBox"
             style="@style/EditTextStye"
             android:layout_width="300dp"
             android:layout_height="43dp"
-            android:layout_marginStart="-50dp"
             android:layout_centerInParent="true"
+            android:layout_marginStart="-50dp"
+            android:hint="搜索：商品名称/类别/标签/扫码"
             android:maxLength="20"
-            android:textSize="18sp"
-            android:hint="商品名称/条形码" />
-        
+            android:textSize="18sp" />
+
         <Button
-            style="@style/BtnBlue"
             android:id="@+id/btnSearchProduct"
+            style="@style/BtnBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/etBarCode"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/etSearchBox"
             android:text="搜索" />
 
         <ImageView
             android:id="@+id/imageScanBarCode"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_toEndOf="@id/etBarCode"
-            android:layout_marginStart="-70dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="-70dp"
+            android:layout_toEndOf="@id/etSearchBox"
             android:clickable="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -55,55 +56,91 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="条码" />
+            android:gravity="left|center"
+            android:paddingLeft="20dp"
+            android:text="商品二维码"
+            android:textColor="@color/base_black_333333" />
 
         <TextView
             android:id="@+id/tvProductName"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="商品名称" />
+            android:gravity="left|center"
+            android:text="商品名称"
+            android:textColor="@color/base_black_333333" />
 
         <TextView
             android:id="@+id/tvPurchasePrice"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="采购单价" />
+            android:gravity="center|right"
+            android:text="采购单价(元)"
+            android:textColor="@color/base_black_333333" />
 
         <TextView
             android:id="@+id/tvRetailPrice"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="销售单价" />
+            android:gravity="center|right"
+            android:text="销售单价(元)"
+            android:textColor="@color/base_black_333333" />
 
         <TextView
             android:id="@+id/tvSalesCount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="销售量" />
+            android:gravity="center|right"
+            android:text="销售数量"
+            android:textColor="@color/base_black_333333" />
 
         <TextView
             android:id="@+id/tvStockCount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="库存数量" />
+            android:gravity="center|right"
+            android:paddingRight="30dp"
+            android:text="现有库存"
+            android:textColor="@color/base_black_333333" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/viewSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tvKeyword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/base_orange" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tvKeyword"
+            android:text="的搜索结果"
+            android:textColor="@color/base_black_333333" />
+
+        <ImageView
+            android:id="@+id/ivCloseSearchTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_clear_text" />
+    </RelativeLayout>
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         xmlns:ptr="http://schemas.android.com/apk/res-auto"
@@ -127,7 +164,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="2"
             android:visibility="invisible" />
 
         <!-- 总库存量 -->
@@ -138,8 +175,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="库存数量" />
+            android:text="总库存数量"
+            android:textColor="@color/base_black_333333" />
 
         <!-- 占用资金 -->
 
@@ -147,10 +184,11 @@
             android:id="@+id/tvStockFund"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_gravity="left"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/base_black_333333"
-            android:text="占用资金" />
+            android:text="总占用资金(元)"
+            android:textColor="@color/base_black_333333" />
     </LinearLayout>
 
 </LinearLayout>

@@ -3,54 +3,141 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <FrameLayout
-        android:id="@+id/camera_view"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.7" >
-        
-        <SurfaceView
-            android:id="@+id/preview_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
 
-        <com.globalways.csscli.android.ViewfinderView
-            android:id="@+id/viewfinder_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/base_gray_light" >
+
+                <EditText
+                    android:id="@+id/etBarCode"
+                    style="@style/EditNumStye"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="20dp"
+                    android:hint="输入条码/二维码查找"
+                    android:inputType="text"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/btnManualSelect"
+                    style="@style/BtnBlue"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:text="按分类选择" />
+
+                <Button
+                    android:id="@+id/btnShowHelpCode"
+                    style="@style/BtnBlue"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@id/btnManualSelect"
+                    android:text="编码查找" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/camera_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+
+                <SurfaceView
+                    android:id="@+id/preview_view"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+
+                <com.globalways.cvsb.android.ViewfinderView
+                    android:id="@+id/viewfinder_view"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <Button
+                        android:id="@+id/btnRefreshCamera"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/selector_login_btn_bg"
+                        android:text="刷新"
+                        android:textColor="@color/base_white" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_refresh_orange"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </FrameLayout>
+        </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:id="@+id/rlResultList"
+            android:layout_width="280dp"
+            android:layout_height="307dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="71dp"
+            android:background="@color/base_white"
+            android:visibility="invisible" >
 
-            <Button
-                android:id="@+id/btnRefreshCamera"
-                android:layout_width="100dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@color/selector_login_btn_bg"
-                android:text="刷新"
-                android:textColor="@color/base_white" />
-            
-            <Button
-                style="@style/BtnBlue"
-                android:id="@+id/btnManualSelect"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="手动选择"
-               />
+                android:layout_centerInParent="true"
+                android:text="暂无结果"
+                android:textSize="18sp" />
+
+            <ListView
+                android:id="@+id/lvCodeResult"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/base_white"
+                android:divider="@color/base_gray_light"
+                android:dividerHeight="1px"
+                android:visibility="invisible" />
         </RelativeLayout>
-    </FrameLayout>
+
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/viewCustomKeyboard"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="70dp"
+            android:layout_toEndOf="@id/rlResultList"
+            android:background="#ffffffff"
+            android:focusable="true"
+            android:keyBackground="@drawable/calculator_button_bg"
+            android:keyTextColor="@color/base_black_333333"
+            android:keyTextSize="26.0sp"
+            android:shadowColor="#ffffffff"
+            android:shadowRadius="0.0"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.3"

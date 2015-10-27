@@ -7,13 +7,18 @@
     <color name="base_black_999999">#999999</color>
     <color name="base_white">#ffffff</color>
     <color name="base_btn_blue">#0f6fe8</color>
+    <color name="base_btn_blue_pressed">#269afd</color>
     <color name="base_btn_orange">#f84e27</color>
     <color name="base_blue">#004080</color>
+    <color name="base_blue_1d90f4">#1d90f4</color>
     <color name="base_blue_gray">#428bca</color>
     <color name="base_green">#00923f</color>
+    <color name="base_gray_light">#f3f3f3</color>
     <color name="base_gray">#eeeeee</color>
+    <color name="base_gray_dark">#d8d8d8</color>
     <color name="base_gray_60">#60eeeeee</color>
     <color name="base_orange">#EE7600</color>
+    <color name="green">#59BBFF</color>
 
     <!-- scanner -->
     <color name="contents_text">#ff000000</color>

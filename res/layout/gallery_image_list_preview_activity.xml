@@ -13,13 +13,12 @@
         android:layout_height="0dp"
         android:layout_weight="1.0" >
 
-        <com.globalways.csscli.ui.gallery.MyViewPager
+        <com.globalways.cvsb.ui.gallery.MyViewPager
             android:id="@+id/myViewPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" >
-        </com.globalways.csscli.ui.gallery.MyViewPager>
+            android:layout_marginRight="5dp" />
 
         <TextView
             android:id="@+id/textIndex"

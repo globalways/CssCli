@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="20dp" >
+
+        <TextView
+            android:id="@+id/tvQA"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:text="在线帮助"
+            android:textColor="@color/base_black_333333"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textSize="14sp"
+            android:lineSpacingExtra="2dp"
+            android:text="这里可以提出一些功能性问题，我们将为您解答，包括以下内容
+			\n使用帮助：对于一些在使用上出现的问题与引导。
+			\n问题反馈：在您使用过程中出现的一些异常问题。" />
+
+        <Button
+            android:id="@+id/btnQA"
+            style="@style/BtnGray"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="在线帮助" />
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/base_gray"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="20dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:text="建议反馈"
+            android:textColor="@color/base_black_333333"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textSize="14sp"
+            android:lineSpacingExtra="2dp"
+            android:text="欢迎并感谢您对我们提出建设性的反馈与建议。
+			\n我们将更加完善产品与服务 "/>
+
+        <Button
+            android:id="@+id/btnAdvice"
+            style="@style/BtnGray"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="建议反馈" />
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/base_gray"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="20dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:text="商务合作"
+            android:textColor="@color/base_black_333333"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="600dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textSize="14sp"
+            android:lineSpacingExtra="2dp"
+            android:text="秉承着共赢共享的理念
+			\n欢迎商家或者个人联系并洽谈、合作" />
+
+        <Button
+            android:id="@+id/btnCooperation"
+            style="@style/BtnGray"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="商务合作" />
+    </RelativeLayout>
+
+</LinearLayout>

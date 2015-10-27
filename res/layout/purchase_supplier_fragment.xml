@@ -13,28 +13,21 @@
         android:orientation="vertical"
         >
 
-        <!-- <Button
-            android:id="@+id/btnToNewSupplier"
-            style="@style/BtnBlue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="新增供应商" /> -->
-
         <!-- table title -->
 
         <LinearLayout
             android:id="@+id/supplierListTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EEEEEE"
+            android:background="@color/base_gray_light"
             android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/supplier_name"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
-                android:gravity="center"
+                android:gravity="start|center"
+                android:paddingStart="10dp"
                 android:layout_weight="1"
                 android:text="供应商"
                 android:textColor="@color/base_black_333333" />
@@ -43,7 +36,7 @@
                 android:id="@+id/supplier_contacts_name"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
-                android:gravity="center"
+                android:gravity="center|end"
                 android:layout_weight="1"
                 android:text="联系人"
                 android:textColor="@color/base_black_333333" />
@@ -52,8 +45,9 @@
                 android:id="@+id/supplier_contacts_phone"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
-                android:gravity="center"
+                android:gravity="center|end"
                 android:layout_weight="1"
+                android:paddingEnd="10dp"
                 android:text="联系电话"
                 android:textColor="@color/base_black_333333" />
 
@@ -62,6 +56,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/table_title_height"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:text="供应商地址"
                 android:textColor="@color/base_black_333333" />
@@ -92,6 +87,7 @@
             android:clickable="false"
             android:divider="@color/base_gray"
             android:dividerHeight="1px"
+            android:listSelector="@color/base_gray_dark"
             android:footerDividersEnabled="false"
             android:headerDividersEnabled="false"
             ptr:ptrAnimationStyle="flip" />
@@ -108,7 +104,7 @@
                 android:layout_height="50dp"
                 android:gravity="right"
                 android:layout_weight="1"
-                android:text="总数："
+                android:text="总供应商数："
                 android:textColor="@color/base_black_333333" />
 
             <TextView
@@ -168,10 +164,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="*供应商名称"
+                        android:text="供应商名称*"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etSupplierName"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -188,10 +184,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="*联系人"
+                        android:text="联    系    人*"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etContactsName"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -208,10 +204,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="*联系电话"
+                        android:text="联 系 电 话 *"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etContactsPhone"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -231,13 +227,13 @@
                         android:text="供应商地址"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etSupplierAddress"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
                         android:layout_height="80dp"
                         android:layout_weight="1"
-                        android:gravity="top|left"
+                        android:gravity="top|start"
                         android:inputType="textMultiLine" />
                 </TableRow>
 
@@ -249,10 +245,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="邮编"
+                        android:text="邮 政  编 码"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etZipCode"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -271,10 +267,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="开户行"
+                        android:text="开 户  银 行"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etBank"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -291,10 +287,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="户名"
+                        android:text="银行账户名"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etBankUser"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -311,15 +307,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="账号"
+                        android:text="银 行  卡 号"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etBankCard"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:maxLength="19"
                         android:digits="0123456789"
                         android:inputType="number" />
                 </TableRow>
@@ -332,10 +329,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="主页"
+                        android:text="网 站  主 页"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etHomePage"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
@@ -352,16 +349,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:text="备注"
+                        android:text="备            注"
                         android:textColor="@color/base_black_333333" />
 
-                    <com.globalways.csscli.view.ClearableEditText
+                    <com.globalways.cvsb.view.ClearableEditText
                         android:id="@+id/etComment"
                         style="@style/EditTextStye"
                         android:layout_width="0dp"
                         android:layout_height="80dp"
                         android:layout_weight="1"
-                        android:gravity="top|left"
+                        android:gravity="top|start"
                         android:inputType="textMultiLine" />
                 </TableRow>
 

@@ -70,6 +70,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/table_title_height"
+                android:background="@color/base_gray_light"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -77,7 +78,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="2"
-                    android:gravity="center"
+                    android:gravity="left|center"
+                    android:paddingLeft="10dp"
                     android:text="订单号"
                     android:textColor="@color/base_black_333333" />
 
@@ -86,8 +88,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="时间"
+                    android:gravity="left|center"
+                    android:text="订单时间"
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
@@ -95,8 +97,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="总价"
+                    android:gravity="center|right"
+                    android:text="订单总价(元)"
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
@@ -104,8 +106,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="状态"
+                    android:gravity="center|right"
+                    android:paddingRight="10dp"
+                    android:text="订单状态"
                     android:textColor="@color/base_black_333333" />
             </LinearLayout>
 
@@ -118,26 +121,29 @@
                 android:clickable="false"
                 android:divider="@color/base_gray"
                 android:dividerHeight="1px"
+                android:choiceMode="singleChoice"
+                android:listSelector="@color/base_gray_dark"
                 android:footerDividersEnabled="false"
                 android:headerDividersEnabled="false"
                 ptr:ptrAnimationStyle="flip" />
             
             <RelativeLayout 
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/base_gray"
+                android:layout_height="50dp"
+                android:background="@color/base_gray_light"
                 >
                 <TextView android:id="@+id/tvOrderNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/base_black_333333"
+                    android:textColor="@color/base_orange"
                     />
                 <TextView
                     android:layout_toStartOf="@id/tvOrderNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:textColor="@color/base_black_333333"
                     android:text="订单总数："
                     />
             </RelativeLayout>
@@ -205,6 +211,15 @@
                         android:layout_weight="1"
                         android:text="status"
                         android:textColor="@color/base_black_333333" />
+                    
+                    <Button android:id="@+id/btnToPayOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/BtnOrange"
+                        android:text="付款"
+                        android:visibility="invisible"
+                        />
+                    
                 </TableRow>
 
                 <View
@@ -228,7 +243,23 @@
                         android:id="@+id/tvPaymentType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
                         android:text="在线支付"
+                        android:textColor="@color/base_black_333333" />
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="渠道："
+                        android:textColor="@color/base_black_333333" />
+                    
+                     <TextView
+                        android:id="@+id/tvPaymentChannel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:layout_marginStart="-50dp"
+                        android:text="支付宝"
                         android:textColor="@color/base_black_333333" />
                 </TableRow>
 
@@ -248,8 +279,9 @@
                         android:id="@+id/tvOrderAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
                         android:text="￥32"
-                        android:textColor="@color/base_black_333333" />
+                        android:textColor="@color/base_btn_orange" />
                     
                     <TextView
                         android:layout_width="wrap_content"
@@ -261,27 +293,29 @@
                         android:id="@+id/tvDiscountAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:layout_marginStart="-50dp"
                         android:text="￥32"
-                        android:textColor="@color/base_black_333333" />
+                        android:textColor="@color/base_green" />
                 </TableRow>
 
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="9dp" >
+                    android:paddingBottom="9dp" 
+                    android:paddingTop="9dp" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="创建时间："
+                        android:text="订单时间："
                         android:textColor="@color/base_black_333333" />
 
                     <TextView
                         android:id="@+id/tvOrderCreateTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="huantu"
                         android:textColor="@color/base_black_333333" />
 
                 </TableRow>
@@ -303,8 +337,9 @@
                         android:id="@+id/tvProductsCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
                         android:text="3"
-                        android:textColor="@color/base_black_333333" />
+                        android:textColor="@color/base_btn_orange" />
 
                     <Button
                         android:id="@+id/btnShowProducts"
@@ -313,6 +348,12 @@
                         android:layout_height="wrap_content"
                         android:text="查看商品"
                         />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        android:layout_weight="1.5"
+                        android:textColor="@color/base_black_333333" />
                 </TableRow>
 
 
@@ -326,20 +367,28 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="工单号：："
+                        android:text="结算工单："
                         android:textColor="@color/base_black_333333" />
 
                     <TextView
                         android:id="@+id/tvSettleNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
                         android:text="2015-32-232"
                         android:textColor="@color/base_black_333333" />
+                    
                     <TextView
                         android:id="@+id/tvSettleStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="settle_status"
+                        android:textColor="@color/base_black_333333" />
+                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        android:layout_weight="1.5"
                         android:textColor="@color/base_black_333333" />
                 </TableRow>
             </TableLayout>

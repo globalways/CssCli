@@ -10,11 +10,12 @@
         android:layout_weight="1"
         android:layout_height="30dp"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="left|center"
+        android:paddingLeft="20dp"
         android:textColor="@color/base_black_333333"
         android:text="名称" />
 
-    <TextView
+   <!--  <TextView
         android:id="@+id/tvProUnit"
         android:layout_width="0dp"
         android:layout_height="30dp"
@@ -22,7 +23,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:textColor="@color/base_black_333333"
-        android:text="单位" />
+        android:text="单位" /> -->
 
     <TextView
         android:id="@+id/tvStoreName"
@@ -30,7 +31,7 @@
         android:layout_height="30dp"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="left|center"
         android:textColor="@color/base_black_333333"
         android:text="商铺名称" />
 
@@ -40,7 +41,7 @@
         android:layout_height="30dp"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="center|right"
         android:textColor="@color/base_black_333333"
         android:text="销量" />
 
@@ -50,7 +51,7 @@
         android:layout_height="30dp"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="center|right"
         android:textColor="@color/base_black_333333"
         android:text="毛利" />
 
@@ -60,7 +61,8 @@
         android:layout_height="30dp"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="center|right"
+        android:paddingRight="30dp"
         android:textColor="@color/base_black_333333"
         android:text="毛利率" />
 

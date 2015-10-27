@@ -55,15 +55,11 @@
 	    <item name="alertDialogProStyle">@style/CommonDialogStyle</item>
 	    <!-- base color -->
 	    <item name="colorControlActivated">@color/base_orange</item>
-	    <!-- buttons -->
-	    <item name="adpButtonBarNeutralButtonStyle">@style/CommonDialogNeutralButton</item>
+	    <item name="android:windowBackground">@drawable/common_dialog_bacground</item>
 	</style>
     
     <style name="CommonDialogStyle" parent="AlertDialogPro.Material.Light">
         <item name="adpLayout">@layout/common_dialog</item>
-    </style>
-    <style name="CommonDialogNeutralButton" parent="Widget.AlertDialogPro.Material.Light.Button">
-        <item name="android:textColor">@color/base_orange</item>
     </style>
     <!-- end -->
     
@@ -96,6 +92,7 @@
         <item name="android:background">@color/selector_edittext_bg</item>
         <item name="android:layout_marginTop">@dimen/edittext_margin_tb</item>
         <item name="android:layout_marginBottom">@dimen/edittext_margin_tb</item>
+        <item name="android:selectAllOnFocus">true</item>
     </style>
 
     <style name="EditTextStye">

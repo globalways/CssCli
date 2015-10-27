@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/table_title_height"
+    android:layout_height="50dp"
     android:orientation="horizontal" >
     
     <TextView 
@@ -10,11 +10,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="start|center"
+        android:paddingStart="10dp"
         android:textColor="@color/base_black_333333"
         android:text="工单号"
         />
-    <TextView 
+    <TextView
+        android:visibility="gone" 
         android:id="@+id/tvEndTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,9 +32,19 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
+        android:gravity="right"
         android:textColor="@color/base_black_333333"
         android:text="流水"
+        />
+    <TextView 
+        android:id="@+id/tvReturnAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:gravity="right"
+        android:textColor="@color/base_black_333333"
+        android:text="应收"
         />
     <TextView 
         android:id="@+id/tvSettleStatus"

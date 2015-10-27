@@ -86,11 +86,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="left|center"
+                android:paddingLeft="20dp"
                 android:text="名称"
                 android:textColor="@color/base_black_333333" />
 
-            <TextView
+            <!-- <TextView
                 android:id="@+id/tvProUnit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -98,7 +99,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="单位"
-                android:textColor="@color/base_black_333333" />
+                android:textColor="@color/base_black_333333" /> -->
 
             <TextView
                 android:id="@+id/tvStoreName"
@@ -106,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="left|center"
                 android:text="商铺名称"
                 android:textColor="@color/base_black_333333" />
 
@@ -116,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center|right"
                 android:text="销量"
                 android:textColor="@color/base_black_333333" />
 
@@ -126,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="毛利"
+                android:gravity="center|right"
+                android:text="毛利(元)"
                 android:textColor="@color/base_black_333333" />
 
             <TextView
@@ -136,8 +137,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:text="毛利率"
+                android:gravity="center|right"
+                android:paddingRight="30dp"
+                android:text="毛利率(百分比)"
                 android:textColor="@color/base_black_333333" />
         </LinearLayout>
 

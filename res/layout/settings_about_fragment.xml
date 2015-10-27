@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal" >
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/ivLogo"
+            android:text=" 环途生活"
+            android:textColor="@color/base_black_333333"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp"
+        android:text="四川环途新能源有限公司位于四川省成都市新都区四川省\n成都市新都区新都街道新都大道８号西南石油大学科技园大厦８０７－１７交通便利。\n四川环途新能源有限公司本着“客户第一，诚信至上”的原则，与多家企业建立了长期的合作关系。"
+        android:textColor="@color/base_black_333333"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="我们的愿景：成为最具影响力和最受人尊敬的企业\n我们的使命：通过创新和革变为大众提供优质服务"
+        android:textColor="@color/base_black_333333"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="250dp"
+        android:gravity="center"
+        android:text="www.globalways.cn"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="©2015 四川环途新能源有限公司" />
+
+</LinearLayout>

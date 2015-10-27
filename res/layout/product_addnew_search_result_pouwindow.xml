@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/listview_border_bg"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/lvSearchResult"
+        android:layout_width="386dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_height="200dp"
+        android:divider="@color/base_gray_light"
+        android:dividerHeight="1px"
+         />
+    <View android:layout_width="match_parent"
+        android:background="@color/base_gray"
+        android:layout_height="2px"
+        />
+    
+    <TextView android:id="@+id/tvClose"
+        android:layout_width="266dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/selector_btn_blue"
+        android:text="收   起"
+        android:textColor="@color/base_white"
+        />
+    <View android:layout_width="match_parent"
+        android:layout_height="10dp"
+        />
+
+</LinearLayout>

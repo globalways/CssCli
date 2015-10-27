@@ -8,9 +8,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1"
+        android:layout_weight="1.2"
+        android:gravity="start|center"
         android:textColor="@color/base_black_333333"
-        android:text="品名"
+        android:text="商品名称"
         />
     
     <TextView android:id="@+id/goods_counts"
@@ -18,8 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
+        android:gravity="center|end"
         android:textColor="@color/base_black_333333"
-        android:text="数目"
+        android:text="数量"
         />
     
     <TextView android:id="@+id/goods_price"
@@ -27,14 +29,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
+        android:gravity="center|end"
         android:textColor="@color/base_black_333333"
-        android:text="采购价"
+        android:text="采购单价(元)"
         />
     <TextView android:id="@+id/goods_supplier"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
+        android:gravity="center|end"
         android:textColor="@color/base_black_333333"
         android:text="供应商"
         />

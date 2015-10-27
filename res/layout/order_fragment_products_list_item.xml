@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="品名"
         android:textColor="@color/base_black_333333" />
 
     <TextView
@@ -19,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="数目"
         android:textColor="@color/base_black_333333" />
 
     <TextView
@@ -28,16 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="采购价"
-        android:textColor="@color/base_black_333333" />
-    
-    <TextView
-        android:id="@+id/tvProductUnit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:text="个"
         android:textColor="@color/base_black_333333" />
 
 </LinearLayout>

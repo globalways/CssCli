@@ -85,28 +85,32 @@
         var datas = JSON.parse(data.series);
         type_name = data.type_name;
         type =  data.type;
+        var y_name;
         var len = datas.length;
         
         //商品销量 sales_count
-        //商品毛利 maori
+        //商品毛利 maori,maori_yuan
         //商品毛利率 maori_apr
         switch(type){
         	case 1:
+        		y_name = '销售数量'
         		for (var i = 0; i < len; i++) {
                 	productData.push(datas[i].product_name);
                 	compareData.push(datas[i].sales_count);
                 }
         		break;
         	case 2:
+        		y_name = '毛利（元）'
         		for (var i = 0; i < len; i++) {
                 	productData.push(datas[i].product_name);
-                	compareData.push(datas[i].maori);
+                	compareData.push(datas[i].maori_yuan);
                 }
         		break;
         	case 3:
+        		y_name = '毛利率（%）'
         		for (var i = 0; i < len; i++) {
                 	productData.push(datas[i].product_name);
-                	compareData.push(datas[i].sales_count);
+                	compareData.push(datas[i].maori_apr);
                 }
         		break;
         	default:break;
@@ -144,7 +148,8 @@
         		    ],
         		    yAxis : [
         		        {
-        		            type : 'value'
+        		            type : 'value',
+        		            name : y_name
         		        }
         		    ],
         		    series : [

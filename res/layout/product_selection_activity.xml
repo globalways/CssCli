@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="1：选择类别，点击【选择】按钮显示该分类下的商品"
+                    android:text="1、选择类别，点击【选择】按钮显示该分类下的商品"
                     android:textColor="@color/base_orange" />
             </RelativeLayout>
 
@@ -72,7 +72,8 @@
             <ListView
                 android:id="@+id/lvCategoryList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="0dp"
                 android:divider="@color/base_gray"
                 android:dividerHeight="1px"
                 android:paddingEnd="30dp"
@@ -91,19 +92,19 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="50dp"
 			        android:gravity="center_vertical"
-			        android:textColor="@color/base_black_333333"
+			        android:textColor="@color/base_btn_orange"
 			        android:text="未分类"
 			         />
 			    
 			    <Button 
 			        android:id="@+id/btnNoCategory"
-			        style="@style/BtnGray"
+			        style="@style/BtnOrange"
 			        android:focusable="false"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_alignParentEnd="true"
 			        android:layout_centerVertical="true"
-			        android:text="选择"
+			        android:text="@string/product_category_selection_show_product"
 			        />
 			
 			</RelativeLayout>
@@ -114,6 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingEnd="30dp"
+                android:layout_marginBottom="30dp"
                 android:paddingStart="30dp" >
 
                 <TableRow
@@ -159,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="2：点击要选择的商品"
+                    android:text="2、点击要选择的商品"
                     android:textColor="@color/base_orange" />
             </RelativeLayout>
 
@@ -190,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="3：确认所选择的商品"
+                    android:text="3、确认所选择的商品"
                     android:textColor="@color/base_orange" />
             </RelativeLayout>
 
@@ -210,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="名称："
+                        android:text="商品名称："
                         android:textColor="@color/base_black_333333" />
 
                     <TextView
@@ -243,7 +245,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="价格："
+                        android:text="零  售  价："
                         android:textColor="@color/base_black_333333" />
 
                     <TextView
@@ -290,7 +292,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="类型："
+                        android:text="商品类型："
                         android:textColor="@color/base_black_333333" />
 
                     <TextView

@@ -18,7 +18,7 @@
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="right|center"
         android:text="销售金额"
         android:textColor="#333333" />
 
@@ -27,16 +27,17 @@
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="right|center"
         android:text="优惠金额"
         android:textColor="#333333" />
 
     <TextView
         android:id="@+id/textCount"
-        android:layout_width="0dp"
+        android:layout_width="10dp"
         android:layout_height="35dp"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="right|center"
+        android:paddingRight="30dp"
         android:text="销售数量"
         android:textColor="#333333" />
 

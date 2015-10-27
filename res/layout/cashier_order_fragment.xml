@@ -28,37 +28,37 @@
                     android:layout_height="wrap_content"
                     android:visibility="invisible" >
 
-                    <TableRow
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp" >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:layout_marginRight="20dp"
-                            android:gravity="center_vertical"
-                            android:text="商品总价："
-                            android:textColor="@color/base_black_333333" />
 
                         <TextView
                             android:id="@+id/textTotalPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="50dp"
+                            android:layout_marginStart="80dp"
                             android:gravity="center_vertical"
                             android:textColor="@android:color/holo_orange_dark"
                             android:textStyle="bold" />
 
-                        <!-- 去零 -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_marginEnd="20dp"
+                            android:gravity="center_vertical"
+                            android:text="商品总价："
+                            android:textColor="@color/base_black_333333" />
+
+                        <!-- 抹零 -->
 
                         <Button
                             android:id="@+id/btnRemoveOdd"
                             style="@style/BtnBlue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="247dp"
-                            android:gravity="center_vertical"
-                            android:text="去零" />
-                    </TableRow>
+                            android:layout_alignParentEnd="true"
+                            android:text="抹零" />
+                    </RelativeLayout>
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -68,10 +68,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="20dp"
-                            android:text="优惠："
+                            android:text="优        惠："
                             android:textColor="@color/base_black_333333" />
 
-                        <com.globalways.csscli.view.ClearableEditText
+                        <com.globalways.cvsb.view.ClearableEditText
                             android:id="@+id/editApr"
                             style="@style/EditNumStye"
                             android:layout_width="0dp"
@@ -89,10 +89,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="20dp"
-                            android:text="备注："
+                            android:text="备        注："
                             android:textColor="@color/base_black_333333" />
 
-                        <com.globalways.csscli.view.ClearableEditText
+                        <com.globalways.cvsb.view.ClearableEditText
                             android:id="@+id/editDesc"
                             style="@style/EditTextStye"
                             android:layout_width="0dp"
@@ -167,9 +167,9 @@
                             android:id="@+id/tvOrederIDLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="50dp"
-                            android:layout_marginEnd="20dp"
+                            android:layout_marginEnd="10dp"
                             android:gravity="center_vertical"
-                            android:text="订单号："
+                            android:text="订  单  号："
                             android:textColor="@color/base_black_333333" />
 
                         <TextView
@@ -190,30 +190,29 @@
                             android:layout_alignParentEnd="true"
                             android:text="扫码支付" />
                     </RelativeLayout>
-					
-                    
+
                     <!-- 扫码支付二维码 -->
+
                     <LinearLayout
                         android:id="@+id/viewQRCodeArea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="gone"
-                        >
-                        <Button android:id="@+id/btnHuanTuQR"
+                        android:visibility="gone" >
+
+                        <Button
+                            android:id="@+id/btnHuanTuQR"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/selector_qr_btn_bg"
-                            android:text="环途客户端"
-                            />
-                        
-                        <Button android:id="@+id/btnAlipayQR"
+                            android:text="@string/cashier_order_qrpay_huantu" />
+
+                        <Button
+                            android:id="@+id/btnAlipayQR"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/selector_qr_btn_bg"
-                            android:text="支付宝"
-                            />
-                        
+                            android:text="@string/cashier_order_qrpay_alipay" />
                     </LinearLayout>
 
                     <!-- 支付成功提示 -->
@@ -229,7 +228,7 @@
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
                             android:background="@color/selector_cashier_btn_pay_success"
-                            android:drawableTop="@drawable/icon_product"
+                            android:drawableTop="@drawable/icon_pay_success"
                             android:text="付款成功"
                             android:textSize="24sp" />
 
@@ -240,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentEnd="true"
-                            android:text="完成" />
+                            android:text="在线订单完成" />
                     </RelativeLayout>
 
                     <TableLayout
@@ -256,7 +255,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="80dp"
-                                android:layout_marginRight="20dp"
+                                android:layout_marginRight="10dp"
                                 android:gravity="center_vertical"
                                 android:text="订单总价："
                                 android:textColor="@color/base_black_333333" />
@@ -279,11 +278,11 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginRight="20dp"
-                                android:text="实收："
+                                android:layout_marginRight="10dp"
+                                android:text="实        收："
                                 android:textColor="@color/base_black_333333" />
 
-                            <com.globalways.csscli.view.ClearableEditText
+                            <com.globalways.cvsb.view.ClearableEditText
                                 android:id="@+id/editCash"
                                 style="@style/EditNumStye"
                                 android:layout_width="0dp"
@@ -301,9 +300,9 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="50dp"
-                                android:layout_marginRight="20dp"
+                                android:layout_marginRight="10dp"
                                 android:gravity="center_vertical"
-                                android:text="找零："
+                                android:text="找        零："
                                 android:textColor="@color/base_black_333333" />
 
                             <TextView
@@ -315,6 +314,25 @@
                                 android:textColor="@android:color/holo_orange_dark"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
+                        </TableRow>
+
+                        <TableRow
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="是否打印小票" />
+
+                            <CheckBox
+                                android:id="@+id/cbPrinter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:checked="false" />
                         </TableRow>
 
                         <LinearLayout
@@ -339,7 +357,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:background="@color/selector_btn_orange"
-                                android:text="确认收银"
+                                android:text="现金收银"
                                 android:textColor="@android:color/white" />
                         </LinearLayout>
                     </TableLayout>

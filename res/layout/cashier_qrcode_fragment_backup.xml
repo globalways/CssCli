@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/base_gray_light" >
+
+        <EditText
+            android:id="@+id/etBarCode"
+            style="@style/EditNumStye"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="输入条码查找"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:inputType="text"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnManualSelect"
+            style="@style/BtnBlue"
+            android:layout_width="110dp"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="按分类选择" />
+        <Button
+            android:id="@+id/btnShowHelpCode"
+            style="@style/BtnBlue"
+            android:layout_toStartOf="@id/btnManualSelect"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="输入条码" />
+
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/viewCustomKeyboard"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5.0dp"
+            android:layout_toEndOf="@id/etBarCode"
+            android:background="#ffffffff"
+            android:focusable="true"
+            android:keyBackground="@drawable/calculator_button_bg"
+            android:keyTextColor="@color/base_black_333333"
+            android:keyTextSize="26.0sp"
+            android:shadowColor="#ffffffff"
+            android:shadowRadius="0.0"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/camera_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7" >
+
+        <SurfaceView
+            android:id="@+id/preview_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <com.globalways.cvsb.android.ViewfinderView
+            android:id="@+id/viewfinder_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <Button
+                android:id="@+id/btnRefreshCamera"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@color/selector_login_btn_bg"
+                android:text="刷新"
+                android:textColor="@color/base_white" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/imageProductAva"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@null"
+            android:padding="20dp"
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textProductName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/base_black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textProductPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/base_black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:baselineAligned="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btnLess"
+                    android:layout_width="@dimen/cashier_btn_hw"
+                    android:layout_height="@dimen/cashier_btn_hw"
+                    android:background="@color/selector_cashier_btn_number"
+                    android:text="-"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/cashier_btn_hw"
+                    android:layout_marginLeft="-1dp"
+                    android:layout_marginRight="-1dp"
+                    android:background="@color/selector_cashier_edittext_number"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/base_black"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="@dimen/cashier_btn_hw"
+                    android:layout_height="@dimen/cashier_btn_hw"
+                    android:background="@color/selector_cashier_btn_number"
+                    android:text="+"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAddCashier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/selector_btn_blue"
+                android:text="添加"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSingle"
+        style="@style/BtnOrange"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:text="去结算" />
+
+</LinearLayout>

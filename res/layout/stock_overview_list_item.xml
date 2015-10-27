@@ -10,7 +10,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:textColor="@color/base_black_333333"
-        android:gravity="center"
+        android:gravity="left|center"
+        android:paddingLeft="20dp"
         />
     <TextView
         android:id="@+id/tvProductName" 
@@ -18,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:textColor="@color/base_black_333333"
-        android:gravity="center"
+        android:gravity="left|center"
         />
     <TextView
         android:id="@+id/tvPurchasePrice" 
@@ -26,7 +27,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:textColor="@color/base_black_333333"
-        android:gravity="center"
+        android:gravity="center|right"
         />
     <TextView 
         android:id="@+id/tvRetailPrice"
@@ -34,7 +35,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:textColor="@color/base_black_333333"
-        android:gravity="center"
+        android:gravity="center|right"
         />
     <TextView 
         android:id="@+id/tvSalesCount"
@@ -42,7 +43,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:textColor="@color/base_black_333333"
-        android:gravity="center"
+        android:gravity="center|right"
         />
     <TextView 
         android:id="@+id/tvStockCount"
@@ -50,7 +51,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:textColor="@color/base_black_333333"
-        android:gravity="center"
+        android:gravity="center|right"
+        android:paddingRight="30dp"
         />
 
 </LinearLayout>

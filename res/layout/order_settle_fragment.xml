@@ -51,7 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="2"
-                android:gravity="center"
+                android:gravity="start|center"
+                android:paddingStart="10dp"
                 android:text="工单号"
                 android:textColor="@color/base_black_333333" />
 
@@ -62,6 +63,16 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="截止时间"
+                android:textColor="@color/base_black_333333"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center|end"
+                android:text="总流水(元)"
                 android:textColor="@color/base_black_333333" />
 
             <TextView
@@ -69,8 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="流水"
+                android:gravity="center|end"
+                android:text="应收(元)"
                 android:textColor="@color/base_black_333333" />
 
             <TextView
@@ -78,8 +89,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="状态"
+                android:gravity="center|end"
+                android:paddingEnd="10dp"
+                android:text="工单状态"
                 android:textColor="@color/base_black_333333" />
         </LinearLayout>
 
@@ -94,7 +106,7 @@
             android:dividerHeight="1px"
             android:footerDividersEnabled="false"
             android:headerDividersEnabled="false"
-            android:listSelector="@color/base_gray"
+            android:listSelector="@color/base_gray_dark"
             ptr:ptrAnimationStyle="flip" />
 
         <RelativeLayout
@@ -115,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toStartOf="@id/tvSettlesNum"
-                android:text="当前工单数目:"
+                android:text="工单总数:"
                 android:textColor="@color/base_black_333333" />
 
             <TextView
@@ -190,20 +202,44 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="工单创建方："
+                    android:text="创  建  方："
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
                     android:id="@+id/tvApplyType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="环途"
+                    android:text="平台"
                     android:textColor="@color/base_black_333333" />
 
+          
+                  
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="创建于："
+                    android:text="结算截止时间："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2015-07-23"
+                    android:textColor="@color/base_black_333333" />
+                
+                
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp" >
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="创建时间："
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
@@ -212,7 +248,42 @@
                     android:layout_height="wrap_content"
                     android:text="2015-03-32"
                     android:textColor="@color/base_black_333333" />
+                
             </TableRow>
+            
+             <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp" >
+                
+                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="备注信息："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2015-03-32"
+                    android:textColor="@color/base_black_333333" />
+                
+            </TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收款账户信息"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/base_btn_blue" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/base_blue_gray" />
 
             <TableRow
                 android:layout_width="match_parent"
@@ -223,31 +294,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="工单截止于："
-                    android:textColor="@color/base_black_333333" />
-
-                <TextView
-                    android:id="@+id/tvEndTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2015-07-23"
-                    android:textColor="@color/base_black_333333" />
-            </TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="账号信息" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="9dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="户名："
+                    android:text="银行户名："
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
@@ -256,11 +303,18 @@
                     android:layout_height="wrap_content"
                     android:text="huantu"
                     android:textColor="@color/base_black_333333" />
-
+            </TableRow>
+            
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp" >
+                
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="账号："
+                    android:text="银行卡号："
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
@@ -271,11 +325,121 @@
                     android:textColor="@color/base_black_333333" />
             </TableRow>
 
+            <!-- 流水 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="结算审计结果"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/base_btn_blue" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/base_blue_gray" />
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="9dp"
                 android:paddingTop="9dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="总  流  水："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvSerialAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2015-07-23"
+                    android:textColor="@color/base_btn_orange" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服  务  费："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvServiceFee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/base_btn_orange" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="现金流水："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvCashAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2015-07-23"
+                    android:textColor="@color/base_btn_orange" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="在线流水："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvOnlineAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2015-07-23"
+                    android:textColor="@color/base_btn_orange" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="9dp"
+                android:paddingTop="9dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="应收金额："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvReturnAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/base_btn_orange" />
+                
+                  <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="滞  纳  金："
+                    android:textColor="@color/base_black_333333" />
+
+                <TextView
+                    android:id="@+id/tvLateFee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/base_btn_orange" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -295,20 +459,18 @@
                     style="@style/BtnGray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="打款"
+                    android:text="确认打款"
                     android:visibility="invisible" />
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="9dp"
-                android:paddingTop="9dp" >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="确认收款于："
+                    android:text="收款时间："
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
@@ -331,12 +493,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="9dp"
-                android:paddingTop="9dp" >
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="工单完成于："
+                    android:text="关闭时间："
                     android:textColor="@color/base_black_333333" />
 
                 <TextView
@@ -350,7 +512,7 @@
                     style="@style/BtnGray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="完成工单"
+                    android:text="关闭工单"
                     android:visibility="gone" />
             </TableRow>
 
@@ -359,7 +521,7 @@
                 android:layout_height="1px"
                 android:background="@color/base_gray" />
 
-            <TableRow
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="9dp"
@@ -377,9 +539,20 @@
                     style="@style/BtnBlue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/btnShowOrders"
                     android:layout_marginStart="20dp"
                     android:text="电脑审计" />
-            </TableRow>
+                
+                 <Button
+                    android:id="@+id/btnDiscuss"
+                    style="@style/BtnOrange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="20dp"
+                    android:text="存在异议?" 
+                    />
+            </RelativeLayout>
         </TableLayout>
 
         <!-- settle options -->
@@ -421,7 +594,7 @@
                     style="@style/BtnBlue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2015-03-31" />
+                    android:text="0000-00-00" />
             </TableRow>
 
             <TableRow
@@ -436,7 +609,7 @@
                     android:text="备注："
                     android:textColor="@color/base_black_333333" />
 
-                <com.globalways.csscli.view.ClearableEditText
+                <com.globalways.cvsb.view.ClearableEditText
                     android:id="@+id/etComments"
                     android:layout_width="200dp"
                     android:layout_height="80dp"

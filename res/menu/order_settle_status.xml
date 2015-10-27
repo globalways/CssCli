@@ -5,15 +5,19 @@
         android:id="@+id/menuSettleAll"
         android:title="@string/order_settle_status_all"/>
     
-    <item
+   <!--  <item
         android:id="@+id/menuSettleWatting"
-        android:title="@string/order_settle_status_watting"/>
+        android:title="@string/order_settle_status_watting"/> -->
     <item
         android:id="@+id/menuSettleSubmit"
         android:title="@string/order_settle_status_created"/>
     <item
         android:id="@+id/menuSettleAudit"
         android:title="@string/order_settle_status_audit"/>
+    <item
+        android:id="@+id/menuSettleAuditComplete"
+        android:title="@string/order_settle_status_audit_complete"/>
+    
     <item
         android:id="@+id/menuSettlePayed"
         android:title="@string/order_settle_status_payed"/>

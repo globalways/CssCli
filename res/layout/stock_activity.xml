@@ -24,7 +24,7 @@
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
                 android:checked="true"
-                android:drawableTop="@drawable/icon_statistics_sell"
+                android:drawableTop="@drawable/icon_stock_stock"
                 android:padding="20dp"
                 android:text="库存总览"
                 android:textColor="#333333" />

@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical" >
 
-            <com.globalways.csscli.view.ClearableEditText
+            <com.globalways.cvsb.view.ClearableEditText
                 android:id="@+id/etNewCategoryName"
                 style="@style/EditTextStye"
                 android:layout_width="0dp"

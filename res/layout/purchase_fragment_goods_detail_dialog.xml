@@ -28,7 +28,7 @@
                     android:digits="0123456789."
                     android:inputType="number"
                     /> -->
-                <com.globalways.csscli.view.ClearableEditText
+                <com.globalways.cvsb.view.ClearableEditText
                     style="@style/EditTextStye"
                     android:id="@+id/etGoodsCount"
                     android:layout_width="250dp"
@@ -49,7 +49,7 @@
                     android:textColor="@color/base_black_333333"
                     android:text="采购价" />
 
-                <com.globalways.csscli.view.ClearableEditText
+                <com.globalways.cvsb.view.ClearableEditText
                     style="@style/EditTextStye"
                     android:id="@+id/etGoodsPrice"
                     android:layout_width="250dp"

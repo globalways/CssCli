@@ -5,12 +5,17 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src-zxing"/>
 	<classpathentry kind="lib" path="libs/android-async-http-1.4.6.jar"/>
-	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.3.jar"/>
-	<classpathentry kind="lib" path="libs/picasso-2.3.4.jar"/>
-	<classpathentry kind="lib" path="libs/qiniu-android-sdk-7.0.2.jar"/>
+	<classpathentry kind="lib" path="libs/qiniu-android-sdk-7.0.2.jar">
+		<attributes>
+			<attribute name="source_encoding" value="UTF-8"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="libs/zxing-core-2.3.0.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="/android-support-v7-appcompat/libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="libs/zpSDK.jar"/>
+	<classpathentry kind="lib" path="libs/Bughd_android_sdk_v1.3.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -24,7 +24,7 @@
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
                 android:checked="true"
-                android:drawableTop="@drawable/icon_statistics_sell"
+                android:drawableTop="@drawable/icon_settings_update"
                 android:padding="20dp"
                 android:text="系统更新"
                 android:textColor="#333333" />
@@ -35,20 +35,9 @@
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
                 android:checked="false"
-                android:drawableTop="@drawable/icon_statistics_sell"
+                android:drawableTop="@drawable/icon_settings_devices"
                 android:padding="20dp"
                 android:text="外接设备"
-                android:textColor="#333333" />
-            <RadioButton
-                android:id="@+id/radioAbout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_stat_radio_bg"
-                android:button="@null"
-                android:checked="false"
-                android:drawableTop="@drawable/icon_statistics_sell"
-                android:padding="20dp"
-                android:text="关于我们"
                 android:textColor="#333333" />
             <RadioButton
                 android:id="@+id/radioFeedback"
@@ -57,9 +46,20 @@
                 android:background="@drawable/selector_stat_radio_bg"
                 android:button="@null"
                 android:checked="false"
-                android:drawableTop="@drawable/icon_statistics_sell"
+                android:drawableTop="@drawable/icon_settings_feedback"
                 android:padding="20dp"
-                android:text="反馈建议"
+                android:text="在线客服"
+                android:textColor="#333333" />
+            <RadioButton
+                android:id="@+id/radioAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_stat_radio_bg"
+                android:button="@null"
+                android:checked="false"
+                android:drawableTop="@drawable/icon_settings_about"
+                android:padding="20dp"
+                android:text="关于我们"
                 android:textColor="#333333" />
 
         </RadioGroup>

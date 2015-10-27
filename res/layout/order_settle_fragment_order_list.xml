@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
-            android:gravity="center"
+            android:gravity="start|center"
+            android:paddingStart="10dp"
             android:text="订单号"
             android:textColor="@color/base_black_333333" />
 
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="start|center"
             android:text="时间"
             android:textColor="@color/base_black_333333" />
 
@@ -34,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="总价"
+            android:gravity="center|end"
+            android:text="总价(元)"
             android:textColor="@color/base_black_333333" />
 
         <TextView
@@ -43,7 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="center|end"
+            android:paddingEnd="10dp"
             android:text="状态"
             android:textColor="@color/base_black_333333" />
     </LinearLayout>
